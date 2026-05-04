@@ -210,6 +210,7 @@
 }
 
 .trip-card {
+    min-height: 520px;
     background: #fff;
     border-radius: 20px;
     overflow: hidden;
@@ -406,6 +407,7 @@
 }
 
 .item-card {
+    min-height: 520px;
     background: #fff;
     border-radius: 20px;
     overflow: hidden;
