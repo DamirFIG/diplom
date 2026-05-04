@@ -115,6 +115,10 @@
                     <span>🚗</span> Поездки
                 </a>
                 
+                <a href="{{ route('admin.bookings') }}" class="sidebar-link {{ request()->routeIs('admin.bookings*') ? 'active' : '' }}">
+                    <span>🧾</span> Заказы
+                </a>
+
                 <a href="{{ route('admin.guides') }}" class="sidebar-link {{ request()->routeIs('admin.guides*') ? 'active' : '' }}">
                     <span>👤</span> Гиды
                 </a>
