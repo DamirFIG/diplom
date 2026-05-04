@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Review;
+use App\Models\Booking;
 use Illuminate\Http\Request;
 
 class ReviewController extends Controller
@@ -17,6 +18,29 @@ class ReviewController extends Controller
             'text' => 'required|string|max:256',
             'rating' => 'required|integer|min:1|max:5',
         ]);
+
+        // Разрешаем оставлять отзыв только по завершенному заказу
+        if ($request->filled('trip_id')) {
+            $hasCompleted = Booking::where('user_id', auth()->id())
+                ->where('trip_id', $request->trip_id)
+                ->where('status', 'completed')
+                ->exists();
+
+            if (!$hasCompleted) {
+                return redirect()->back()->with('error', 'Оставить отзыв можно только после статуса заказа "выполнен"');
+            }
+        }
+
+        if ($request->filled('item_id')) {
+            $hasCompleted = Booking::where('user_id', auth()->id())
+                ->where('item_id', $request->item_id)
+                ->where('status', 'completed')
+                ->exists();
+
+            if (!$hasCompleted) {
+                return redirect()->back()->with('error', 'Оставить отзыв можно только на товар по выполненному заказу');
+            }
+        }
 
         $data = [
             'user_id' => auth()->id(),
