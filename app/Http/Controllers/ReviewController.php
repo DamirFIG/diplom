@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Review;
 use App\Models\Booking;
-use App\Models\Item;
 use Illuminate\Http\Request;
 
 class ReviewController extends Controller
@@ -33,14 +32,9 @@ class ReviewController extends Controller
         }
 
         if ($request->filled('item_id')) {
-            $item = Item::find($request->item_id);
             $hasCompleted = Booking::where('user_id', auth()->id())
+                ->where('item_id', $request->item_id)
                 ->where('status', 'completed')
-                ->whereHas('trip', function($q) use ($item) {
-                    if ($item) {
-                        $q->where('activity_type', $item->activity_type);
-                    }
-                })
                 ->exists();
 
             if (!$hasCompleted) {

@@ -76,6 +76,7 @@ Route::post('/reviews/{review}/react-simple', [ReviewController::class, 'reactSi
 // Карточки
 Route::middleware('auth')->group(function () {
     Route::get('/items/{id}', [ItemController::class, 'show'])->name('items.show');
+    Route::post('/items/book', [ItemController::class, 'book'])->name('items.book');
     Route::get('/trips/{id}', [TripController::class, 'show'])->name('trips.show');
     Route::post('/trips/book', [TripController::class, 'book'])->name('trips.book');
 });
