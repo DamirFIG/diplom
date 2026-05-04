@@ -110,6 +110,11 @@
 .item-booking-form label { display:block; font-size:13px; margin-bottom:4px; }
 .item-booking-form input, .item-booking-form textarea { width:100%; padding:8px; border:1px solid #ddd; border-radius:8px; }
 .booking-time-row { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.booking-modal { position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 1000; }
+.booking-modal-content { background:#fff; max-width:520px; margin:6vh auto; border-radius:12px; overflow:hidden; }
+.booking-modal-header { display:flex; justify-content:space-between; align-items:center; padding:16px 20px; border-bottom:1px solid #eee; }
+.booking-modal-body { padding:20px; }
+.booking-modal-close { font-size:26px; cursor:pointer; }
 
 /* Стили для блока с маршрутом */
 .route-section {
@@ -230,6 +235,8 @@
         max-width: 100%;
     }
 }
+
+
 
 
 .reviews-section {
@@ -541,6 +548,37 @@
         <p><strong>Минимальный возраст:</strong> {{ $item->min_age ?? '0' }}</p>
         <p class="price">{{ $item->price }} ₽ / час</p>
 
+        <button class="btn-book" type="button" onclick="openItemBookingModal()">Забронировать</button>
+    </div>
+</div>
+
+<div id="itemBookingModal" class="booking-modal" style="display:none;">
+    <div class="booking-modal-content">
+        <div class="booking-modal-header">
+            <h3>Бронирование аренды</h3>
+            <span class="booking-modal-close" onclick="closeItemBookingModal()">&times;</span>
+        </div>
+        <div class="booking-modal-body">
+            <form action="{{ route('items.book') }}" method="POST" class="item-booking-form">
+                @csrf
+                <input type="hidden" name="item_id" value="{{ $item->id }}">
+                <div class="booking-row">
+                    <label>Дата</label>
+                    <input type="date" name="booking_date" required min="{{ now()->toDateString() }}">
+                </div>
+                <div class="booking-row booking-time-row">
+                    <div><label>С</label><input type="time" name="start_time" id="start_time" required></div>
+                    <div><label>До</label><input type="time" name="end_time" id="end_time" required></div>
+                </div>
+                <div class="booking-row">
+                    <label>Людей</label>
+                    <input type="number" name="people" id="booking_people" value="1" min="1" max="{{ $item->max_people ?? 10 }}" required>
+                </div>
+                <div class="booking-row"><label>Комментарий</label><textarea name="comment" rows="2"></textarea></div>
+                <p id="booking_total_preview" class="price">Итоговая цена: {{ $item->price }} ₽</p>
+                <button class="btn-book" type="submit">Подтвердить бронирование</button>
+            </form>
+        </div>
         <form action="{{ route('items.book') }}" method="POST" class="item-booking-form">
             @csrf
             <input type="hidden" name="item_id" value="{{ $item->id }}">
@@ -923,6 +961,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 <script>
+function openItemBookingModal(){ document.getElementById('itemBookingModal').style.display='block'; }
+function closeItemBookingModal(){ document.getElementById('itemBookingModal').style.display='none'; }
+
 document.addEventListener('DOMContentLoaded', function () {
   const start = document.getElementById('start_time');
   const end = document.getElementById('end_time');
@@ -938,6 +979,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (endM <= startM) { preview.textContent = 'Укажите корректное время'; return; }
     const hours = Math.ceil((endM - startM) / 60);
     const total = hours * pricePerHour * (parseInt(people.value || '1', 10));
+    preview.textContent = 'Итоговая цена: ' + total.toLocaleString('ru-RU') + ' ₽';
     preview.textContent = total.toLocaleString('ru-RU') + ' ₽';
   }
   [start, end, people].forEach(el => el && el.addEventListener('input', recalc));
