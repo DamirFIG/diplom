@@ -75,6 +75,10 @@
         .notification-close:hover {
             opacity: 1;
         }
+
+        body {
+            background: #fff !important;
+        }
     </style>
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="dns-prefetch" href="https://unpkg.com">
@@ -105,7 +109,7 @@
     </header>
 
     <div class="page-container">
-<main style="padding-top: 20px;">
+<main>
             @yield('content')
         </main>
 
