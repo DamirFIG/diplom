@@ -65,6 +65,7 @@ Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('
 // Профиль
 Route::middleware('auth')->prefix('profile')->name('profile.')->group(function () {
     Route::get('/', [ProfileController::class, 'show'])->name('index');
+    Route::post('/update', [ProfileController::class, 'updateInfo'])->name('update');
     Route::post('/avatar', [ProfileController::class, 'uploadAvatar'])->name('avatar.upload');
     Route::post('/avatar/delete', [ProfileController::class, 'deleteAvatar'])->name('avatar.delete');
 });

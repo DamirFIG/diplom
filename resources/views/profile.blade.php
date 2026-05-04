@@ -13,7 +13,7 @@
                 @endif
             </div>
             
-            <h2 class="profile-name">{{ $user->name ?? $user->login }}</h2>
+            <h2 class="profile-name">{{ $user->name ?? $user->login }} <button type="button" class="edit-profile-btn" onclick="openProfileEditModal()">✏️</button></h2>
             
             <p class="profile-register-date">
                 Зарегистрирован: {{ $user->created_at->format('d.m.Y') }}
@@ -114,8 +114,22 @@
                                             <path d="M9 18L15 12L9 6" stroke="#4A90D9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                         </svg>
                                     </div>
+                                @elseif($booking->item)
+                                    <div class="booking-image">
+                                        <img loading="lazy" decoding="async" src="{{ asset('storage/' . $booking->item->main_image) }}" alt="{{ $booking->item->title }}" onerror="this.src='{{ asset('img/empty.png') }}'; this.onerror=null;">
+                                    </div>
+                                    <div class="booking-info">
+                                        <div class="booking-header"><h4>{{ $booking->item->title }}</h4></div>
+                                        <p class="booking-type">Аренда: {{ $booking->item->activity_type }}</p>
+                                        <div class="booking-details">
+                                            <div class="detail-item"><span class="detail-icon">📅</span><span>{{ $booking->booking_date ? \Carbon\Carbon::parse($booking->booking_date)->format('d.m.Y') : 'Не указана' }}</span></div>
+                                            <div class="detail-item"><span class="detail-icon">🕒</span><span>{{ $booking->start_time }} - {{ $booking->end_time }}</span></div>
+                                            <div class="detail-item"><span class="detail-icon">👥</span><span>{{ $booking->people }} чел.</span></div>
+                                            <div class="detail-item"><span class="detail-icon">💰</span><span>{{ number_format($booking->total_price ?? 0, 0, '.', ' ') }} ₽</span></div>
+                                        </div>
+                                    </div>
                                 @else
-                                    <p>Поездка удалена</p>
+                                    <p>Заказ удален</p>
                                 @endif
                             </div>
                         @endforeach
@@ -227,6 +241,28 @@
                 @endif
             </section>
         </main>
+
+<div id="profileEditModal" class="profile-modal" style="display:none;">
+  <div class="profile-modal-content">
+    <div class="profile-modal-header"><h3>Редактировать профиль</h3><span onclick="closeProfileEditModal()">&times;</span></div>
+    <form method="POST" action="{{ route('profile.update') }}" class="profile-edit-form">@csrf
+      <label>Имя</label><input type="text" name="name" value="{{ $user->name }}">
+      <label>Логин</label><input type="text" name="login" value="{{ $user->login }}" required>
+      <label>Email</label><input type="email" name="email" value="{{ $user->email }}" required>
+      <button type="submit">Сохранить</button>
+    </form>
+    <form action="{{ route('profile.avatar.upload') }}" method="POST" enctype="multipart/form-data" class="profile-edit-form">@csrf
+      <label>Аватар</label><input type="file" name="avatar" accept="image/*" required>
+      <button type="submit">Обновить аватар</button>
+    </form>
+    @if($user->avatar)
+    <form action="{{ route('profile.avatar.delete') }}" method="POST" class="profile-edit-form">@csrf
+      <button type="submit" class="avatar-btn delete">Удалить аватар</button>
+    </form>
+    @endif
+  </div>
+</div>
+
     </div>
 </div>
 
