@@ -105,7 +105,7 @@
     </header>
 
     <div class="page-container">
-<main style="padding-top: 20px;">
+<main>
             @yield('content')
         </main>
 
