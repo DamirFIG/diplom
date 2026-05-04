@@ -1,4 +1,4 @@
-@extends('layouts.app2')
+@extends('layouts.app')
 
 @section('content')
 
@@ -235,6 +235,8 @@
         max-width: 100%;
     }
 }
+
+
 
 
 .reviews-section {
@@ -577,6 +579,25 @@
                 <button class="btn-book" type="submit">Подтвердить бронирование</button>
             </form>
         </div>
+        <form action="{{ route('items.book') }}" method="POST" class="item-booking-form">
+            @csrf
+            <input type="hidden" name="item_id" value="{{ $item->id }}">
+            <div class="booking-row">
+                <label>Дата</label>
+                <input type="date" name="booking_date" required min="{{ now()->toDateString() }}">
+            </div>
+            <div class="booking-row booking-time-row">
+                <div><label>С</label><input type="time" name="start_time" id="start_time" required></div>
+                <div><label>До</label><input type="time" name="end_time" id="end_time" required></div>
+            </div>
+            <div class="booking-row">
+                <label>Людей</label>
+                <input type="number" name="people" id="booking_people" value="1" min="1" max="{{ $item->max_people ?? 10 }}" required>
+            </div>
+            <div class="booking-row"><label>Комментарий</label><textarea name="comment" rows="2"></textarea></div>
+            <p id="booking_total_preview" class="price">{{ $item->price }} ₽</p>
+            <button class="btn-book" type="submit">Забронировать</button>
+        </form>
     </div>
 </div>
 
@@ -959,6 +980,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const hours = Math.ceil((endM - startM) / 60);
     const total = hours * pricePerHour * (parseInt(people.value || '1', 10));
     preview.textContent = 'Итоговая цена: ' + total.toLocaleString('ru-RU') + ' ₽';
+    preview.textContent = total.toLocaleString('ru-RU') + ' ₽';
   }
   [start, end, people].forEach(el => el && el.addEventListener('input', recalc));
 });
