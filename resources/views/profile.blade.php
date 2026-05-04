@@ -18,24 +18,6 @@
             <p class="profile-register-date">
                 Зарегистрирован: {{ $user->created_at->format('d.m.Y') }}
             </p>
-            
-            <!-- Загрузка аватарки -->
-            <div class="avatar-upload">
-                <form action="{{ route('profile.avatar.upload') }}" method="POST" enctype="multipart/form-data" id="avatar-form">
-                    @csrf
-                    <input type="file" name="avatar" id="avatar-input" accept="image/*" style="display: none;" onchange="this.form.submit()">
-                    <button type="button" class="avatar-btn" onclick="document.getElementById('avatar-input').click()">
-                        Загрузить фото
-                    </button>
-                </form>
-                @if($user->avatar)
-                    <form action="{{ route('profile.avatar.delete') }}" method="POST" style="margin-top: 10px;">
-                        @csrf
-                        <button type="submit" class="avatar-btn delete">Удалить фото</button>
-                    </form>
-                @endif
-            </div>
-            
             <div class="profile-divider"></div>
             
             <nav class="profile-menu">
@@ -119,6 +101,26 @@
                                         <img loading="lazy" decoding="async" src="{{ asset('storage/' . $booking->item->main_image) }}" alt="{{ $booking->item->title }}" onerror="this.src='{{ asset('img/empty.png') }}'; this.onerror=null;">
                                     </div>
                                     <div class="booking-info">
+                                        <div class="booking-header"><h4>{{ $booking->item->title }}</h4>
+                                            <div class="booking-status-badge status-{{ $booking->status }}">
+                                                @php
+                                                    $statusIcons = [
+                                                        'pending' => '⏳',
+                                                        'confirmed' => '✅',
+                                                        'completed' => '🎉',
+                                                        'cancelled' => '❌'
+                                                    ];
+                                                    $statusTexts = [
+                                                        'pending' => 'Ожидает',
+                                                        'confirmed' => 'Подтверждено',
+                                                        'completed' => 'Завершено',
+                                                        'cancelled' => 'Отменено'
+                                                    ];
+                                                @endphp
+                                                <span class="status-icon">{{ $statusIcons[$booking->status] ?? '⏳' }}</span>
+                                                <span class="status-text">{{ $statusTexts[$booking->status] ?? $booking->status }}</span>
+                                            </div>
+                                        </div>
                                         <div class="booking-header"><h4>{{ $booking->item->title }}</h4></div>
                                         <p class="booking-type">Аренда: {{ $booking->item->activity_type }}</p>
                                         <div class="booking-details">
@@ -292,7 +294,11 @@
 .profile-name {
     margin: 20px 0;
     color: #2b2b2b;
+    display:flex;
+    align-items:center;
+    gap:8px;
 }
+.edit-profile-btn{background:transparent;border:none;padding:0;line-height:1;cursor:pointer;font-size:18px;box-shadow:none;}
 
 .profile-register-date {
     color: #B2AEAE;
@@ -936,5 +942,10 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
+</script>
+<script>
+function openProfileEditModal(){ const m=document.getElementById('profileEditModal'); if(m) m.style.display='block'; }
+function closeProfileEditModal(){ const m=document.getElementById('profileEditModal'); if(m) m.style.display='none'; }
+window.addEventListener('click', function(e){ const m=document.getElementById('profileEditModal'); if(m && e.target===m) closeProfileEditModal(); });
 </script>
 @endsection
