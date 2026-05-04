@@ -748,8 +748,6 @@ function selectPoint(point) {
 
 // Инициализация после загрузки страницы
 document.addEventListener('DOMContentLoaded', function() {
-    initMap();
-    
     // Выделяем первую точку (старт) или последнюю
     const firstPoint = document.querySelector('.route-point-item.start') || 
                        document.querySelector('.route-point-item:last-child');
@@ -759,8 +757,47 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
-@section('scripts')
-<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-@endsection
+@push('scripts')
+    <script>
+    (function () {
+        function bootMap() {
+            if (typeof window.initMap === 'function') {
+                window.initMap();
+            }
+        }
+
+        function loadLeafletAndInit() {
+            if (window.L) {
+                bootMap();
+                return;
+            }
+
+            const script = document.createElement('script');
+            script.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+            script.onload = bootMap;
+            script.onerror = function () {
+                const fallback = document.createElement('script');
+                fallback.src = 'https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js';
+                fallback.onload = bootMap;
+                fallback.onerror = function () {
+                    const mapEl = document.getElementById('map');
+                    if (mapEl) {
+                        mapEl.innerHTML = '<div style="padding:16px;color:#c0392b;">Не удалось загрузить скрипт карты (Leaflet). Проверьте доступ к CDN.</div>';
+                    }
+                };
+                document.body.appendChild(fallback);
+            };
+
+            document.body.appendChild(script);
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', loadLeafletAndInit);
+        } else {
+            loadLeafletAndInit();
+        }
+    })();
+    </script>
+@endpush
 
 @endsection
