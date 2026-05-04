@@ -602,11 +602,9 @@ function initMap() {
             map.removeLayer(markers[pointIndex]);
         }
         
-        // Для точки поворота маркер на карте не рисуем (только геометрия маршрута)
-        if (selectedPoint.dataset.type !== 'turn') {
-            const icon = getPointIcon(selectedPoint.dataset.type);
-            markers[pointIndex] = L.marker([lat, lng], { icon }).addTo(map);
-        }
+        // В админке показываем маркер и для точки поворота
+        const icon = getPointIcon(selectedPoint.dataset.type);
+        markers[pointIndex] = L.marker([lat, lng], { icon }).addTo(map);
     });
 }
 
