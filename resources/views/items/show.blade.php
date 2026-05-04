@@ -402,9 +402,10 @@
 
 .add-review-form {
     background: linear-gradient(135deg, #f8f9fa 0%, #e8f0fe 100%);
-    padding: 30px;
-    border-radius: 16px;
+    padding: 20px;
+    border-radius: 14px;
     border: 1px solid #e0e0e0;
+    margin-bottom: 30px;
 }
 
 .add-review-form h4 {
@@ -420,7 +421,7 @@
 
 .add-review-form .star {
     color: #ddd;
-    font-size: 32px;
+    font-size: 26px;
     cursor: pointer;
     transition: all 0.2s ease;
     margin-right: 5px;
@@ -434,8 +435,8 @@
 
 .add-review-form textarea {
     width: 100%;
-    min-height: 120px;
-    padding: 15px;
+    min-height: 90px;
+    padding: 12px;
     border: 2px solid #e0e0e0;
     border-radius: 12px;
     resize: vertical;
@@ -453,10 +454,10 @@
 .add-review-form button {
     background: linear-gradient(135deg, #4A90D9 0%, #357ABD 100%);
     color: white;
-    padding: 14px 35px;
+    padding: 10px 24px;
     border: none;
     border-radius: 12px;
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
