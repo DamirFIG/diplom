@@ -14,10 +14,6 @@
 @endphp
 
 <style>
-body {
-    background: red !important;
-}
-
 .catalog-top-filters {
     margin-bottom: 20px;
     display: flex;
