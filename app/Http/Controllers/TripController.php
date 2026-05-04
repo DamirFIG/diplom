@@ -16,7 +16,12 @@ class TripController extends Controller
         
         $reviews = $trip->reviews()->with('user')->orderBy('created_at', 'desc')->paginate(10);
 
-        return view('trips.show', compact('trip', 'reviews'));
+        $canReview = auth()->check() && Booking::where('user_id', auth()->id())
+            ->where('trip_id', $trip->id)
+            ->where('status', 'completed')
+            ->exists();
+
+        return view('trips.show', compact('trip', 'reviews', 'canReview'));
     }
 
     public function book(Request $request)

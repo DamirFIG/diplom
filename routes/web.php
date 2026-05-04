@@ -33,6 +33,10 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::put('/trips/{id}', [AdminController::class, 'update'])->name('trips.update');
     Route::delete('/trips/{id}', [AdminController::class, 'destroy'])->name('trips.destroy');
     
+    // Заказы
+    Route::get('/bookings', [AdminController::class, 'bookings'])->name('bookings');
+    Route::post('/bookings/{booking}/status', [AdminController::class, 'updateBookingStatus'])->name('bookings.status');
+
     // Гиды
     Route::get('/guides', [AdminController::class, 'guides'])->name('guides');
     Route::get('/guides/create', [AdminController::class, 'createGuide'])->name('guides.create');
