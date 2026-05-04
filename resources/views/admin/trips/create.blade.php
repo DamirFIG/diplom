@@ -90,7 +90,7 @@
                 <label>Точки маршрута</label>
                 <div class="route-points-list" id="route-points-list">
                     <!-- Точка старта -->
-                    <div class="route-point-item start" data-index="0">
+                    <div class="route-point-item start" data-index="0" data-type="start">
                         <div class="point-header">
                             <span class="point-badge badge-start">🚩 Старт</span>
                             <button type="button" class="btn-remove-point" onclick="removePoint(this, 'start')">✕</button>
@@ -508,9 +508,11 @@ function initMap() {
             map.removeLayer(markers[pointIndex]);
         }
         
-        // Добавляем новый маркер
-        const icon = getPointIcon(selectedPoint.dataset.type);
-        markers[pointIndex] = L.marker([lat, lng], { icon }).addTo(map);
+        // Для точки поворота маркер на карте не рисуем (только геометрия маршрута)
+        if (selectedPoint.dataset.type !== 'turn') {
+            const icon = getPointIcon(selectedPoint.dataset.type);
+            markers[pointIndex] = L.marker([lat, lng], { icon }).addTo(map);
+        }
     });
 }
 
@@ -582,7 +584,10 @@ function addPoint(type) {
     `;
     
     const isVisible = isTurn ? '0' : '1';
-    const latLngFields = isTurn ? '' : `
+    const latLngFields = isTurn ? `
+        <input type="hidden" name="route_points[${pointIndex}][lat]" class="point-lat hidden-field" required>
+        <input type="hidden" name="route_points[${pointIndex}][lng]" class="point-lng hidden-field" required>
+    ` : `
         <input type="text" name="route_points[${pointIndex}][lat]" class="point-lat" placeholder="Широта" readonly required>
         <input type="text" name="route_points[${pointIndex}][lng]" class="point-lng" placeholder="Долгота" readonly required>
     `;
@@ -611,9 +616,7 @@ function addPoint(type) {
     });
     
     container.appendChild(newPoint);
-    if (!isTurn) {
-        selectPoint(newPoint);
-    }
+    selectPoint(newPoint);
 }
 
 // Удаление точки
