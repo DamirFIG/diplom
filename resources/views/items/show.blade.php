@@ -3,6 +3,7 @@
 @section('content')
 
 @push('styles')
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 <style>
 .item-page {
     display: flex;
@@ -621,7 +622,8 @@
             <span>Будьте первым, кто оставит отзыв!</span>
         </div>
     @endif
-</section>   
+</section>
+    
 
 
 <script>
@@ -733,6 +735,9 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // Инициализация карты с маршрутом
+</script>
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script>
 document.addEventListener('DOMContentLoaded', function() {
     const mapElement = document.getElementById('map');
     if (!mapElement) return;
@@ -889,10 +894,4 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 
 
-@section('scripts')
-<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-<script>
-// Leaflet map code here
-</script>
 @endsection
