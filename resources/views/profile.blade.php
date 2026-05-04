@@ -299,6 +299,15 @@
     gap:8px;
 }
 .edit-profile-btn{background:transparent;border:none;padding:0;line-height:1;cursor:pointer;font-size:18px;box-shadow:none;}
+.profile-modal{position:fixed;inset:0;background:rgba(16,24,40,.45);z-index:2000;display:flex;align-items:center;justify-content:center;padding:16px;}
+.profile-modal-content{width:100%;max-width:520px;background:#fff;border-radius:16px;box-shadow:0 20px 50px rgba(0,0,0,.2);padding:20px;}
+.profile-modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
+.profile-modal-header h3{margin:0;font-size:24px;color:#2b2b2b;}
+.profile-modal-header span{font-size:30px;cursor:pointer;line-height:1;color:#777;}
+.profile-edit-form{display:flex;flex-direction:column;gap:8px;margin-bottom:14px;}
+.profile-edit-form label{font-size:14px;color:#4b5563;}
+.profile-edit-form input{padding:10px 12px;border:1px solid #d9dee7;border-radius:10px;font-size:14px;}
+.profile-edit-form button{padding:10px 14px;border:none;border-radius:10px;background:#377FC1;color:#fff;font-weight:600;cursor:pointer;}
 
 .profile-register-date {
     color: #B2AEAE;
@@ -944,6 +953,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 <script>
+function openProfileEditModal(){ const m=document.getElementById('profileEditModal'); if(m) m.style.display='flex'; }
 function openProfileEditModal(){ const m=document.getElementById('profileEditModal'); if(m) m.style.display='block'; }
 function closeProfileEditModal(){ const m=document.getElementById('profileEditModal'); if(m) m.style.display='none'; }
 window.addEventListener('click', function(e){ const m=document.getElementById('profileEditModal'); if(m && e.target===m) closeProfileEditModal(); });

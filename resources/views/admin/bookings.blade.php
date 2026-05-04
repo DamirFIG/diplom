@@ -10,6 +10,7 @@
         <table class="bookings-table">
             <thead>
             <tr>
+                <th>ID</th><th>Пользователь</th><th>Объект</th><th>Дата</th><th>Время</th><th>Люди</th><th>Сумма</th><th>Статус заказа</th>
                 <th>ID</th><th>Пользователь</th><th>Объект</th><th>Дата</th><th>Время</th><th>Люди</th><th>Сумма</th><th>Статус</th><th>Изменить</th>
     <div class="admin-table">
         <table>
@@ -28,6 +29,8 @@
                     <td>{{ $booking->start_time && $booking->end_time ? $booking->start_time.'-'.$booking->end_time : '—' }}</td>
                     <td>{{ $booking->people ?? '—' }}</td>
                     <td>{{ number_format($booking->total_price ?? 0, 0, '.', ' ') }} ₽</td>
+                    <td>
+                        <form method="POST" action="{{ route('admin.bookings.status', $booking) }}" class="status-form">
                     <td><span class="status-badge status-{{ $booking->status }}">{{ $booking->status }}</span></td>
                     <td>
                         <form method="POST" action="{{ route('admin.bookings.status', $booking) }}" class="status-form">
@@ -46,6 +49,7 @@
                                 @endforeach
                             </select>
                             <button type="submit">Сохранить</button>
+                        </form></td>
                         </form>
                     </td>
                 </tr>
