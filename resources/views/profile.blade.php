@@ -121,6 +121,7 @@
                                                 <span class="status-text">{{ $statusTexts[$booking->status] ?? $booking->status }}</span>
                                             </div>
                                         </div>
+                                        <div class="booking-header"><h4>{{ $booking->item->title }}</h4></div>
                                         <p class="booking-type">Аренда: {{ $booking->item->activity_type }}</p>
                                         <div class="booking-details">
                                             <div class="detail-item"><span class="detail-icon">📅</span><span>{{ $booking->booking_date ? \Carbon\Carbon::parse($booking->booking_date)->format('d.m.Y') : 'Не указана' }}</span></div>
