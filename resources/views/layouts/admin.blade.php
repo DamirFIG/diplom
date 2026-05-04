@@ -420,5 +420,7 @@
             setTimeout(() => notification.remove(), 300);
         }
     </script>
+    @stack('scripts')
+
 </body>
 </html>
