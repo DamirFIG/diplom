@@ -33,6 +33,10 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::put('/trips/{id}', [AdminController::class, 'update'])->name('trips.update');
     Route::delete('/trips/{id}', [AdminController::class, 'destroy'])->name('trips.destroy');
     
+    // Заказы
+    Route::get('/bookings', [AdminController::class, 'bookings'])->name('bookings');
+    Route::post('/bookings/{booking}/status', [AdminController::class, 'updateBookingStatus'])->name('bookings.status');
+
     // Гиды
     Route::get('/guides', [AdminController::class, 'guides'])->name('guides');
     Route::get('/guides/create', [AdminController::class, 'createGuide'])->name('guides.create');
@@ -61,6 +65,7 @@ Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('
 // Профиль
 Route::middleware('auth')->prefix('profile')->name('profile.')->group(function () {
     Route::get('/', [ProfileController::class, 'show'])->name('index');
+    Route::post('/update', [ProfileController::class, 'updateInfo'])->name('update');
     Route::post('/avatar', [ProfileController::class, 'uploadAvatar'])->name('avatar.upload');
     Route::post('/avatar/delete', [ProfileController::class, 'deleteAvatar'])->name('avatar.delete');
 });
@@ -72,6 +77,7 @@ Route::post('/reviews/{review}/react-simple', [ReviewController::class, 'reactSi
 // Карточки
 Route::middleware('auth')->group(function () {
     Route::get('/items/{id}', [ItemController::class, 'show'])->name('items.show');
+    Route::post('/items/book', [ItemController::class, 'book'])->name('items.book');
     Route::get('/trips/{id}', [TripController::class, 'show'])->name('trips.show');
     Route::post('/trips/book', [TripController::class, 'book'])->name('trips.book');
 });

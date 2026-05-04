@@ -18,7 +18,7 @@ class ProfileController extends Controller
 
         // Загружаем бронирования с поездками (пагинация)
         $bookings = $user->bookings()
-            ->with('trip')
+            ->with(['trip','item'])
             ->orderBy('created_at', 'desc')
             ->paginate(10);
 
@@ -64,6 +64,21 @@ class ProfileController extends Controller
     /**
      * Удаление аватарки
      */
+    public function updateInfo(Request $request)
+    {
+        $user = Auth::user();
+
+        $data = $request->validate([
+            'name' => 'nullable|string|max:255',
+            'login' => 'required|string|max:255|unique:users,login,' . $user->id,
+            'email' => 'required|email|max:255|unique:users,email,' . $user->id,
+        ]);
+
+        $user->update($data);
+
+        return back()->with('success', 'Профиль обновлён');
+    }
+
     public function deleteAvatar()
     {
         $user = Auth::user();

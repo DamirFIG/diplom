@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Guide;
+use App\Models\Booking;
 use App\Models\Item;
 use App\Models\Trip;
 use App\Models\User;
@@ -80,6 +81,25 @@ class AdminController extends Controller
             'trips' => $trips,
             'activityTypes' => ['гидроцикл', 'банан', 'флайборд', 'сапборд', 'катамаран'],
         ]);
+    }
+
+
+    public function bookings(Request $request)
+    {
+        $bookings = Booking::with(['user', 'trip'])->orderByDesc('created_at')->paginate(20);
+        return view('admin.bookings', compact('bookings'));
+    }
+
+    public function updateBookingStatus(Request $request, Booking $booking)
+    {
+        $request->validate([
+            'status' => 'required|in:pending,confirmed,completed,cancelled',
+        ]);
+
+        $booking->status = $request->status;
+        $booking->save();
+
+        return back()->with('success', 'Статус заказа обновлён');
     }
 
     public function users(Request $request)
