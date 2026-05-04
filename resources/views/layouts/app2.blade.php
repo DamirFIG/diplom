@@ -11,6 +11,7 @@
     <meta name="description" content="Аренда гидроциклов и водных маршрутов в Санкт-Петербурге. Активный отдых на воде.">
     <meta name="keywords" content="аренда гидроцикла СПб, водные прогулки, отдых на воде">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    @stack('styles')
     <style>
         .notifications {
             position: fixed;
@@ -73,6 +74,10 @@
 
         .notification-close:hover {
             opacity: 1;
+        }
+
+        body {
+            background: #fff !important;
         }
     </style>
 </head>
