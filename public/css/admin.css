@@ -1,0 +1,150 @@
+/* ===== ФИЛЬТРЫ АДМИН-ПАНЕЛИ ===== */
+.filters-section {
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+    padding: 24px;
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+    margin-bottom: 24px;
+    border: 1px solid #e8ecf1;
+    transition: box-shadow 0.3s ease;
+}
+
+.filters-section:hover {
+    box-shadow: 0 6px 24px rgba(0,0,0,0.1);
+}
+
+.filters-form {
+    width: 100%;
+}
+
+.filters-row {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    align-items: flex-end;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 160px;
+    flex: 1;
+}
+
+.filter-group label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.filter-group input,
+.filter-group select {
+    padding: 12px 16px;
+    border: 2px solid #e2e8f0;
+    border-radius: 10px;
+    font-size: 15px;
+    font-family: inherit;
+    background: #fff;
+    transition: all 0.3s ease;
+    color: #334155;
+}
+
+.filter-group input::placeholder {
+    color: #94a3b8;
+}
+
+.filter-group input:focus,
+.filter-group select:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.15);
+}
+
+.filter-group select {
+    cursor: pointer;
+    -webkit-appearance: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2364748b' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    padding-right: 36px;
+}
+
+.filter-buttons {
+    display: flex;
+    gap: 10px;
+    align-self: flex-end;
+    flex: 0 0 auto;
+}
+
+.btn-filter,
+.btn-reset {
+    padding: 12px 24px;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.btn-filter {
+    background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+    color: white;
+    box-shadow: 0 2px 8px rgba(52, 152, 219, 0.3);
+}
+
+.btn-filter:hover {
+    background: linear-gradient(135deg, #2980b9 0%, #2471a3 100%);
+    box-shadow: 0 4px 12px rgba(52, 152, 219, 0.4);
+    transform: translateY(-1px);
+}
+
+.btn-filter:active {
+    transform: translateY(0);
+}
+
+.btn-reset {
+    background: #f1f5f9;
+    color: #64748b;
+    border: 2px solid #e2e8f0;
+}
+
+.btn-reset:hover {
+    background: #e2e8f0;
+    color: #475569;
+    border-color: #cbd5e1;
+}
+
+@media (max-width: 768px) {
+    .filters-section {
+        padding: 20px;
+    }
+
+    .filters-row {
+        flex-direction: column;
+    }
+
+    .filter-group {
+        width: 100%;
+        min-width: unset;
+    }
+
+    .filter-buttons {
+        width: 100%;
+    }
+
+    .btn-filter,
+    .btn-reset {
+        flex: 1;
+        justify-content: center;
+    }
+}

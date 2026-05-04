@@ -1,0 +1,46 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('trips', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('guide_id')->nullable()->constrained()->nullOnDelete();
+            $table->enum('activity_type', [
+                'гидроцикл',
+                'банан',
+                'флайборд',
+                'сапборд',
+                'катамаран'
+            ]);
+            $table->string('title');
+            $table->unsignedInteger('price');
+            $table->date('event_date')->nullable();
+            $table->text('description')->nullable();
+            $table->json('gallery')->nullable();
+            $table->unsignedTinyInteger('max_people')->nullable();
+            $table->unsignedSmallInteger('duration_minutes')->nullable();
+            $table->unsignedTinyInteger('min_age')->nullable();
+            $table->unsignedBigInteger('route_id')->nullable();
+
+
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('trips');
+    }
+};
