@@ -74,6 +74,10 @@
         .notification-close:hover {
             opacity: 1;
         }
+
+        body {
+            background: #fff !important;
+        }
     </style>
 </head>
 <body>
