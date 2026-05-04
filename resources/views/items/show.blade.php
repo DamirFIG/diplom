@@ -2,6 +2,8 @@
 
 @section('content')
 
+@push('styles')
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 <style>
 .item-page {
     display: flex;
@@ -103,6 +105,11 @@
 .btn-book:hover {
     background: #357ABD;
 }
+
+.item-booking-form .booking-row { margin-bottom: 10px; }
+.item-booking-form label { display:block; font-size:13px; margin-bottom:4px; }
+.item-booking-form input, .item-booking-form textarea { width:100%; padding:8px; border:1px solid #ddd; border-radius:8px; }
+.booking-time-row { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
 
 /* Стили для блока с маршрутом */
 .route-section {
@@ -223,136 +230,8 @@
         max-width: 100%;
     }
 }
-</style>
 
-<div class="item-page">
-    <div class="item-left">
-        {{-- Большое фото --}}
-        <div class="main-image">
-            <img loading="lazy" decoding="async" id="activeImage" src="{{ asset('storage/' . $item->main_image) }}" alt="{{ $item->title }}">
-        </div>
 
-        {{-- Мини-фото --}}
-        <div class="thumbs">
-            {{-- Главное фото как первая миниатюра --}}
-            <img loading="lazy" decoding="async" src="{{ asset('storage/' . $item->main_image) }}"
-                 class="thumb"
-                 alt="Main"
-                 onclick="changeImage(this.src)">
-
-            {{-- Галерея --}}
-            @php
-                $gallery = is_array($item->gallery) ? $item->gallery : [];
-            @endphp
-
-            @if(count($gallery) > 1)
-                @foreach(array_slice($gallery, 1) as $img)
-                    <img loading="lazy" decoding="async" src="{{ asset('storage/'.$img) }}" class="thumb" alt="Gallery" onclick="changeImage(this.src)">
-                @endforeach
-            @endif
-        </div>
-    </div>
-
-    <div class="item-right">
-        <h4>{{ $item->title }}</h4>
-        <p><strong>Тип:</strong> {{ $item->activity_type }}</p>
-        <p style="word-wrap: break-word; overflow-wrap: break-word;">{{ $item->description ?? '' }}</p>
-        <p><strong>Допустимое количество людей:</strong> {{ $item->max_people ?? 'не указано' }}</p>
-        <p><strong>Длительность маршрута:</strong> {{ $item->duration_minutes ?? 'не указано' }} минут</p>
-        <p><strong>Минимальный возраст:</strong> {{ $item->min_age ?? '0' }}</p>
-        <p class="price">{{ $item->price }} ₽ / час</p>
-
-        <button class="btn-book">Забронировать</button>
-    </div>
-</div>
-
-{{-- Блок с маршрутом на карте --}}
-@if($item->route && $item->route->points->count())
-    <div class="route-section">
-        <h3>🗺️ Маршрут</h3>
-        <div id="map"
-             data-visible-points='@json($item->route->allPoints)'
-             data-line-points='@json($item->route->allLinePoints)'
-             data-center='@json(["lat" => $item->route->start_lat ?? 59.9343, "lng" => $item->route->start_lng ?? 30.3351])'>
-        </div>
-    </div>
-@endif
-
-<!-- Отзывы -->
-<section class="reviews-section container">
-    <h3 class="reviews-title">Отзывы <span class="reviews-count">({{ $reviews->total() }})</span></h3>
-
-    <!-- Форма добавления отзыва -->
-    @auth
-        <div class="add-review-form">
-            <h4>Оставить отзыв</h4>
-            <form action="{{ route('reviews.store') }}" method="POST">
-                @csrf
-                <input type="hidden" name="item_id" value="{{ $item->id }}">
-                <input type="hidden" name="rating" id="item-rating-input" value="0">
-
-                <div class="rating-stars" id="item-rating">
-                    @for($i = 1; $i <= 5; $i++)
-                        <span class="star" data-value="{{ $i }}">★</span>
-                    @endfor
-                </div>
-
-                <textarea name="text" maxlength="256" placeholder="Напишите ваш отзыв..." required></textarea>
-                <button type="submit">Отправить отзыв</button>
-            </form>
-        </div>
-    @else
-        <p class="login-message"><a href="{{ route('auth.login') }}">Войдите</a>, чтобы оставить отзыв</p>
-    @endauth
-
-    @if($reviews->count() > 0)
-        <div class="reviews-list">
-            @foreach($reviews as $review)
-                <div class="review-card" data-review-id="{{ $review->id }}">
-                    <div class="review-card-header">
-                        <div class="review-author-wrapper">
-                            <img loading="lazy" decoding="async" src="{{ $review->user->avatar ? asset('storage/' . $review->user->avatar) : asset('img/empty.png') }}" alt="avatar" class="review-avatar">
-                            <div class="review-author-info">
-                                <span class="author-name">{{ $review->user->login ?? 'Гость' }}</span>
-                                <span class="review-date">{{ $review->created_at->format('d.m.Y') }}</span>
-                            </div>
-                        </div>
-                        <div class="review-rating-badge">
-                            @for($i = 0; $i < 5; $i++)
-                                <span class="star {{ $i < $review->rating ? 'active' : '' }}">★</span>
-                            @endfor
-                        </div>
-                    </div>
-                    <p class="review-text">{{ $review->text }}</p>
-                    <div class="review-reactions">
-                        <span class="reaction-item likes">
-                            <span class="reaction-icon">👍</span>
-                            <span class="reaction-count">{{ $review->likes }}</span>
-                        </span>
-                        <span class="reaction-item dislikes">
-                            <span class="reaction-icon">👎</span>
-                            <span class="reaction-count">{{ $review->dislikes }}</span>
-                        </span>
-                    </div>
-                </div>
-            @endforeach
-        </div>
-
-        <!-- Пагинация для отзывов -->
-        <div class="pagination-container">
-            {{ $reviews->links('vendor.pagination.bootstrap-5') }}
-        </div>
-    @else
-        <div class="no-reviews">
-            <div class="no-reviews-icon">💬</div>
-            <p>Отзывов пока нет</p>
-            <span>Будьте первым, кто оставит отзыв!</span>
-        </div>
-    @endif
-</section>
-    
-
-<style>
 .reviews-section {
     max-width: 1200px;
     margin: 30px auto;
@@ -528,9 +407,10 @@
 
 .add-review-form {
     background: linear-gradient(135deg, #f8f9fa 0%, #e8f0fe 100%);
-    padding: 30px;
-    border-radius: 16px;
+    padding: 20px;
+    border-radius: 14px;
     border: 1px solid #e0e0e0;
+    margin-bottom: 30px;
 }
 
 .add-review-form h4 {
@@ -546,7 +426,7 @@
 
 .add-review-form .star {
     color: #ddd;
-    font-size: 32px;
+    font-size: 26px;
     cursor: pointer;
     transition: all 0.2s ease;
     margin-right: 5px;
@@ -560,8 +440,8 @@
 
 .add-review-form textarea {
     width: 100%;
-    min-height: 120px;
-    padding: 15px;
+    min-height: 90px;
+    padding: 12px;
     border: 2px solid #e0e0e0;
     border-radius: 12px;
     resize: vertical;
@@ -579,10 +459,10 @@
 .add-review-form button {
     background: linear-gradient(135deg, #4A90D9 0%, #357ABD 100%);
     color: white;
-    padding: 14px 35px;
+    padding: 10px 24px;
     border: none;
     border-radius: 12px;
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -620,6 +500,159 @@
     justify-content: center;
 }
 </style>
+@endpush
+
+
+
+<div class="item-page">
+    <div class="item-left">
+        {{-- Большое фото --}}
+        <div class="main-image">
+            <img loading="lazy" decoding="async" id="activeImage" src="{{ asset('storage/' . $item->main_image) }}" alt="{{ $item->title }}">
+        </div>
+
+        {{-- Мини-фото --}}
+        <div class="thumbs">
+            {{-- Главное фото как первая миниатюра --}}
+            <img loading="lazy" decoding="async" src="{{ asset('storage/' . $item->main_image) }}"
+                 class="thumb"
+                 alt="Main"
+                 onclick="changeImage(this.src)">
+
+            {{-- Галерея --}}
+            @php
+                $gallery = is_array($item->gallery) ? $item->gallery : [];
+            @endphp
+
+            @if(count($gallery) > 1)
+                @foreach(array_slice($gallery, 1) as $img)
+                    <img loading="lazy" decoding="async" src="{{ asset('storage/'.$img) }}" class="thumb" alt="Gallery" onclick="changeImage(this.src)">
+                @endforeach
+            @endif
+        </div>
+    </div>
+
+    <div class="item-right">
+        <h4>{{ $item->title }}</h4>
+        <p><strong>Тип:</strong> {{ $item->activity_type }}</p>
+        <p style="word-wrap: break-word; overflow-wrap: break-word;">{{ $item->description ?? '' }}</p>
+        <p><strong>Допустимое количество людей:</strong> {{ $item->max_people ?? 'не указано' }}</p>
+        <p><strong>Длительность маршрута:</strong> {{ $item->duration_minutes ?? 'не указано' }} минут</p>
+        <p><strong>Минимальный возраст:</strong> {{ $item->min_age ?? '0' }}</p>
+        <p class="price">{{ $item->price }} ₽ / час</p>
+
+        <form action="{{ route('items.book') }}" method="POST" class="item-booking-form">
+            @csrf
+            <input type="hidden" name="item_id" value="{{ $item->id }}">
+            <div class="booking-row">
+                <label>Дата</label>
+                <input type="date" name="booking_date" required min="{{ now()->toDateString() }}">
+            </div>
+            <div class="booking-row booking-time-row">
+                <div><label>С</label><input type="time" name="start_time" id="start_time" required></div>
+                <div><label>До</label><input type="time" name="end_time" id="end_time" required></div>
+            </div>
+            <div class="booking-row">
+                <label>Людей</label>
+                <input type="number" name="people" id="booking_people" value="1" min="1" max="{{ $item->max_people ?? 10 }}" required>
+            </div>
+            <div class="booking-row"><label>Комментарий</label><textarea name="comment" rows="2"></textarea></div>
+            <p id="booking_total_preview" class="price">{{ $item->price }} ₽</p>
+            <button class="btn-book" type="submit">Забронировать</button>
+        </form>
+    </div>
+</div>
+
+{{-- Блок с маршрутом на карте --}}
+@if($item->route && $item->route->points->count())
+    <div class="route-section">
+        <h3>🗺️ Маршрут</h3>
+        <div id="map"
+             data-visible-points='@json($item->route->allPoints)'
+             data-line-points='@json($item->route->allLinePoints)'
+             data-center='@json(["lat" => $item->route->start_lat ?? 59.9343, "lng" => $item->route->start_lng ?? 30.3351])'>
+        </div>
+    </div>
+@endif
+
+<!-- Отзывы -->
+<section class="reviews-section container">
+    <h3 class="reviews-title">Отзывы <span class="reviews-count">({{ $reviews->total() }})</span></h3>
+
+    <!-- Форма добавления отзыва -->
+    @auth
+        @if($canReview)
+        <div class="add-review-form">
+            <h4>Оставить отзыв</h4>
+            <form action="{{ route('reviews.store') }}" method="POST">
+                @csrf
+                <input type="hidden" name="item_id" value="{{ $item->id }}">
+                <input type="hidden" name="rating" id="item-rating-input" value="0">
+
+                <div class="rating-stars" id="item-rating">
+                    @for($i = 1; $i <= 5; $i++)
+                        <span class="star" data-value="{{ $i }}">★</span>
+                    @endfor
+                </div>
+
+                <textarea name="text" maxlength="256" placeholder="Напишите ваш отзыв..." required></textarea>
+                <button type="submit">Отправить отзыв</button>
+            </form>
+        </div>
+        @else
+        <div class="login-message">Оставить отзыв можно только после заказа со статусом «Выполнен».</div>
+        @endif
+    @else
+        <p class="login-message"><a href="{{ route('auth.login') }}">Войдите</a>, чтобы оставить отзыв</p>
+    @endauth
+
+    @if($reviews->count() > 0)
+        <div class="reviews-list">
+            @foreach($reviews as $review)
+                <div class="review-card" data-review-id="{{ $review->id }}">
+                    <div class="review-card-header">
+                        <div class="review-author-wrapper">
+                            <img loading="lazy" decoding="async" src="{{ $review->user->avatar ? asset('storage/' . $review->user->avatar) : asset('img/empty.png') }}" alt="avatar" class="review-avatar">
+                            <div class="review-author-info">
+                                <span class="author-name">{{ $review->user->login ?? 'Гость' }}</span>
+                                <span class="review-date">{{ $review->created_at->format('d.m.Y') }}</span>
+                            </div>
+                        </div>
+                        <div class="review-rating-badge">
+                            @for($i = 0; $i < 5; $i++)
+                                <span class="star {{ $i < $review->rating ? 'active' : '' }}">★</span>
+                            @endfor
+                        </div>
+                    </div>
+                    <p class="review-text">{{ $review->text }}</p>
+                    <div class="review-reactions">
+                        <span class="reaction-item likes">
+                            <span class="reaction-icon">👍</span>
+                            <span class="reaction-count">{{ $review->likes }}</span>
+                        </span>
+                        <span class="reaction-item dislikes">
+                            <span class="reaction-icon">👎</span>
+                            <span class="reaction-count">{{ $review->dislikes }}</span>
+                        </span>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+
+        <!-- Пагинация для отзывов -->
+        <div class="pagination-container">
+            {{ $reviews->links('vendor.pagination.bootstrap-5') }}
+        </div>
+    @else
+        <div class="no-reviews">
+            <div class="no-reviews-icon">💬</div>
+            <p>Отзывов пока нет</p>
+            <span>Будьте первым, кто оставит отзыв!</span>
+        </div>
+    @endif
+</section>
+    
+
 
 <script>
 // Рейтинг для формы отзыва
@@ -730,6 +763,9 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // Инициализация карты с маршрутом
+</script>
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script>
 document.addEventListener('DOMContentLoaded', function() {
     const mapElement = document.getElementById('map');
     if (!mapElement) return;
@@ -886,10 +922,25 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 
 
-@section('scripts')
-<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script>
-// Leaflet map code here
+document.addEventListener('DOMContentLoaded', function () {
+  const start = document.getElementById('start_time');
+  const end = document.getElementById('end_time');
+  const people = document.getElementById('booking_people');
+  const preview = document.getElementById('booking_total_preview');
+  const pricePerHour = {{ $item->price }};
+  function recalc() {
+    if (!start || !end || !people || !preview || !start.value || !end.value) return;
+    const [sh, sm] = start.value.split(':').map(Number);
+    const [eh, em] = end.value.split(':').map(Number);
+    const startM = sh * 60 + sm;
+    const endM = eh * 60 + em;
+    if (endM <= startM) { preview.textContent = 'Укажите корректное время'; return; }
+    const hours = Math.ceil((endM - startM) / 60);
+    const total = hours * pricePerHour * (parseInt(people.value || '1', 10));
+    preview.textContent = total.toLocaleString('ru-RU') + ' ₽';
+  }
+  [start, end, people].forEach(el => el && el.addEventListener('input', recalc));
+});
 </script>
 @endsection
