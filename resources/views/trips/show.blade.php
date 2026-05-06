@@ -523,6 +523,7 @@
 
     <!-- Форма добавления отзыва -->
     @auth
+        @if($canReview)
         <div class="add-review-form">
             <h4>Оставить отзыв</h4>
             <form action="{{ route('reviews.store') }}" method="POST">
@@ -540,6 +541,9 @@
                 <button type="submit">Отправить отзыв</button>
             </form>
         </div>
+        @else
+        <div class="login-message">Оставить отзыв можно только после заказа со статусом «Выполнен».</div>
+        @endif
     @else
         <p class="login-message"><a href="{{ route('auth.login') }}">Войдите</a>, чтобы оставить отзыв</p>
     @endauth
