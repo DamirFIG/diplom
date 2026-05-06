@@ -121,6 +121,7 @@
                                                 <span class="status-text">{{ $statusTexts[$booking->status] ?? $booking->status }}</span>
                                             </div>
                                         </div>
+                                        <div class="booking-header"><h4>{{ $booking->item->title }}</h4></div>
                                         <p class="booking-type">Аренда: {{ $booking->item->activity_type }}</p>
                                         <div class="booking-details">
                                             <div class="detail-item"><span class="detail-icon">📅</span><span>{{ $booking->booking_date ? \Carbon\Carbon::parse($booking->booking_date)->format('d.m.Y') : 'Не указана' }}</span></div>
@@ -953,6 +954,7 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 <script>
 function openProfileEditModal(){ const m=document.getElementById('profileEditModal'); if(m) m.style.display='flex'; }
+function openProfileEditModal(){ const m=document.getElementById('profileEditModal'); if(m) m.style.display='block'; }
 function closeProfileEditModal(){ const m=document.getElementById('profileEditModal'); if(m) m.style.display='none'; }
 window.addEventListener('click', function(e){ const m=document.getElementById('profileEditModal'); if(m && e.target===m) closeProfileEditModal(); });
 </script>
