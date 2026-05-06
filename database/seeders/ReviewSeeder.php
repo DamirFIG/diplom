@@ -2,9 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\Review;
 use App\Models\Item;
-use App\Models\Trip;
+use App\Models\Review;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
@@ -15,88 +14,82 @@ class ReviewSeeder extends Seeder
      */
     public function run(): void
     {
-        $users = User::all();
-        $items = Item::all();
-        $trips = Trip::all();
+        $items = Item::orderBy('id')->get();
 
-        if ($items->isEmpty() && $trips->isEmpty()) {
-            $this->command->info('Нет товаров или поездок для создания отзывов.');
+        if ($items->isEmpty()) {
+            $this->command->info('Нет карточек аренды для создания отзывов.');
             return;
         }
 
-        // Если нет пользователей, создадим тестового
-        if ($users->isEmpty()) {
-            $user = User::create([
-                'login' => 'reviewer',
-                'name' => 'Тестовый пользователь',
-                'email' => 'reviewer@test.com',
-                'phone' => '+79990000000',
-                'password' => bcrypt('password'),
-            ]);
-            $users = collect([$user]);
-            $this->command->info('Создан тестовый пользователь для отзывов.');
-        }
+        Review::whereNotNull('item_id')->delete();
 
-        $reviewTexts = [
-            'Отличная прогулка! Всё понравилось, особенно виды на воде.',
-            'Очень понравилось! Инструктор был внимательный, всё объяснил.',
-            'Хорошее место для отдыха с семьёй. Дети в восторге!',
-            'Прекрасный маршрут, красивые виды. Рекомендую!',
-            'Всё супер! Обязательно приду ещё раз.',
-            'Понравилось, но хотелось бы больше времени на маршруте.',
-            'Отличный сервис, вежливый персонал. Всё понравилось!',
-            'Замечательная поездка! Получили массу эмоций.',
-            'Всё хорошо, но было немного холодно. Взяли бы тёплые вещи.',
-            'Очень круто! Советую всем любителям водного отдыха.',
-            'Прекрасно провели время! Гид был очень опытный.',
-            'Всё понравилось, кроме того что было много людей.',
-            'Отличная организация, всё чётко по времени.',
-            'Супер! Давно хотел попробовать, теперь буду постоянным клиентом.',
-            'Хорошее соотношение цены и качества.',
+        $users = collect([
+            User::firstOrCreate(
+                ['email' => 'reviewer1@test.com'],
+                ['login' => 'Марина', 'phone' => '+79990000001', 'password' => bcrypt('password')]
+            ),
+            User::firstOrCreate(
+                ['email' => 'reviewer2@test.com'],
+                ['login' => 'Алексей', 'phone' => '+79990000002', 'password' => bcrypt('password')]
+            ),
+            User::firstOrCreate(
+                ['email' => 'reviewer3@test.com'],
+                ['login' => 'Ирина', 'phone' => '+79990000003', 'password' => bcrypt('password')]
+            ),
+        ]);
+
+        $textsByType = [
+            'гидроцикл' => [
+                'Гидроцикл мощный и устойчивый, инструктор всё понятно объяснил перед стартом.',
+                'Катание получилось очень бодрым, техника в хорошем состоянии, эмоций много.',
+                'Отличный вариант для активного отдыха, скорость чувствуется сразу, всё безопасно.',
+            ],
+            'банан' => [
+                'Весёлое катание для компании, все смеялись и получили много эмоций.',
+                'Банан удобный, маршрут понравился, инструктор аккуратно подбирал скорость.',
+                'Хороший вариант для семьи и друзей, было динамично, но без лишнего риска.',
+            ],
+            'сапборд' => [
+                'Сапборд устойчивый, спокойно погуляли по воде и сделали красивые фото.',
+                'Отлично подходит для расслабленной прогулки, весло и жилет выдали сразу.',
+                'Понравилось качество доски и спокойный маршрут, обязательно возьмём ещё.',
+            ],
+            'флайборд' => [
+                'Флайборд — это восторг, инструктор помог быстро подняться над водой.',
+                'Очень необычный опыт, всё прошло безопасно и с понятными подсказками.',
+                'Получились яркие эмоции и классные фото, хочется повторить ещё раз.',
+            ],
+            'катамаран' => [
+                'Катамаран удобный и чистый, спокойно покатались всей компанией.',
+                'Хороший вариант для неспешной прогулки, места хватило всем.',
+                'Понравился комфорт и простое управление, отличный отдых на воде.',
+            ],
         ];
 
         $reviewsCreated = 0;
 
-        // Создаём отзывы для Items
         foreach ($items as $item) {
-            $reviewCount = rand(2, 5);
+            $texts = $textsByType[$item->activity_type] ?? [
+                'Отличная аренда, всё понравилось.',
+                'Хороший сервис и приятные впечатления.',
+                'Рекомендую для отдыха на воде.',
+            ];
 
-            for ($i = 0; $i < $reviewCount; $i++) {
-                $user = $users->random();
-
+            foreach ($texts as $index => $text) {
                 Review::create([
-                    'user_id' => $user->id,
+                    'user_id' => $users[$index]->id,
                     'item_id' => $item->id,
                     'trip_id' => null,
-                    'rating' => rand(4, 5),
-                    'text' => $reviewTexts[array_rand($reviewTexts)],
-                    'likes' => rand(0, 10),
-                    'dislikes' => rand(0, 2),
+                    'rating' => $index === 1 ? 4 : 5,
+                    'text' => $text,
+                    'likes' => 6 + $index * 3,
+                    'dislikes' => $index === 1 ? 1 : 0,
                 ]);
+
                 $reviewsCreated++;
             }
         }
 
-        // Создаём отзывы для Trips
-        foreach ($trips as $trip) {
-            $reviewCount = rand(2, 5);
-
-            for ($i = 0; $i < $reviewCount; $i++) {
-                $user = $users->random();
-
-                Review::create([
-                    'user_id' => $user->id,
-                    'item_id' => null,
-                    'trip_id' => $trip->id,
-                    'rating' => rand(4, 5),
-                    'text' => $reviewTexts[array_rand($reviewTexts)],
-                    'likes' => rand(0, 10),
-                    'dislikes' => rand(0, 2),
-                ]);
-                $reviewsCreated++;
-            }
-        }
-
-        $this->command->info("Отзывы успешно созданы! Всего: {$reviewsCreated}");
+        $this->command->info("Отзывы для карточек аренды созданы: {$reviewsCreated}");
     }
 }

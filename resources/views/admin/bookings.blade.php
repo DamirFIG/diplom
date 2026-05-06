@@ -30,6 +30,11 @@
                 </form>
             </div>
         @endforeach
+    </div>
+
+    <div class="pagination-container">{{ $bookings->links('vendor.pagination.bootstrap-5') }}</div>
+</div>
+
    
 <style>
 .orders-grid{display:grid;grid-template-columns:1fr;gap:14px}
@@ -41,6 +46,7 @@
 .status-form select{padding:8px 10px;border:1px solid #d9e1ea;border-radius:8px;background:#fff}
 .status-form button{padding:8px 12px;border:none;border-radius:8px;background:#4A90D9;color:#fff;cursor:pointer}
 .status-form button:hover{background:#357ABD}
+</style>
 .bookings-table-wrap{background:#fff;border-radius:14px;padding:16px;box-shadow:0 4px 14px rgba(0,0,0,.08);overflow:auto}
 .bookings-table{width:100%;border-collapse:collapse;font-size:14px}
 .bookings-table th,.bookings-table td{padding:12px 10px;border-bottom:1px solid #eef1f5;text-align:left;white-space:nowrap}
