@@ -15,8 +15,8 @@ class DatabaseSeeder extends Seeder
         $this->call([
             ItemSeeder::class,
             GuidesSeeder::class,
-           // ReviewsSeeder::class,
             TripSeeder::class,
+            ReviewSeeder::class,
         ]);
     }
 }
