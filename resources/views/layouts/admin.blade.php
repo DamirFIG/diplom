@@ -558,6 +558,7 @@
             font-size: 13px !important;
         }
 
+        .stat-icon,
         .action-icon {
             font-size: 30px !important;
         }
