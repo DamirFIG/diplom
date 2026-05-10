@@ -800,50 +800,9 @@
     </div>
 
     <!-- ПАГИНАЦИЯ -->
-    @if ($items->lastPage() > 1)
-        <div class="pagination-wrapper">
-            <ul class="pagination">
-                {{-- ⬅ Назад --}}
-                @if ($items->onFirstPage())
-                    <li class="disabled arrow">
-                        <img loading="lazy" decoding="async" src="/img/arrow.svg" alt="">
-                    </li>
-                @else
-                    <li class="arrow">
-                        <a href="{{ $items->previousPageUrl() }}#catalog">
-                            <img loading="lazy" decoding="async" src="/img/arrow.svg" alt="">
-                        </a>
-                    </li>
-                @endif
-
-                <!-- Цифры -->
-                @for ($i = 1; $i <= $items->lastPage(); $i++)
-                    @if ($i == $items->currentPage())
-                        <li class="active">
-                            <span>{{ $i }}</span>
-                        </li>
-                    @else
-                        <li>
-                            <a href="{{ $items->url($i) }}#catalog">{{ $i }}</a>
-                        </li>
-                    @endif
-                @endfor
-
-                <!-- Вперёд -->
-                @if ($items->hasMorePages())
-                    <li class="arrow">
-                        <a href="{{ $items->nextPageUrl() }}#catalog">
-                            <img loading="lazy" decoding="async" src="/img/arrow.svg" alt="" class="arrow-right">
-                        </a>
-                    </li>
-                @else
-                    <li class="disabled arrow">
-                        <img loading="lazy" decoding="async" src="/img/arrow.svg" alt="" class="arrow-right">
-                    </li>
-                @endif
-            </ul>
-        </div>
-    @endif
+    <div id="catalogPagination">
+        @include('home.partials.pagination', ['paginator' => $items, 'anchor' => 'catalog'])
+    </div>
 
 </section>
 <!-- ПОЕЗДКИ -->
@@ -1005,50 +964,9 @@
     </div>
 
     <!-- ПАГИНАЦИЯ -->
-    @if ($trips->lastPage() > 1)
-        <div class="pagination-wrapper">
-            <ul class="pagination">
-                {{-- ⬅ Назад --}}
-                @if ($trips->onFirstPage())
-                    <li class="disabled arrow">
-                        <img loading="lazy" decoding="async" src="/img/arrow.svg" alt="">
-                    </li>
-                @else
-                    <li class="arrow">
-                        <a href="{{ $trips->previousPageUrl() }}#trips">
-                            <img loading="lazy" decoding="async" src="/img/arrow.svg" alt="">
-                        </a>
-                    </li>
-                @endif
-
-                <!-- Цифры -->
-                @for ($i = 1; $i <= $trips->lastPage(); $i++)
-                    @if ($i == $trips->currentPage())
-                        <li class="active">
-                            <span>{{ $i }}</span>
-                        </li>
-                    @else
-                        <li>
-                            <a href="{{ $trips->url($i) }}#trips">{{ $i }}</a>
-                        </li>
-                    @endif
-                @endfor
-
-                <!-- Вперёд -->
-                @if ($trips->hasMorePages())
-                    <li class="arrow">
-                        <a href="{{ $trips->nextPageUrl() }}#trips">
-                            <img loading="lazy" decoding="async" src="/img/arrow.svg" alt="" class="arrow-right">
-                        </a>
-                    </li>
-                @else
-                    <li class="disabled arrow">
-                        <img loading="lazy" decoding="async" src="/img/arrow.svg" alt="" class="arrow-right">
-                    </li>
-                @endif
-            </ul>
-        </div>
-    @endif
+    <div id="tripsPagination">
+        @include('home.partials.pagination', ['paginator' => $trips, 'anchor' => 'trips'])
+    </div>
 
 </section>
 
@@ -1155,14 +1073,24 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // AJAX-фильтрация (категории и сортировка)
+    function updateUrl(params, anchor) {
+        const queryString = params.toString();
+        const url = queryString ? `?${queryString}#${anchor}` : `#${anchor}`;
+        window.history.pushState({path: url}, '', url);
+    }
+
     function loadItemsContent(params, scrollPosition) {
         fetch('{{ route("search.items") }}?' + params.toString(), {
-            headers: { 'X-Requested-With': 'XMLHttpRequest' }
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'Accept': 'application/json'
+            }
         })
-        .then(response => response.text())
-        .then(html => {
-            document.querySelector('.catalog-items').innerHTML = html;
-            window.history.pushState({path: '?' + params.toString() + '#catalog'}, '', '?' + params.toString() + '#catalog');
+        .then(response => response.json())
+        .then(data => {
+            document.querySelector('.catalog-items').innerHTML = data.content;
+            document.getElementById('catalogPagination').innerHTML = data.pagination;
+            updateUrl(params, 'catalog');
             window.scrollTo(0, scrollPosition);
             initFavoriteButtons();
             initSortSelects(); // Переинициализируем select-ы
@@ -1172,12 +1100,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function loadTripsContent(params, scrollPosition) {
         fetch('{{ route("search.trips") }}?' + params.toString(), {
-            headers: { 'X-Requested-With': 'XMLHttpRequest' }
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'Accept': 'application/json'
+            }
         })
-        .then(response => response.text())
-        .then(html => {
-            document.querySelector('.trips-list').innerHTML = html;
-            window.history.pushState({path: '?' + params.toString() + '#trips'}, '', '?' + params.toString() + '#trips');
+        .then(response => response.json())
+        .then(data => {
+            document.querySelector('.trips-list').innerHTML = data.content;
+            document.getElementById('tripsPagination').innerHTML = data.pagination;
+            updateUrl(params, 'trips');
             window.scrollTo(0, scrollPosition);
             initSortSelects();
         })
