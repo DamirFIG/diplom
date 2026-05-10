@@ -4,7 +4,7 @@
 <div class="admin-page">
     <div class="page-header">
         <h1>Поездки</h1>
-        <a href="{{ route('admin.trips.create') }}" class="btn-primary">➕ Создать поездку</a>
+        <a href="{{ route('admin.trips.create') }}" class="btn-primary">Создать поездку</a>
     </div>
 
     <!-- Фильтры и поиск -->
@@ -17,7 +17,7 @@
                 </div>
                 
                 <div class="filter-group">
-                    <label>🏷️ Тип активности</label>
+                    <label>Тип активности</label>
                     <select name="activity_type">
                         <option value="">Все типы</option>
                         @foreach($activityTypes as $type)
@@ -85,11 +85,11 @@
                     <td>{{ $trip->event_date?->format('d.m.Y') ?? '—' }}</td>
                     <td>{{ $trip->price }} ₽</td>
                     <td>
-                        <a href="{{ route('admin.trips.edit', $trip->id) }}" class="btn-edit">✏️</a>
+                        <a href="{{ route('admin.trips.edit', $trip->id) }}" class="btn-edit">Ред.</a>
                         <form action="{{ route('admin.trips.destroy', $trip->id) }}" method="POST" style="display:inline;">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" onclick="return confirm('Удалить?')" class="btn-delete">🗑</button>
+                            <button type="submit" onclick="return confirm('Удалить?')" class="btn-delete">Удалить</button>
                         </form>
                     </td>
                 </tr>

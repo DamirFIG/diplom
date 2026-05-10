@@ -6,7 +6,7 @@
 
     <div class="stats-grid">
         <a href="{{ route('admin.items') }}" class="stat-card">
-            <div class="stat-icon">📦</div>
+            <div class="stat-icon">АР</div>
             <div class="stat-info">
                 <h3>{{ $items->count() }}</h3>
                 <p>Карточек аренды</p>
@@ -14,7 +14,7 @@
         </a>
 
         <a href="{{ route('admin.trips') }}" class="stat-card">
-            <div class="stat-icon">🚗</div>
+            <div class="stat-icon">ПЗ</div>
             <div class="stat-info">
                 <h3>{{ $trips->count() }}</h3>
                 <p>Поездок</p>
@@ -22,7 +22,7 @@
         </a>
 
         <a href="{{ route('admin.guides') }}" class="stat-card">
-            <div class="stat-icon">👤</div>
+            <div class="stat-icon">ГД</div>
             <div class="stat-info">
                 <h3>{{ $guides->count() }}</h3>
                 <p>Гидов</p>
@@ -30,7 +30,7 @@
         </a>
 
         <a href="{{ route('admin.users') }}" class="stat-card">
-            <div class="stat-icon">👥</div>
+            <div class="stat-icon">ПЛ</div>
             <div class="stat-info">
                 <h3>{{ $users->count() }}</h3>
                 <p>Пользователей</p>
@@ -42,15 +42,12 @@
         <h2>Быстрые действия</h2>
         <div class="actions-grid">
             <a href="{{ route('admin.items.create') }}" class="action-card">
-                <span class="action-icon">➕</span>
                 <span>Создать карточку</span>
             </a>
             <a href="{{ route('admin.trips.create') }}" class="action-card">
-                <span class="action-icon">🚗</span>
                 <span>Создать поездку</span>
             </a>
             <a href="{{ route('admin.guides.create') }}" class="action-card">
-                <span class="action-icon">👤</span>
                 <span>Добавить гида</span>
             </a>
         </div>
@@ -88,7 +85,16 @@
 }
 
 .stat-icon {
-    font-size: 40px;
+    width: 46px;
+    height: 46px;
+    border-radius: 14px;
+    background: #eef6ff;
+    color: #377FC1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    font-weight: 700;
 }
 
 .stat-info h3 {

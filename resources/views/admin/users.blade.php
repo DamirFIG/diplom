@@ -16,7 +16,7 @@
                 </div>
                 
                 <div class="filter-group">
-                    <label>👥 Роль</label>
+                    <label>Роль</label>
                     <select name="role">
                         <option value="">Все роли</option>
                         <option value="user" {{ request('role') == 'user' ? 'selected' : '' }}>Пользователь</option>

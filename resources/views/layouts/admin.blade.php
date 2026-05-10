@@ -104,41 +104,41 @@
             
             <nav class="sidebar-nav">
                 <a href="{{ route('admin.index') }}" class="sidebar-link {{ request()->routeIs('admin.index') ? 'active' : '' }}">
-                    <span>📋</span> Главная
+                    Главная
                 </a>
                 
                 <a href="{{ route('admin.items') }}" class="sidebar-link {{ request()->routeIs('admin.items*') ? 'active' : '' }}">
-                    <span>📦</span> Карточки
+                    Карточки
                 </a>
                 
                 <a href="{{ route('admin.trips') }}" class="sidebar-link {{ request()->routeIs('admin.trips*') ? 'active' : '' }}">
-                    <span>🚗</span> Поездки
+                    Поездки
                 </a>
                 
                 <a href="{{ route('admin.bookings') }}" class="sidebar-link {{ request()->routeIs('admin.bookings*') ? 'active' : '' }}">
-                    <span>🧾</span> Заказы
+                    Заказы
                 </a>
 
                 <a href="{{ route('admin.guides') }}" class="sidebar-link {{ request()->routeIs('admin.guides*') ? 'active' : '' }}">
-                    <span>👤</span> Гиды
+                    Гиды
                 </a>
                 
                 <a href="{{ route('admin.users') }}" class="sidebar-link {{ request()->routeIs('admin.users*') ? 'active' : '' }}">
-                    <span>👥</span> Пользователи
+                    Пользователи
                 </a>
                 
                 <hr class="sidebar-divider">
                 
                 <a href="{{ route('home') }}" class="sidebar-link">
-                    <span>🏠</span> На сайт
+                    На сайт
                 </a>
                 
                 <a href="{{ route('profile.index') }}" class="sidebar-link">
-                    <span>👤</span> Профиль
+                    Профиль
                 </a>
                 
                 <a href="{{ route('logout') }}" class="sidebar-link logout">
-                    <span>🚪</span> Выйти
+                    Выйти
                 </a>
             </nav>
         </aside>
@@ -435,6 +435,19 @@
             gap: 12px !important;
         }
 
+        .sidebar-link {
+            gap: 0 !important;
+            padding: 14px 24px !important;
+            font-size: 15px !important;
+            font-weight: 500 !important;
+            line-height: 1.35 !important;
+            letter-spacing: 0.01em;
+        }
+
+        .sidebar-link span {
+            display: none !important;
+        }
+
         .filters-section {
             padding: 16px !important;
             margin-bottom: 16px !important;
@@ -539,6 +552,10 @@
             padding: 18px !important;
             transform: none !important;
             box-shadow: 0 2px 10px rgba(16, 24, 40, 0.05) !important;
+        }
+
+        .stat-icon {
+            font-size: 13px !important;
         }
 
         .stat-icon,
