@@ -975,20 +975,30 @@
     <div class="container">
         <h2>Наши гиды</h2>
 
-        <div class="guides-slider" id="guidesSlider">
-            @forelse($guides as $guide)
-                <div class="guide-card {{ empty($guide->photo) ? 'guide-card-no-photo' : '' }}" 
-                     @if(!empty($guide->photo)) style="background-image: url('{{ asset('storage/' . $guide->photo) }}')" @endif>
-                    <div class="guide-info">
-                        <p>{{ $guide->name }}</p>
-                        @if(!empty($guide->bio))
-                            <p>{{ $guide->bio }}</p>
-                        @endif
+        <div class="guides-slider-shell">
+            @if($guides->count() > 1)
+                <button type="button" class="guides-slider-btn guides-slider-btn-prev" data-guide-direction="prev" aria-label="Предыдущий гид">‹</button>
+            @endif
+
+            <div class="guides-slider" id="guidesSlider">
+                @forelse($guides as $guide)
+                    <div class="guide-card {{ empty($guide->photo) ? 'guide-card-no-photo' : '' }}" 
+                         @if(!empty($guide->photo)) style="background-image: url('{{ asset('storage/' . $guide->photo) }}')" @endif>
+                        <div class="guide-info">
+                            <p>{{ $guide->name }}</p>
+                            @if(!empty($guide->bio))
+                                <p>{{ $guide->bio }}</p>
+                            @endif
+                        </div>
                     </div>
-                </div>
-            @empty
-                <p class="no-guides">Гиды пока не добавлены</p>
-            @endforelse
+                @empty
+                    <p class="no-guides">Гиды пока не добавлены</p>
+                @endforelse
+            </div>
+
+            @if($guides->count() > 1)
+                <button type="button" class="guides-slider-btn guides-slider-btn-next" data-guide-direction="next" aria-label="Следующий гид">›</button>
+            @endif
         </div>
     </div>
 </section>
@@ -1457,6 +1467,27 @@ document.addEventListener('DOMContentLoaded', function() {
             slider.scrollLeft += velX;
         }
     }
+
+    const prevButton = document.querySelector('[data-guide-direction="prev"]');
+    const nextButton = document.querySelector('[data-guide-direction="next"]');
+
+    function getGuideScrollAmount() {
+        const card = slider.querySelector('.guide-card');
+        const styles = window.getComputedStyle(slider);
+        const gap = parseFloat(styles.columnGap || styles.gap) || 24;
+        return card ? card.getBoundingClientRect().width + gap : slider.clientWidth * 0.85;
+    }
+
+    function scrollGuides(direction) {
+        cancelMomentum();
+        slider.scrollBy({
+            left: direction * getGuideScrollAmount(),
+            behavior: 'smooth'
+        });
+    }
+
+    prevButton?.addEventListener('click', () => scrollGuides(-1));
+    nextButton?.addEventListener('click', () => scrollGuides(1));
 
     slider.addEventListener('dragstart', (e) => e.preventDefault());
 })();
