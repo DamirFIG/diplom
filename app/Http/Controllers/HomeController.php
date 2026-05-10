@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Guide;
 use App\Models\Item;
 use App\Models\Trip;
-use App\Models\Guide;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -16,9 +16,9 @@ class HomeController extends Controller
 
         // 🔍 ПОИСК
         if ($request->filled('search')) {
-            $itemsQuery->where(function($q) use ($request) {
-                $q->where('title', 'like', '%' . $request->search . '%')
-                  ->orWhere('description', 'like', '%' . $request->search . '%');
+            $itemsQuery->where(function ($q) use ($request) {
+                $q->where('title', 'like', '%'.$request->search.'%')
+                    ->orWhere('description', 'like', '%'.$request->search.'%');
             });
         }
 
@@ -37,16 +37,16 @@ class HomeController extends Controller
         }
 
         // 📦 ПАГИНАЦИЯ аренды
-        $items = $itemsQuery->paginate(8);
+        $items = $itemsQuery->paginate(8)->withQueryString();
 
         // 🚀 ПОЕЗДКИ (новая таблица trips)
         $tripsQuery = Trip::query();
 
         // 🔍 ПОИСК для поездок
         if ($request->filled('trip_search')) {
-            $tripsQuery->where(function($q) use ($request) {
-                $q->where('title', 'like', '%' . $request->trip_search . '%')
-                  ->orWhere('description', 'like', '%' . $request->trip_search . '%');
+            $tripsQuery->where(function ($q) use ($request) {
+                $q->where('title', 'like', '%'.$request->trip_search.'%')
+                    ->orWhere('description', 'like', '%'.$request->trip_search.'%');
             });
         }
 
@@ -90,10 +90,10 @@ class HomeController extends Controller
         }
 
         // 📦 ПАГИНАЦИЯ поездок
-        $trips = $tripsQuery->paginate(8);
+        $trips = $tripsQuery->paginate(8)->withQueryString();
 
         // 👨‍✈️ ГИДЫ
-$guides = Guide::all();
+        $guides = Guide::all();
 
         return view('home', compact('items', 'trips', 'guides'));
     }
@@ -104,9 +104,9 @@ $guides = Guide::all();
 
         // 🔍 ПОИСК
         if ($request->filled('search')) {
-            $itemsQuery->where(function($q) use ($request) {
-                $q->where('title', 'like', '%' . $request->search . '%')
-                  ->orWhere('description', 'like', '%' . $request->search . '%');
+            $itemsQuery->where(function ($q) use ($request) {
+                $q->where('title', 'like', '%'.$request->search.'%')
+                    ->orWhere('description', 'like', '%'.$request->search.'%');
             });
         }
 
@@ -124,11 +124,17 @@ $guides = Guide::all();
             $itemsQuery->orderBy('id', 'desc');
         }
 
-        $items = $itemsQuery->paginate(8);
+        $items = $itemsQuery->paginate(8)->withQueryString();
 
         // Если это AJAX-запрос, возвращаем только карточки с пагинацией
         if ($request->ajax()) {
-            return view('home.partials.items-list', compact('items'))->render();
+            return response()->json([
+                'content' => view('home.partials.items-list', compact('items'))->render(),
+                'pagination' => view('home.partials.pagination', [
+                    'paginator' => $items,
+                    'anchor' => 'catalog',
+                ])->render(),
+            ]);
         }
 
         return view('home', compact('items'));
@@ -140,9 +146,9 @@ $guides = Guide::all();
 
         // 🔍 ПОИСК
         if ($request->filled('trip_search')) {
-            $tripsQuery->where(function($q) use ($request) {
-                $q->where('title', 'like', '%' . $request->trip_search . '%')
-                  ->orWhere('description', 'like', '%' . $request->trip_search . '%');
+            $tripsQuery->where(function ($q) use ($request) {
+                $q->where('title', 'like', '%'.$request->trip_search.'%')
+                    ->orWhere('description', 'like', '%'.$request->trip_search.'%');
             });
         }
 
@@ -185,11 +191,17 @@ $guides = Guide::all();
             $tripsQuery->orderBy('event_date', 'asc');
         }
 
-        $trips = $tripsQuery->paginate(8);
+        $trips = $tripsQuery->paginate(8)->withQueryString();
 
         // Если это AJAX-запрос, возвращаем только карточки с пагинацией
         if ($request->ajax()) {
-            return view('home.partials.trips-list', compact('trips'))->render();
+            return response()->json([
+                'content' => view('home.partials.trips-list', compact('trips'))->render(),
+                'pagination' => view('home.partials.pagination', [
+                    'paginator' => $trips,
+                    'anchor' => 'trips',
+                ])->render(),
+            ]);
         }
 
         return view('home', compact('trips'));
