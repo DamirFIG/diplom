@@ -1190,3 +1190,68 @@ font-weight:600;
         gap: 30px;
     }
 }
+/* Кнопки слайдера гидов */
+.guides-slider-shell {
+    position: relative;
+}
+
+.guides-slider {
+    scroll-behavior: smooth;
+}
+
+.guides-slider-btn {
+    position: absolute;
+    top: 50%;
+    z-index: 5;
+    width: 52px;
+    height: 52px;
+    border: 1px solid rgba(55, 127, 193, 0.22);
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.94);
+    color: #377FC1;
+    box-shadow: 0 10px 28px rgba(43, 43, 43, 0.16);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 36px;
+    line-height: 1;
+    font-weight: 400;
+    transform: translateY(-50%);
+    transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.guides-slider-btn:hover {
+    background: #377FC1;
+    color: #fff;
+    box-shadow: 0 12px 32px rgba(55, 127, 193, 0.28);
+}
+
+.guides-slider-btn:focus-visible {
+    outline: 3px solid rgba(55, 127, 193, 0.28);
+    outline-offset: 3px;
+}
+
+.guides-slider-btn-prev {
+    left: -26px;
+}
+
+.guides-slider-btn-next {
+    right: -26px;
+}
+
+@media (max-width: 768px) {
+    .guides-slider-btn {
+        width: 44px;
+        height: 44px;
+        font-size: 30px;
+    }
+
+    .guides-slider-btn-prev {
+        left: 6px;
+    }
+
+    .guides-slider-btn-next {
+        right: 6px;
+    }
+}

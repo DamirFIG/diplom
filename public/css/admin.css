@@ -6,7 +6,7 @@
     box-shadow: 0 4px 16px rgba(0,0,0,0.06);
     margin-bottom: 24px;
     border: 1px solid #e8ecf1;
-    transition: box-shadow 0.3s ease;
+    transition: none;
 }
 
 .filters-section:hover {
@@ -48,7 +48,7 @@
     font-size: 15px;
     font-family: inherit;
     background: #fff;
-    transition: all 0.3s ease;
+    transition: none;
     color: #334155;
 }
 
@@ -78,6 +78,8 @@
     gap: 10px;
     align-self: flex-end;
     flex: 0 0 auto;
+    flex-direction: row;
+    align-items: flex-end;
 }
 
 .btn-filter,
@@ -88,7 +90,7 @@
     font-weight: 600;
     text-decoration: none;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: none;
     border: none;
     white-space: nowrap;
     display: inline-flex;
@@ -105,11 +107,11 @@
 .btn-filter:hover {
     background: linear-gradient(135deg, #2980b9 0%, #2471a3 100%);
     box-shadow: 0 4px 12px rgba(52, 152, 219, 0.4);
-    transform: translateY(-1px);
+    transform: none;
 }
 
 .btn-filter:active {
-    transform: translateY(0);
+    transform: none;
 }
 
 .btn-reset {

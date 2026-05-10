@@ -104,41 +104,41 @@
             
             <nav class="sidebar-nav">
                 <a href="{{ route('admin.index') }}" class="sidebar-link {{ request()->routeIs('admin.index') ? 'active' : '' }}">
-                    <span>📋</span> Главная
+                    Главная
                 </a>
                 
                 <a href="{{ route('admin.items') }}" class="sidebar-link {{ request()->routeIs('admin.items*') ? 'active' : '' }}">
-                    <span>📦</span> Карточки
+                    Карточки
                 </a>
                 
                 <a href="{{ route('admin.trips') }}" class="sidebar-link {{ request()->routeIs('admin.trips*') ? 'active' : '' }}">
-                    <span>🚗</span> Поездки
+                    Поездки
                 </a>
                 
                 <a href="{{ route('admin.bookings') }}" class="sidebar-link {{ request()->routeIs('admin.bookings*') ? 'active' : '' }}">
-                    <span>🧾</span> Заказы
+                    Заказы
                 </a>
 
                 <a href="{{ route('admin.guides') }}" class="sidebar-link {{ request()->routeIs('admin.guides*') ? 'active' : '' }}">
-                    <span>👤</span> Гиды
+                    Гиды
                 </a>
                 
                 <a href="{{ route('admin.users') }}" class="sidebar-link {{ request()->routeIs('admin.users*') ? 'active' : '' }}">
-                    <span>👥</span> Пользователи
+                    Пользователи
                 </a>
                 
                 <hr class="sidebar-divider">
                 
                 <a href="{{ route('home') }}" class="sidebar-link">
-                    <span>🏠</span> На сайт
+                    На сайт
                 </a>
                 
                 <a href="{{ route('profile.index') }}" class="sidebar-link">
-                    <span>👤</span> Профиль
+                    Профиль
                 </a>
                 
                 <a href="{{ route('logout') }}" class="sidebar-link logout">
-                    <span>🚪</span> Выйти
+                    Выйти
                 </a>
             </nav>
         </aside>
@@ -391,6 +391,234 @@
 
             .mobile-close-btn {
                 display: block;
+            }
+        }
+
+        /* Компактный и спокойный вид админ-панели */
+        html {
+            view-transition-name: none;
+        }
+
+        ::view-transition-old(root),
+        ::view-transition-new(root) {
+            animation: none !important;
+        }
+
+        .admin-layout,
+        .admin-layout * {
+            font-size: 14px;
+        }
+
+        .admin-content {
+            padding: 28px !important;
+            background: #f6f8fb;
+        }
+
+        .admin-page h1 {
+            margin-bottom: 18px !important;
+            color: #263445 !important;
+            font-size: 24px !important;
+            line-height: 1.25 !important;
+            font-weight: 700 !important;
+            letter-spacing: -0.02em;
+        }
+
+        .quick-actions h2,
+        .admin-mobile-header h2,
+        .sidebar-header h2 {
+            font-size: 18px !important;
+            line-height: 1.25 !important;
+        }
+
+        .page-header {
+            margin-bottom: 16px !important;
+            gap: 12px !important;
+        }
+
+        .sidebar-link {
+            gap: 0 !important;
+            padding: 14px 24px !important;
+            font-size: 15px !important;
+            font-weight: 500 !important;
+            line-height: 1.35 !important;
+            letter-spacing: 0.01em;
+        }
+
+        .sidebar-link span {
+            display: none !important;
+        }
+
+        .filters-section {
+            padding: 16px !important;
+            margin-bottom: 16px !important;
+            border: 1px solid #e6edf5 !important;
+            border-radius: 14px !important;
+            background: #fff !important;
+            box-shadow: 0 2px 10px rgba(16, 24, 40, 0.05) !important;
+        }
+
+        .filters-section:hover {
+            box-shadow: 0 2px 10px rgba(16, 24, 40, 0.05) !important;
+        }
+
+        .filters-row {
+            gap: 12px !important;
+            align-items: flex-end !important;
+        }
+
+        .filter-group {
+            gap: 5px !important;
+            min-width: 145px !important;
+        }
+
+        .filter-group label {
+            font-size: 12px !important;
+            letter-spacing: 0.02em !important;
+            text-transform: none !important;
+        }
+
+        .filter-group input,
+        .filter-group select {
+            min-height: 40px !important;
+            padding: 9px 12px !important;
+            border: 1px solid #d9e2ec !important;
+            border-radius: 9px !important;
+            font-size: 13px !important;
+        }
+
+        .filter-buttons {
+            flex: 0 0 auto !important;
+            flex-direction: row !important;
+            align-items: flex-end !important;
+            justify-content: flex-start !important;
+            gap: 8px !important;
+            min-width: auto !important;
+        }
+
+        .btn-primary,
+        .btn-secondary,
+        .btn-submit,
+        .btn-cancel,
+        .btn-filter,
+        .btn-reset {
+            min-height: 40px !important;
+            padding: 9px 16px !important;
+            border-radius: 9px !important;
+            font-size: 13px !important;
+            line-height: 1.35 !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 6px !important;
+            box-shadow: none !important;
+            transform: none !important;
+        }
+
+        .btn-filter {
+            background: #3498db !important;
+            color: #fff !important;
+        }
+
+        .btn-reset {
+            background: #eef3f8 !important;
+            color: #536273 !important;
+            border: 1px solid #d9e2ec !important;
+        }
+
+        .table-wrapper,
+        .bookings-table-wrap,
+        .order-card,
+        .filters-section,
+        .admin-form,
+        .form {
+            border-radius: 14px !important;
+            box-shadow: 0 2px 10px rgba(16, 24, 40, 0.05) !important;
+        }
+
+        .admin-table,
+        .bookings-table {
+            font-size: 13px !important;
+        }
+
+        .admin-table th,
+        .admin-table td,
+        .bookings-table th,
+        .bookings-table td {
+            padding: 11px 12px !important;
+        }
+
+        .stat-card,
+        .action-card {
+            padding: 18px !important;
+            transform: none !important;
+            box-shadow: 0 2px 10px rgba(16, 24, 40, 0.05) !important;
+        }
+
+        .stat-icon,
+        .action-icon {
+            font-size: 30px !important;
+        }
+
+        .stat-info h3 {
+            font-size: 22px !important;
+        }
+
+        .stat-info p,
+        .action-card span {
+            font-size: 13px !important;
+        }
+
+        .admin-sidebar,
+        .admin-content,
+        .sidebar-link,
+        .mobile-menu-btn span,
+        .filters-section,
+        .btn-primary,
+        .btn-secondary,
+        .btn-submit,
+        .btn-cancel,
+        .btn-filter,
+        .btn-reset,
+        .btn-edit,
+        .btn-delete,
+        .stat-card,
+        .action-card,
+        .filter-group input,
+        .filter-group select {
+            transition: none !important;
+            animation: none !important;
+        }
+
+        .sidebar-link:hover,
+        .stat-card:hover,
+        .action-card:hover,
+        .btn-filter:hover,
+        .btn-reset:hover,
+        .btn-primary:hover,
+        .btn-secondary:hover,
+        .btn-submit:hover,
+        .btn-cancel:hover {
+            transform: none !important;
+        }
+
+
+        @media (max-width: 768px) {
+            .admin-content {
+                padding: 76px 14px 20px !important;
+            }
+
+            .filters-row,
+            .filter-buttons {
+                width: 100% !important;
+            }
+
+            .filter-buttons {
+                flex-direction: row !important;
+            }
+
+            .btn-filter,
+            .btn-reset {
+                flex: 1 !important;
             }
         }
     </style>
