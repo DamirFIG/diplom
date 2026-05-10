@@ -4,7 +4,7 @@
 <div class="admin-page">
     <div class="page-header">
         <h1>Управление гидами</h1>
-        <a href="{{ route('admin.guides.create') }}" class="btn-primary">➕ Добавить гида</a>
+        <a href="{{ route('admin.guides.create') }}" class="btn-primary">Добавить гида</a>
     </div>
 
     <!-- Фильтры и поиск -->
@@ -66,12 +66,12 @@
             </td>
             <td>{{ $guide->trips->count() }}</td>
             <td>
-                <a href="{{ route('admin.guides.edit', $guide->id) }}" class="btn-edit">✏️ Редактировать</a>
+                <a href="{{ route('admin.guides.edit', $guide->id) }}" class="btn-edit">Редактировать</a>
 
                 <form action="{{ route('admin.guides.destroy', $guide->id) }}" method="POST" style="display:inline;">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" onclick="return confirm('Удалить гида?')" class="btn-delete">🗑 Удалить</button>
+                    <button type="submit" onclick="return confirm('Удалить гида?')" class="btn-delete">Удалить</button>
                 </form>
             </td>
         </tr>

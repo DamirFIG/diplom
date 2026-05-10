@@ -84,7 +84,7 @@
 
         <!-- Секция маршрута -->
         <div class="route-section">
-            <h3>🗺️ Маршрут на карте</h3>
+            <h3>Маршрут на карте</h3>
 
             <div class="form-group">
                 <label>Точки маршрута</label>

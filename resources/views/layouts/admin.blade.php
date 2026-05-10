@@ -554,6 +554,10 @@
             box-shadow: 0 2px 10px rgba(16, 24, 40, 0.05) !important;
         }
 
+        .stat-icon {
+            font-size: 13px !important;
+        }
+
         .stat-icon,
         .action-icon {
             font-size: 30px !important;
