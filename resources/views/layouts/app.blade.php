@@ -85,9 +85,14 @@
     <link rel="dns-prefetch" href="https://unpkg.com">
 </head>
 <body>
+    @php
+        $logoPath = public_path('img/logo.svg');
+        $logoVersion = file_exists($logoPath) ? filemtime($logoPath) : time();
+    @endphp
+
     <header class="header">
         <nav class="navigation container">
-            <a href="/"><img class="logo" src="/img/logo.svg" alt="logo"></a>
+            <a href="/" class="logo-link"><img class="logo" src="{{ asset('img/logo.svg') }}?v={{ $logoVersion }}" alt="Логотип"></a>
             <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
                 <span></span>
                 <span></span>

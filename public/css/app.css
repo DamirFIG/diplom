@@ -88,8 +88,17 @@ p{
     height: 46px;
 }
 
-.navigation img{
+.navigation .logo-link{
+    display: flex;
+    align-items: center;
+}
+
+.navigation .logo{
+    display: block;
+    width: auto;
+    max-width: 159px;
     height: 46px;
+    object-fit: contain;
 }
 
 .nav-menu{
