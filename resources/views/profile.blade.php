@@ -425,6 +425,8 @@
     align-items: start;
     justify-content: start;
     gap: 26px;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px;
 }
 
 .booking-card {
@@ -442,6 +444,8 @@
     width: 280px;
     height: 430px;
     overflow: hidden;
+    width: 100%;
+    height: 100%;
 }
 
 .booking-card:hover {
@@ -595,6 +599,12 @@
 .review-card-wrapper {
     width: 280px;
     height: 260px;
+    height: 100%;
+}
+
+.review-card-wrapper {
+    width: 100%;
+    height: 100%;
 }
 
 .review-card-header {
@@ -710,6 +720,8 @@
     width: 280px;
     height: 430px;
     overflow: hidden;
+    width: 100%;
+    height: 100%;
 }
 
 .favorite-card:hover {
