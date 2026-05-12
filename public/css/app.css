@@ -84,12 +84,11 @@ p{
 }
 
 .navigation a{
-    margin-top: 9px;
-    height: 46px;
+    height: 56px;
 }
 
 .navigation img{
-    height: 46px;
+    padding-top: 5px;
 }
 
 .nav-menu{
