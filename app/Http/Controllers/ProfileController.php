@@ -22,24 +22,21 @@ class ProfileController extends Controller
         $bookingFilters = [
             'search' => $request->get('booking_search'),
             'category' => $request->get('booking_category'),
-            'date_from' => $request->get('booking_date_from'),
-            'date_to' => $request->get('booking_date_to'),
+            'date' => $request->get('booking_date'),
             'sort' => $request->get('booking_sort', 'newest'),
         ];
 
         $reviewFilters = [
             'search' => $request->get('review_search'),
             'category' => $request->get('review_category'),
-            'date_from' => $request->get('review_date_from'),
-            'date_to' => $request->get('review_date_to'),
+            'date' => $request->get('review_date'),
             'sort' => $request->get('review_sort', 'newest'),
         ];
 
         $favoriteFilters = [
             'search' => $request->get('favorite_search'),
             'category' => $request->get('favorite_category'),
-            'date_from' => $request->get('favorite_date_from'),
-            'date_to' => $request->get('favorite_date_to'),
+            'date' => $request->get('favorite_date'),
             'sort' => $request->get('favorite_sort', 'newest'),
         ];
 
@@ -70,12 +67,8 @@ class ProfileController extends Controller
             });
         }
 
-        if ($bookingFilters['date_from']) {
-            $bookingsQuery->whereDate('booking_date', '>=', $bookingFilters['date_from']);
-        }
-
-        if ($bookingFilters['date_to']) {
-            $bookingsQuery->whereDate('booking_date', '<=', $bookingFilters['date_to']);
+        if ($bookingFilters['date']) {
+            $bookingsQuery->whereDate('booking_date', $bookingFilters['date']);
         }
 
         match ($bookingFilters['sort']) {
@@ -114,12 +107,8 @@ class ProfileController extends Controller
             });
         }
 
-        if ($reviewFilters['date_from']) {
-            $reviewsQuery->whereDate('created_at', '>=', $reviewFilters['date_from']);
-        }
-
-        if ($reviewFilters['date_to']) {
-            $reviewsQuery->whereDate('created_at', '<=', $reviewFilters['date_to']);
+        if ($reviewFilters['date']) {
+            $reviewsQuery->whereDate('created_at', $reviewFilters['date']);
         }
 
         match ($reviewFilters['sort']) {
@@ -145,12 +134,8 @@ class ProfileController extends Controller
             $favoritesQuery->where('activity_type', $favoriteFilters['category']);
         }
 
-        if ($favoriteFilters['date_from']) {
-            $favoritesQuery->wherePivot('created_at', '>=', $favoriteFilters['date_from']);
-        }
-
-        if ($favoriteFilters['date_to']) {
-            $favoritesQuery->wherePivot('created_at', '<=', $favoriteFilters['date_to'] . ' 23:59:59');
+        if ($favoriteFilters['date']) {
+            $favoritesQuery->whereDate('favorites.created_at', $favoriteFilters['date']);
         }
 
         match ($favoriteFilters['sort']) {

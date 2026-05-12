@@ -54,8 +54,7 @@
                             <option value="{{ $category }}" @selected($bookingFilters['category'] === $category)>{{ $category }}</option>
                         @endforeach
                     </select>
-                    <input type="date" name="booking_date_from" value="{{ $bookingFilters['date_from'] }}" title="Дата от">
-                    <input type="date" name="booking_date_to" value="{{ $bookingFilters['date_to'] }}" title="Дата до">
+                    <input type="date" name="booking_date" value="{{ $bookingFilters['date'] }}" title="Дата поездки" aria-label="Дата поездки">
                     <select name="booking_sort">
                         <option value="newest" @selected($bookingFilters['sort'] === 'newest')>Сначала новые</option>
                         <option value="oldest" @selected($bookingFilters['sort'] === 'oldest')>Сначала старые</option>
@@ -64,7 +63,6 @@
                         <option value="price_asc" @selected($bookingFilters['sort'] === 'price_asc')>Цена по возрастанию</option>
                         <option value="price_desc" @selected($bookingFilters['sort'] === 'price_desc')>Цена по убыванию</option>
                     </select>
-                    <button type="submit">Применить</button>
                     <a href="{{ route('profile.index', ['tab' => 'bookings']) }}">Сбросить</a>
                 </form>
 
@@ -181,8 +179,7 @@
                             <option value="{{ $category }}" @selected($reviewFilters['category'] === $category)>{{ $category }}</option>
                         @endforeach
                     </select>
-                    <input type="date" name="review_date_from" value="{{ $reviewFilters['date_from'] }}" title="Дата от">
-                    <input type="date" name="review_date_to" value="{{ $reviewFilters['date_to'] }}" title="Дата до">
+                    <input type="date" name="review_date" value="{{ $reviewFilters['date'] }}" title="Дата отзыва" aria-label="Дата отзыва">
                     <select name="review_sort">
                         <option value="newest" @selected($reviewFilters['sort'] === 'newest')>Сначала новые</option>
                         <option value="oldest" @selected($reviewFilters['sort'] === 'oldest')>Сначала старые</option>
@@ -190,7 +187,6 @@
                         <option value="rating_asc" @selected($reviewFilters['sort'] === 'rating_asc')>Оценка по возрастанию</option>
                         <option value="popular" @selected($reviewFilters['sort'] === 'popular')>Популярные</option>
                     </select>
-                    <button type="submit">Применить</button>
                     <a href="{{ route('profile.index', ['tab' => 'reviews']) }}">Сбросить</a>
                 </form>
 
@@ -253,8 +249,7 @@
                             <option value="{{ $category }}" @selected($favoriteFilters['category'] === $category)>{{ $category }}</option>
                         @endforeach
                     </select>
-                    <input type="date" name="favorite_date_from" value="{{ $favoriteFilters['date_from'] }}" title="Дата добавления от">
-                    <input type="date" name="favorite_date_to" value="{{ $favoriteFilters['date_to'] }}" title="Дата добавления до">
+                    <input type="date" name="favorite_date" value="{{ $favoriteFilters['date'] }}" title="Дата добавления" aria-label="Дата добавления">
                     <select name="favorite_sort">
                         <option value="newest" @selected($favoriteFilters['sort'] === 'newest')>Сначала новые</option>
                         <option value="oldest" @selected($favoriteFilters['sort'] === 'oldest')>Сначала старые</option>
@@ -262,7 +257,6 @@
                         <option value="price_desc" @selected($favoriteFilters['sort'] === 'price_desc')>Цена по убыванию</option>
                         <option value="title_asc" @selected($favoriteFilters['sort'] === 'title_asc')>По названию</option>
                     </select>
-                    <button type="submit">Применить</button>
                     <a href="{{ route('profile.index', ['tab' => 'favorites']) }}">Сбросить</a>
                 </form>
 
@@ -494,14 +488,10 @@
 
 .profile-filters {
     display: grid;
-    grid-template-columns: minmax(220px, 1.4fr) minmax(160px, 1fr) repeat(2, minmax(140px, .8fr)) minmax(170px, 1fr) auto auto;
+    grid-template-columns: minmax(220px, 1.4fr) minmax(160px, 1fr) minmax(140px, .8fr) minmax(170px, 1fr) auto;
     gap: 12px;
     align-items: center;
     margin-bottom: 24px;
-    padding: 16px;
-    background: #f8fbff;
-    border: 1px solid #e0ecf8;
-    border-radius: 16px;
 }
 
 .profile-filters input,
@@ -516,7 +506,6 @@
     font-size: 14px;
 }
 
-.profile-filters button,
 .profile-filters a {
     min-height: 40px;
     padding: 10px 14px;
@@ -525,13 +514,6 @@
     font-weight: 600;
     text-align: center;
     text-decoration: none;
-}
-
-.profile-filters button {
-    border: none;
-    background: #377FC1;
-    color: #fff;
-    cursor: pointer;
 }
 
 .profile-filters a {
@@ -1091,6 +1073,28 @@
 <script>
 // Обработка лайков/дизлайков для отзывов
 document.addEventListener('DOMContentLoaded', function() {
+    const filterForms = document.querySelectorAll('.profile-filters');
+
+    filterForms.forEach(form => {
+        let submitTimer;
+
+        const submitFilters = () => {
+            clearTimeout(submitTimer);
+            form.requestSubmit();
+        };
+
+        form.querySelectorAll('select, input[type="date"]').forEach(field => {
+            field.addEventListener('change', submitFilters);
+        });
+
+        form.querySelectorAll('input[type="search"]').forEach(field => {
+            field.addEventListener('input', () => {
+                clearTimeout(submitTimer);
+                submitTimer = setTimeout(() => form.requestSubmit(), 500);
+            });
+        });
+    });
+
     const reviewLikes = document.querySelectorAll('.review-likes');
     const reviewDislikes = document.querySelectorAll('.review-dislikes');
 
