@@ -45,6 +45,29 @@
             <section id="bookings" class="profile-section {{ $activeTab === 'bookings' ? '' : 'hidden' }}">
                 <h2 class="section-title">Мои поездки</h2>
 
+                <form method="GET" action="{{ route('profile.index') }}" class="profile-filters">
+                    <input type="hidden" name="tab" value="bookings">
+                    <input type="search" name="booking_search" value="{{ $bookingFilters['search'] }}" placeholder="Поиск по поездкам и аренде">
+                    <select name="booking_category">
+                        <option value="">Все категории</option>
+                        @foreach($bookingCategories as $category)
+                            <option value="{{ $category }}" @selected($bookingFilters['category'] === $category)>{{ $category }}</option>
+                        @endforeach
+                    </select>
+                    <input type="date" name="booking_date_from" value="{{ $bookingFilters['date_from'] }}" title="Дата от">
+                    <input type="date" name="booking_date_to" value="{{ $bookingFilters['date_to'] }}" title="Дата до">
+                    <select name="booking_sort">
+                        <option value="newest" @selected($bookingFilters['sort'] === 'newest')>Сначала новые</option>
+                        <option value="oldest" @selected($bookingFilters['sort'] === 'oldest')>Сначала старые</option>
+                        <option value="date_asc" @selected($bookingFilters['sort'] === 'date_asc')>Дата по возрастанию</option>
+                        <option value="date_desc" @selected($bookingFilters['sort'] === 'date_desc')>Дата по убыванию</option>
+                        <option value="price_asc" @selected($bookingFilters['sort'] === 'price_asc')>Цена по возрастанию</option>
+                        <option value="price_desc" @selected($bookingFilters['sort'] === 'price_desc')>Цена по убыванию</option>
+                    </select>
+                    <button type="submit">Применить</button>
+                    <a href="{{ route('profile.index', ['tab' => 'bookings']) }}">Сбросить</a>
+                </form>
+
                 @if($bookings->count() > 0)
                     <div class="bookings-list">
                         @foreach($bookings as $booking)
@@ -138,7 +161,7 @@
 
                     <!-- Пагинация для поездок -->
                     <div class="pagination-container">
-                        {{ $bookings->appends(['tab' => 'bookings'])->links('vendor.pagination.bootstrap-5') }}
+                        {{ $bookings->appends(request()->except('page'))->links('vendor.pagination.bootstrap-5') }}
                     </div>
                 @else
                     <p class="empty-message">У вас пока нет забронированных поездок</p>
@@ -149,11 +172,39 @@
             <section id="reviews" class="profile-section {{ $activeTab === 'reviews' ? '' : 'hidden' }}">
                 <h3 class="section-title">Мои отзывы</h3>
 
+                <form method="GET" action="{{ route('profile.index') }}" class="profile-filters">
+                    <input type="hidden" name="tab" value="reviews">
+                    <input type="search" name="review_search" value="{{ $reviewFilters['search'] }}" placeholder="Поиск по отзывам">
+                    <select name="review_category">
+                        <option value="">Все категории</option>
+                        @foreach($reviewCategories as $category)
+                            <option value="{{ $category }}" @selected($reviewFilters['category'] === $category)>{{ $category }}</option>
+                        @endforeach
+                    </select>
+                    <input type="date" name="review_date_from" value="{{ $reviewFilters['date_from'] }}" title="Дата от">
+                    <input type="date" name="review_date_to" value="{{ $reviewFilters['date_to'] }}" title="Дата до">
+                    <select name="review_sort">
+                        <option value="newest" @selected($reviewFilters['sort'] === 'newest')>Сначала новые</option>
+                        <option value="oldest" @selected($reviewFilters['sort'] === 'oldest')>Сначала старые</option>
+                        <option value="rating_desc" @selected($reviewFilters['sort'] === 'rating_desc')>Оценка по убыванию</option>
+                        <option value="rating_asc" @selected($reviewFilters['sort'] === 'rating_asc')>Оценка по возрастанию</option>
+                        <option value="popular" @selected($reviewFilters['sort'] === 'popular')>Популярные</option>
+                    </select>
+                    <button type="submit">Применить</button>
+                    <a href="{{ route('profile.index', ['tab' => 'reviews']) }}">Сбросить</a>
+                </form>
+
                 @if($reviews->count() > 0)
                     <div class="reviews-list">
                         @foreach($reviews as $review)
-                            @if($review->item)
-                                <div class="review-card-wrapper" onclick="location.href='{{ route('items.show', $review->item->id) }}'" style="cursor: pointer;">
+                            @php
+                                $reviewTarget = $review->item ?? $review->trip;
+                                $reviewRoute = $review->item
+                                    ? route('items.show', $review->item->id)
+                                    : ($review->trip ? route('trips.show', $review->trip->id) : null);
+                            @endphp
+                            @if($reviewTarget && $reviewRoute)
+                                <div class="review-card-wrapper" onclick="location.href='{{ $reviewRoute }}'" style="cursor: pointer;">
                                     <div class="review-card" data-review-id="{{ $review->id }}">
                                         <div class="review-card-header">
                                             <div class="review-rating-badge">
@@ -182,7 +233,7 @@
 
                     <!-- Пагинация для отзывов -->
                     <div class="pagination-container">
-                        {{ $reviews->appends(['tab' => 'reviews'])->links('vendor.pagination.bootstrap-5') }}
+                        {{ $reviews->appends(request()->except('page'))->links('vendor.pagination.bootstrap-5') }}
                     </div>
                 @else
                     <p class="empty-message">У вас пока нет отзывов</p>
@@ -192,6 +243,28 @@
             <!-- Избранное -->
             <section id="favorites" class="profile-section {{ $activeTab === 'favorites' ? '' : 'hidden' }}">
                 <h3 class="section-title">Избранное</h3>
+
+                <form method="GET" action="{{ route('profile.index') }}" class="profile-filters">
+                    <input type="hidden" name="tab" value="favorites">
+                    <input type="search" name="favorite_search" value="{{ $favoriteFilters['search'] }}" placeholder="Поиск в избранном">
+                    <select name="favorite_category">
+                        <option value="">Все категории</option>
+                        @foreach($favoriteCategories as $category)
+                            <option value="{{ $category }}" @selected($favoriteFilters['category'] === $category)>{{ $category }}</option>
+                        @endforeach
+                    </select>
+                    <input type="date" name="favorite_date_from" value="{{ $favoriteFilters['date_from'] }}" title="Дата добавления от">
+                    <input type="date" name="favorite_date_to" value="{{ $favoriteFilters['date_to'] }}" title="Дата добавления до">
+                    <select name="favorite_sort">
+                        <option value="newest" @selected($favoriteFilters['sort'] === 'newest')>Сначала новые</option>
+                        <option value="oldest" @selected($favoriteFilters['sort'] === 'oldest')>Сначала старые</option>
+                        <option value="price_asc" @selected($favoriteFilters['sort'] === 'price_asc')>Цена по возрастанию</option>
+                        <option value="price_desc" @selected($favoriteFilters['sort'] === 'price_desc')>Цена по убыванию</option>
+                        <option value="title_asc" @selected($favoriteFilters['sort'] === 'title_asc')>По названию</option>
+                    </select>
+                    <button type="submit">Применить</button>
+                    <a href="{{ route('profile.index', ['tab' => 'favorites']) }}">Сбросить</a>
+                </form>
 
                 @if($favorites->count() > 0)
                     <div class="favorites-list">
@@ -235,7 +308,7 @@
 
                     <!-- Пагинация для избранного -->
                     <div class="pagination-container">
-                        {{ $favorites->appends(['tab' => 'favorites'])->links('vendor.pagination.bootstrap-5') }}
+                        {{ $favorites->appends(request()->except('page'))->links('vendor.pagination.bootstrap-5') }}
                     </div>
                 @else
                     <p class="empty-message">У вас пока нет избранных поездок</p>
@@ -419,6 +492,54 @@
     font-size: 16px;
 }
 
+.profile-filters {
+    display: grid;
+    grid-template-columns: minmax(220px, 1.4fr) minmax(160px, 1fr) repeat(2, minmax(140px, .8fr)) minmax(170px, 1fr) auto auto;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 24px;
+    padding: 16px;
+    background: #f8fbff;
+    border: 1px solid #e0ecf8;
+    border-radius: 16px;
+}
+
+.profile-filters input,
+.profile-filters select {
+    width: 100%;
+    min-width: 0;
+    padding: 10px 12px;
+    border: 1px solid #d9dee7;
+    border-radius: 10px;
+    background: #fff;
+    color: #2b2b2b;
+    font-size: 14px;
+}
+
+.profile-filters button,
+.profile-filters a {
+    min-height: 40px;
+    padding: 10px 14px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    text-align: center;
+    text-decoration: none;
+}
+
+.profile-filters button {
+    border: none;
+    background: #377FC1;
+    color: #fff;
+    cursor: pointer;
+}
+
+.profile-filters a {
+    color: #377FC1;
+    border: 1px solid #cfe2f5;
+    background: #fff;
+}
+
 .bookings-list, .reviews-list, .favorites-list {
     display: grid;
     grid-template-columns: repeat(auto-fill, 280px);
@@ -594,6 +715,11 @@
     width: 280px;
     height: 260px;
     overflow: hidden;
+}
+
+.review-card-wrapper {
+    width: 280px;
+    height: 260px;
 }
 
 .review-card-wrapper {
@@ -880,6 +1006,10 @@
     .profile-sidebar {
         flex: none;
         width: 100%;
+    }
+
+    .profile-filters {
+        grid-template-columns: 1fr;
     }
 
     .bookings-list, .reviews-list, .favorites-list {
