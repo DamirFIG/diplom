@@ -394,6 +394,7 @@
 
 .profile-content {
     flex: 1;
+    min-width: 0;
     display: flex;
     flex-direction: column;
     gap: 40px;
@@ -420,6 +421,10 @@
 
 .bookings-list, .reviews-list, .favorites-list {
     display: grid;
+    grid-template-columns: repeat(auto-fill, 280px);
+    align-items: start;
+    justify-content: start;
+    gap: 26px;
     grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
     gap: 20px;
 }
@@ -435,6 +440,10 @@
     box-shadow: 0 2px 10px rgba(0,0,0,0.06);
     transition: all 0.3s ease;
     align-items: start;
+    box-sizing: border-box;
+    width: 280px;
+    height: 430px;
+    overflow: hidden;
     width: 100%;
     height: 100%;
 }
@@ -579,8 +588,17 @@
     border-radius: 12px;
     box-shadow: 0 2px 10px rgba(0,0,0,0.08);
     border: 1px solid #f0f0f0;
+    box-sizing: border-box;
     display: flex;
     flex-direction: column;
+    width: 280px;
+    height: 260px;
+    overflow: hidden;
+}
+
+.review-card-wrapper {
+    width: 280px;
+    height: 260px;
     height: 100%;
 }
 
@@ -631,6 +649,10 @@
     margin-bottom: 15px;
     font-size: 14px;
     flex-grow: 1;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
 }
 
 .review-date {
@@ -694,6 +716,10 @@
     box-shadow: 0 2px 10px rgba(0,0,0,0.06);
     transition: all 0.3s ease;
     align-items: start;
+    box-sizing: border-box;
+    width: 280px;
+    height: 430px;
+    overflow: hidden;
     width: 100%;
     height: 100%;
 }
@@ -858,11 +884,15 @@
 
     .bookings-list, .reviews-list, .favorites-list {
         grid-template-columns: 1fr;
+        gap: 20px;
     }
 
     .booking-card {
         grid-template-columns: 1fr;
         gap: 15px;
+        width: 100%;
+        height: auto;
+        min-height: 0;
     }
 
     .booking-image {
@@ -887,6 +917,9 @@
     .favorite-card {
         grid-template-columns: 1fr;
         gap: 15px;
+        width: 100%;
+        height: auto;
+        min-height: 0;
     }
 
     .favorite-image {
@@ -906,6 +939,13 @@
     .favorite-details .detail-item {
         flex: 1;
         min-width: 140px;
+    }
+
+    .review-card-wrapper,
+    .review-card {
+        width: 100%;
+        height: auto;
+        min-height: 220px;
     }
 
     .review-card {
