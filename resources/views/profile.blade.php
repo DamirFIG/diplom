@@ -121,7 +121,6 @@
                                                 <span class="status-text">{{ $statusTexts[$booking->status] ?? $booking->status }}</span>
                                             </div>
                                         </div>
-                                        <div class="booking-header"><h4>{{ $booking->item->title }}</h4></div>
                                         <p class="booking-type">Аренда: {{ $booking->item->activity_type }}</p>
                                         <div class="booking-details">
                                             <div class="detail-item"><span class="detail-icon">📅</span><span>{{ $booking->booking_date ? \Carbon\Carbon::parse($booking->booking_date)->format('d.m.Y') : 'Не указана' }}</span></div>
@@ -248,7 +247,6 @@
   <div class="profile-modal-content">
     <div class="profile-modal-header"><h3>Редактировать профиль</h3><span onclick="closeProfileEditModal()">&times;</span></div>
     <form method="POST" action="{{ route('profile.update') }}" class="profile-edit-form">@csrf
-      <label>Имя</label><input type="text" name="name" value="{{ $user->name }}">
       <label>Логин</label><input type="text" name="login" value="{{ $user->login }}" required>
       <label>Email</label><input type="email" name="email" value="{{ $user->email }}" required>
       <button type="submit">Сохранить</button>
@@ -954,7 +952,6 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 <script>
 function openProfileEditModal(){ const m=document.getElementById('profileEditModal'); if(m) m.style.display='flex'; }
-function openProfileEditModal(){ const m=document.getElementById('profileEditModal'); if(m) m.style.display='block'; }
 function closeProfileEditModal(){ const m=document.getElementById('profileEditModal'); if(m) m.style.display='none'; }
 window.addEventListener('click', function(e){ const m=document.getElementById('profileEditModal'); if(m && e.target===m) closeProfileEditModal(); });
 </script>
