@@ -45,6 +45,29 @@
             <section id="bookings" class="profile-section {{ $activeTab === 'bookings' ? '' : 'hidden' }}">
                 <h2 class="section-title">Мои поездки</h2>
 
+                <form method="GET" action="{{ route('profile.index') }}" class="profile-filters">
+                    <input type="hidden" name="tab" value="bookings">
+                    <input type="search" name="booking_search" value="{{ $bookingFilters['search'] }}" placeholder="Поиск по поездкам и аренде">
+                    <select name="booking_category">
+                        <option value="">Все категории</option>
+                        @foreach($bookingCategories as $category)
+                            <option value="{{ $category }}" @selected($bookingFilters['category'] === $category)>{{ $category }}</option>
+                        @endforeach
+                    </select>
+                    <input type="date" name="booking_date_from" value="{{ $bookingFilters['date_from'] }}" title="Дата от">
+                    <input type="date" name="booking_date_to" value="{{ $bookingFilters['date_to'] }}" title="Дата до">
+                    <select name="booking_sort">
+                        <option value="newest" @selected($bookingFilters['sort'] === 'newest')>Сначала новые</option>
+                        <option value="oldest" @selected($bookingFilters['sort'] === 'oldest')>Сначала старые</option>
+                        <option value="date_asc" @selected($bookingFilters['sort'] === 'date_asc')>Дата по возрастанию</option>
+                        <option value="date_desc" @selected($bookingFilters['sort'] === 'date_desc')>Дата по убыванию</option>
+                        <option value="price_asc" @selected($bookingFilters['sort'] === 'price_asc')>Цена по возрастанию</option>
+                        <option value="price_desc" @selected($bookingFilters['sort'] === 'price_desc')>Цена по убыванию</option>
+                    </select>
+                    <button type="submit">Применить</button>
+                    <a href="{{ route('profile.index', ['tab' => 'bookings']) }}">Сбросить</a>
+                </form>
+
                 @if($bookings->count() > 0)
                     <div class="bookings-list">
                         @foreach($bookings as $booking)
@@ -121,7 +144,6 @@
                                                 <span class="status-text">{{ $statusTexts[$booking->status] ?? $booking->status }}</span>
                                             </div>
                                         </div>
-                                        <div class="booking-header"><h4>{{ $booking->item->title }}</h4></div>
                                         <p class="booking-type">Аренда: {{ $booking->item->activity_type }}</p>
                                         <div class="booking-details">
                                             <div class="detail-item"><span class="detail-icon">📅</span><span>{{ $booking->booking_date ? \Carbon\Carbon::parse($booking->booking_date)->format('d.m.Y') : 'Не указана' }}</span></div>
@@ -139,7 +161,7 @@
 
                     <!-- Пагинация для поездок -->
                     <div class="pagination-container">
-                        {{ $bookings->appends(['tab' => 'bookings'])->links('vendor.pagination.bootstrap-5') }}
+                        {{ $bookings->appends(request()->except('page'))->links('vendor.pagination.bootstrap-5') }}
                     </div>
                 @else
                     <p class="empty-message">У вас пока нет забронированных поездок</p>
@@ -150,11 +172,39 @@
             <section id="reviews" class="profile-section {{ $activeTab === 'reviews' ? '' : 'hidden' }}">
                 <h3 class="section-title">Мои отзывы</h3>
 
+                <form method="GET" action="{{ route('profile.index') }}" class="profile-filters">
+                    <input type="hidden" name="tab" value="reviews">
+                    <input type="search" name="review_search" value="{{ $reviewFilters['search'] }}" placeholder="Поиск по отзывам">
+                    <select name="review_category">
+                        <option value="">Все категории</option>
+                        @foreach($reviewCategories as $category)
+                            <option value="{{ $category }}" @selected($reviewFilters['category'] === $category)>{{ $category }}</option>
+                        @endforeach
+                    </select>
+                    <input type="date" name="review_date_from" value="{{ $reviewFilters['date_from'] }}" title="Дата от">
+                    <input type="date" name="review_date_to" value="{{ $reviewFilters['date_to'] }}" title="Дата до">
+                    <select name="review_sort">
+                        <option value="newest" @selected($reviewFilters['sort'] === 'newest')>Сначала новые</option>
+                        <option value="oldest" @selected($reviewFilters['sort'] === 'oldest')>Сначала старые</option>
+                        <option value="rating_desc" @selected($reviewFilters['sort'] === 'rating_desc')>Оценка по убыванию</option>
+                        <option value="rating_asc" @selected($reviewFilters['sort'] === 'rating_asc')>Оценка по возрастанию</option>
+                        <option value="popular" @selected($reviewFilters['sort'] === 'popular')>Популярные</option>
+                    </select>
+                    <button type="submit">Применить</button>
+                    <a href="{{ route('profile.index', ['tab' => 'reviews']) }}">Сбросить</a>
+                </form>
+
                 @if($reviews->count() > 0)
                     <div class="reviews-list">
                         @foreach($reviews as $review)
-                            @if($review->item)
-                                <div class="review-card-wrapper" onclick="location.href='{{ route('items.show', $review->item->id) }}'" style="cursor: pointer;">
+                            @php
+                                $reviewTarget = $review->item ?? $review->trip;
+                                $reviewRoute = $review->item
+                                    ? route('items.show', $review->item->id)
+                                    : ($review->trip ? route('trips.show', $review->trip->id) : null);
+                            @endphp
+                            @if($reviewTarget && $reviewRoute)
+                                <div class="review-card-wrapper" onclick="location.href='{{ $reviewRoute }}'" style="cursor: pointer;">
                                     <div class="review-card" data-review-id="{{ $review->id }}">
                                         <div class="review-card-header">
                                             <div class="review-rating-badge">
@@ -183,7 +233,7 @@
 
                     <!-- Пагинация для отзывов -->
                     <div class="pagination-container">
-                        {{ $reviews->appends(['tab' => 'reviews'])->links('vendor.pagination.bootstrap-5') }}
+                        {{ $reviews->appends(request()->except('page'))->links('vendor.pagination.bootstrap-5') }}
                     </div>
                 @else
                     <p class="empty-message">У вас пока нет отзывов</p>
@@ -193,6 +243,28 @@
             <!-- Избранное -->
             <section id="favorites" class="profile-section {{ $activeTab === 'favorites' ? '' : 'hidden' }}">
                 <h3 class="section-title">Избранное</h3>
+
+                <form method="GET" action="{{ route('profile.index') }}" class="profile-filters">
+                    <input type="hidden" name="tab" value="favorites">
+                    <input type="search" name="favorite_search" value="{{ $favoriteFilters['search'] }}" placeholder="Поиск в избранном">
+                    <select name="favorite_category">
+                        <option value="">Все категории</option>
+                        @foreach($favoriteCategories as $category)
+                            <option value="{{ $category }}" @selected($favoriteFilters['category'] === $category)>{{ $category }}</option>
+                        @endforeach
+                    </select>
+                    <input type="date" name="favorite_date_from" value="{{ $favoriteFilters['date_from'] }}" title="Дата добавления от">
+                    <input type="date" name="favorite_date_to" value="{{ $favoriteFilters['date_to'] }}" title="Дата добавления до">
+                    <select name="favorite_sort">
+                        <option value="newest" @selected($favoriteFilters['sort'] === 'newest')>Сначала новые</option>
+                        <option value="oldest" @selected($favoriteFilters['sort'] === 'oldest')>Сначала старые</option>
+                        <option value="price_asc" @selected($favoriteFilters['sort'] === 'price_asc')>Цена по возрастанию</option>
+                        <option value="price_desc" @selected($favoriteFilters['sort'] === 'price_desc')>Цена по убыванию</option>
+                        <option value="title_asc" @selected($favoriteFilters['sort'] === 'title_asc')>По названию</option>
+                    </select>
+                    <button type="submit">Применить</button>
+                    <a href="{{ route('profile.index', ['tab' => 'favorites']) }}">Сбросить</a>
+                </form>
 
                 @if($favorites->count() > 0)
                     <div class="favorites-list">
@@ -236,7 +308,7 @@
 
                     <!-- Пагинация для избранного -->
                     <div class="pagination-container">
-                        {{ $favorites->appends(['tab' => 'favorites'])->links('vendor.pagination.bootstrap-5') }}
+                        {{ $favorites->appends(request()->except('page'))->links('vendor.pagination.bootstrap-5') }}
                     </div>
                 @else
                     <p class="empty-message">У вас пока нет избранных поездок</p>
@@ -248,7 +320,6 @@
   <div class="profile-modal-content">
     <div class="profile-modal-header"><h3>Редактировать профиль</h3><span onclick="closeProfileEditModal()">&times;</span></div>
     <form method="POST" action="{{ route('profile.update') }}" class="profile-edit-form">@csrf
-      <label>Имя</label><input type="text" name="name" value="{{ $user->name }}">
       <label>Логин</label><input type="text" name="login" value="{{ $user->login }}" required>
       <label>Email</label><input type="email" name="email" value="{{ $user->email }}" required>
       <button type="submit">Сохранить</button>
@@ -273,12 +344,17 @@
 .profile-layout {
     margin-top:50px;
     display: flex;
-    gap: 40px;
+    align-items: flex-start;
+    gap: 30px;
+}
+
+.profile-sidebar {
+    flex: 0 0 220px;
 }
 
 .profile-avatar {
-    width: 200px;
-    height: 200px;
+    width: 150px;
+    height: 150px;
     border-radius: 50%;
     overflow: hidden;
 }
@@ -311,7 +387,7 @@
 
 .profile-register-date {
     color: #B2AEAE;
-    font-size: 24px;
+    font-size: 18px;
     margin-bottom: 20px;
     margin-top: 0px;
 }
@@ -347,7 +423,7 @@
 .profile-divider {
     height: 1px;
     background: #377FC1;
-    margin: 30px 0;
+    margin: 22px 0;
 }
 
 .profile-menu {
@@ -359,7 +435,7 @@
 .profile-menu-item {
     color: #2b2b2b;
     text-decoration: none;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
     transition: background 0.3s;
 }
 
@@ -380,7 +456,7 @@
     border: none;
     color: #dc3545;
     text-align:center;
-    font-size: 24px;
+    font-size: 20px;
     cursor: pointer;
     padding: 0;
 }
@@ -391,6 +467,7 @@
 
 .profile-content {
     flex: 1;
+    min-width: 0;
     display: flex;
     flex-direction: column;
     gap: 40px;
@@ -415,24 +492,77 @@
     font-size: 16px;
 }
 
+.profile-filters {
+    display: grid;
+    grid-template-columns: minmax(220px, 1.4fr) minmax(160px, 1fr) repeat(2, minmax(140px, .8fr)) minmax(170px, 1fr) auto auto;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 24px;
+    padding: 16px;
+    background: #f8fbff;
+    border: 1px solid #e0ecf8;
+    border-radius: 16px;
+}
+
+.profile-filters input,
+.profile-filters select {
+    width: 100%;
+    min-width: 0;
+    padding: 10px 12px;
+    border: 1px solid #d9dee7;
+    border-radius: 10px;
+    background: #fff;
+    color: #2b2b2b;
+    font-size: 14px;
+}
+
+.profile-filters button,
+.profile-filters a {
+    min-height: 40px;
+    padding: 10px 14px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    text-align: center;
+    text-decoration: none;
+}
+
+.profile-filters button {
+    border: none;
+    background: #377FC1;
+    color: #fff;
+    cursor: pointer;
+}
+
+.profile-filters a {
+    color: #377FC1;
+    border: 1px solid #cfe2f5;
+    background: #fff;
+}
+
 .bookings-list, .reviews-list, .favorites-list {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 280px);
+    align-items: start;
+    justify-content: start;
+    gap: 26px;
 }
 
 .booking-card {
     display: grid;
-    grid-template-columns: 280px 1fr auto;
-    gap: 25px;
-    padding: 25px;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    padding: 18px;
     background: #fff;
     border: 1px solid #e0e0e0;
     border-radius: 16px;
     box-shadow: 0 2px 10px rgba(0,0,0,0.06);
     transition: all 0.3s ease;
     align-items: start;
-    width: 100%;
+    box-sizing: border-box;
+    width: 280px;
+    height: 430px;
+    overflow: hidden;
 }
 
 .booking-card:hover {
@@ -445,8 +575,8 @@
     position: relative;
     border-radius: 12px;
     overflow: hidden;
-    height: 220px;
-    min-width: 280px;
+    height: 170px;
+    min-width: 0;
     flex-shrink: 0;
 }
 
@@ -468,14 +598,14 @@
 
 .booking-header {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
     align-items: flex-start;
-    gap: 15px;
+    gap: 10px;
     margin-bottom: 10px;
 }
 
 .booking-header h4 {
-    font-size: 20px;
+    font-size: 18px;
     margin: 0;
     color: #2c3e50;
     font-weight: 600;
@@ -550,7 +680,7 @@
 }
 
 .booking-arrow {
-    display: flex;
+    display: none;
     align-items: center;
     justify-content: center;
     width: 50px;
@@ -571,16 +701,21 @@
 
 .review-card {
     background: #fff;
-    padding: 20px;
+    padding: 18px;
     border-radius: 12px;
     box-shadow: 0 2px 10px rgba(0,0,0,0.08);
     border: 1px solid #f0f0f0;
+    box-sizing: border-box;
     display: flex;
     flex-direction: column;
+    width: 280px;
+    height: 260px;
+    overflow: hidden;
 }
 
 .review-card-wrapper {
-    width: 100%;
+    width: 280px;
+    height: 260px;
 }
 
 .review-card-header {
@@ -625,6 +760,10 @@
     margin-bottom: 15px;
     font-size: 14px;
     flex-grow: 1;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
 }
 
 .review-date {
@@ -679,16 +818,19 @@
 
 .favorite-card {
     display: grid;
-    grid-template-columns: 280px 1fr auto;
-    gap: 25px;
-    padding: 25px;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    padding: 18px;
     background: #fff;
     border: 1px solid #e0e0e0;
     border-radius: 16px;
     box-shadow: 0 2px 10px rgba(0,0,0,0.06);
     transition: all 0.3s ease;
     align-items: start;
-    width: 100%;
+    box-sizing: border-box;
+    width: 280px;
+    height: 430px;
+    overflow: hidden;
 }
 
 .favorite-card:hover {
@@ -701,8 +843,8 @@
     position: relative;
     border-radius: 12px;
     overflow: hidden;
-    height: 220px;
-    min-width: 280px;
+    height: 170px;
+    min-width: 0;
     flex-shrink: 0;
 }
 
@@ -724,14 +866,14 @@
 
 .favorite-header {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
     align-items: flex-start;
-    gap: 15px;
+    gap: 10px;
     margin-bottom: 10px;
 }
 
 .favorite-info h4 {
-    font-size: 20px;
+    font-size: 18px;
     margin: 0;
     color: #2c3e50;
     font-weight: 600;
@@ -778,7 +920,7 @@
 }
 
 .favorite-arrow {
-    display: flex;
+    display: none;
     align-items: center;
     justify-content: center;
     width: 50px;
@@ -840,9 +982,30 @@
 
 /* Адаптив для карточек бронирований и отзывов */
 @media (max-width: 768px) {
+    .profile-layout {
+        flex-direction: column;
+    }
+
+    .profile-sidebar {
+        flex: none;
+        width: 100%;
+    }
+
+    .profile-filters {
+        grid-template-columns: 1fr;
+    }
+
+    .bookings-list, .reviews-list, .favorites-list {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
     .booking-card {
         grid-template-columns: 1fr;
         gap: 15px;
+        width: 100%;
+        height: auto;
+        min-height: 0;
     }
 
     .booking-image {
@@ -867,6 +1030,9 @@
     .favorite-card {
         grid-template-columns: 1fr;
         gap: 15px;
+        width: 100%;
+        height: auto;
+        min-height: 0;
     }
 
     .favorite-image {
@@ -886,6 +1052,13 @@
     .favorite-details .detail-item {
         flex: 1;
         min-width: 140px;
+    }
+
+    .review-card-wrapper,
+    .review-card {
+        width: 100%;
+        height: auto;
+        min-height: 220px;
     }
 
     .review-card {
@@ -954,7 +1127,6 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 <script>
 function openProfileEditModal(){ const m=document.getElementById('profileEditModal'); if(m) m.style.display='flex'; }
-function openProfileEditModal(){ const m=document.getElementById('profileEditModal'); if(m) m.style.display='block'; }
 function closeProfileEditModal(){ const m=document.getElementById('profileEditModal'); if(m) m.style.display='none'; }
 window.addEventListener('click', function(e){ const m=document.getElementById('profileEditModal'); if(m && e.target===m) closeProfileEditModal(); });
 </script>
