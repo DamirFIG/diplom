@@ -271,12 +271,17 @@
 .profile-layout {
     margin-top:50px;
     display: flex;
-    gap: 40px;
+    align-items: flex-start;
+    gap: 30px;
+}
+
+.profile-sidebar {
+    flex: 0 0 220px;
 }
 
 .profile-avatar {
-    width: 200px;
-    height: 200px;
+    width: 150px;
+    height: 150px;
     border-radius: 50%;
     overflow: hidden;
 }
@@ -309,7 +314,7 @@
 
 .profile-register-date {
     color: #B2AEAE;
-    font-size: 24px;
+    font-size: 18px;
     margin-bottom: 20px;
     margin-top: 0px;
 }
@@ -345,7 +350,7 @@
 .profile-divider {
     height: 1px;
     background: #377FC1;
-    margin: 30px 0;
+    margin: 22px 0;
 }
 
 .profile-menu {
@@ -357,7 +362,7 @@
 .profile-menu-item {
     color: #2b2b2b;
     text-decoration: none;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
     transition: background 0.3s;
 }
 
@@ -378,7 +383,7 @@
     border: none;
     color: #dc3545;
     text-align:center;
-    font-size: 24px;
+    font-size: 20px;
     cursor: pointer;
     padding: 0;
 }
@@ -414,16 +419,16 @@
 }
 
 .bookings-list, .reviews-list, .favorites-list {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
     gap: 20px;
 }
 
 .booking-card {
     display: grid;
-    grid-template-columns: 280px 1fr auto;
-    gap: 25px;
-    padding: 25px;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    padding: 18px;
     background: #fff;
     border: 1px solid #e0e0e0;
     border-radius: 16px;
@@ -431,6 +436,7 @@
     transition: all 0.3s ease;
     align-items: start;
     width: 100%;
+    height: 100%;
 }
 
 .booking-card:hover {
@@ -443,8 +449,8 @@
     position: relative;
     border-radius: 12px;
     overflow: hidden;
-    height: 220px;
-    min-width: 280px;
+    height: 170px;
+    min-width: 0;
     flex-shrink: 0;
 }
 
@@ -466,14 +472,14 @@
 
 .booking-header {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
     align-items: flex-start;
-    gap: 15px;
+    gap: 10px;
     margin-bottom: 10px;
 }
 
 .booking-header h4 {
-    font-size: 20px;
+    font-size: 18px;
     margin: 0;
     color: #2c3e50;
     font-weight: 600;
@@ -548,7 +554,7 @@
 }
 
 .booking-arrow {
-    display: flex;
+    display: none;
     align-items: center;
     justify-content: center;
     width: 50px;
@@ -569,16 +575,18 @@
 
 .review-card {
     background: #fff;
-    padding: 20px;
+    padding: 18px;
     border-radius: 12px;
     box-shadow: 0 2px 10px rgba(0,0,0,0.08);
     border: 1px solid #f0f0f0;
     display: flex;
     flex-direction: column;
+    height: 100%;
 }
 
 .review-card-wrapper {
     width: 100%;
+    height: 100%;
 }
 
 .review-card-header {
@@ -677,9 +685,9 @@
 
 .favorite-card {
     display: grid;
-    grid-template-columns: 280px 1fr auto;
-    gap: 25px;
-    padding: 25px;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    padding: 18px;
     background: #fff;
     border: 1px solid #e0e0e0;
     border-radius: 16px;
@@ -687,6 +695,7 @@
     transition: all 0.3s ease;
     align-items: start;
     width: 100%;
+    height: 100%;
 }
 
 .favorite-card:hover {
@@ -699,8 +708,8 @@
     position: relative;
     border-radius: 12px;
     overflow: hidden;
-    height: 220px;
-    min-width: 280px;
+    height: 170px;
+    min-width: 0;
     flex-shrink: 0;
 }
 
@@ -722,14 +731,14 @@
 
 .favorite-header {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
     align-items: flex-start;
-    gap: 15px;
+    gap: 10px;
     margin-bottom: 10px;
 }
 
 .favorite-info h4 {
-    font-size: 20px;
+    font-size: 18px;
     margin: 0;
     color: #2c3e50;
     font-weight: 600;
@@ -776,7 +785,7 @@
 }
 
 .favorite-arrow {
-    display: flex;
+    display: none;
     align-items: center;
     justify-content: center;
     width: 50px;
@@ -838,6 +847,19 @@
 
 /* Адаптив для карточек бронирований и отзывов */
 @media (max-width: 768px) {
+    .profile-layout {
+        flex-direction: column;
+    }
+
+    .profile-sidebar {
+        flex: none;
+        width: 100%;
+    }
+
+    .bookings-list, .reviews-list, .favorites-list {
+        grid-template-columns: 1fr;
+    }
+
     .booking-card {
         grid-template-columns: 1fr;
         gap: 15px;
