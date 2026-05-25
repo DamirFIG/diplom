@@ -416,7 +416,7 @@
 @php
     $gallery = is_array($trip->gallery) ? $trip->gallery : [];
 
-    $resolveTripImageUrl = function (?string $path): string {
+    $resolveTripImageUrl = function (?string $path):string {
         if (!$path) {
             return asset('img/empty.png');
         }
@@ -455,7 +455,6 @@
         }
 
         return asset('img/empty.png');
-    };
 
     $mainImageUrl = $resolveTripImageUrl($trip->main_image);
 @endphp
