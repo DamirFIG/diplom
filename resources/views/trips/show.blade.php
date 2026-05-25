@@ -416,6 +416,18 @@
 @php
     $gallery = is_array($trip->gallery) ? $trip->gallery : [];
 
+    $resolveTripImageUrl = function (?string $path):string {
+        if (!$path) {
+            return asset('img/empty.png');
+        }
+
+        if (str_starts_with($path, 'img/')) {
+            return asset($path);
+        }
+
+        return asset('storage/' . ltrim($path, '/'));
+    };
+
     $resolvedGallery = [];
     foreach ($gallery as $imagePath) {
         if (!$imagePath) {
@@ -428,10 +440,29 @@
 
         if (!in_array($imageUrl, $resolvedGallery, true)) {
             $resolvedGallery[] = $imageUrl;
+        $resolvedUrl = $resolveTripImageUrl($imagePath);
+        if (!in_array($resolvedUrl, $resolvedGallery, true)) {
+            $resolvedGallery[] = $resolvedUrl;
         }
     }
 
     $mainImageUrl = $resolvedGallery[0] ?? asset('img/empty.png');
+        if (file_exists(public_path('storage/' . $path))) {
+            return asset('storage/' . $path);
+        }
+
+        $basename = basename($path);
+        if (file_exists(public_path('storage/img/' . $basename))) {
+            return asset('storage/img/' . $basename);
+        }
+
+        if (file_exists(public_path('img/' . $basename))) {
+            return asset('img/' . $basename);
+        }
+
+        return asset('img/empty.png');
+
+    $mainImageUrl = $resolveTripImageUrl($trip->main_image);
 @endphp
 
 <div class="trip-page">
@@ -439,6 +470,7 @@
         {{-- Большое фото --}}
         <div class="main-image">
             <img loading="lazy" decoding="async" id="activeImage" src="{{ $mainImageUrl }}" alt="{{ $trip->title }}">
+            <img loading="lazy" decoding="async" id="activeImage" src="{{ str_starts_with($trip->main_image, 'img/') ? asset($trip->main_image) : asset('storage/' . $trip->main_image) }}" alt="{{ $trip->title }}">
         </div>
 
         {{-- Мини-фото --}}
@@ -447,6 +479,19 @@
             @foreach($resolvedGallery as $imageUrl)
                 <img loading="lazy" decoding="async" src="{{ $imageUrl }}" class="thumb" alt="Gallery" onclick="changeImage(this.src)">
             @endforeach
+            {{-- Главное фото как первая миниатюра --}}
+            <img loading="lazy" decoding="async" src="{{ $mainImageUrl }}"
+            <img loading="lazy" decoding="async" src="{{ str_starts_with($trip->main_image, 'img/') ? asset($trip->main_image) : asset('storage/' . $trip->main_image) }}"
+                 class="thumb"
+                 alt="Main"
+                 onclick="changeImage(this.src)">
+
+            {{-- Галерея --}}
+            @if(count($gallery) > 1)
+                @foreach(array_slice($gallery, 1) as $img)
+                    <img loading="lazy" decoding="async" src="{{ $resolveTripImageUrl($img) }}" class="thumb" alt="Gallery" onclick="changeImage(this.src)">
+                @endforeach
+            @endif
         </div>
     </div>
 
