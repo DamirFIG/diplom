@@ -413,29 +413,58 @@
 }
 </style>
 
+@php
+    $gallery = is_array($trip->gallery) ? $trip->gallery : [];
+
+    $resolveTripImageUrl = function (?string $path): string {
+        if (!$path) {
+            return asset('img/empty.png');
+        }
+
+        if (str_starts_with($path, 'img/')) {
+            return asset($path);
+        }
+
+        if (file_exists(public_path('storage/' . $path))) {
+            return asset('storage/' . $path);
+        }
+
+        $basename = basename($path);
+        if (file_exists(public_path('storage/img/' . $basename))) {
+            return asset('storage/img/' . $basename);
+        }
+
+        if (file_exists(public_path('img/' . $basename))) {
+            return asset('img/' . $basename);
+        }
+
+        return asset('img/empty.png');
+    };
+
+    $mainImageUrl = $resolveTripImageUrl($trip->main_image);
+@endphp
+
 <div class="trip-page">
     <div class="trip-left">
         {{-- Большое фото --}}
         <div class="main-image">
+            <img loading="lazy" decoding="async" id="activeImage" src="{{ $mainImageUrl }}" alt="{{ $trip->title }}">
             <img loading="lazy" decoding="async" id="activeImage" src="{{ str_starts_with($trip->main_image, 'img/') ? asset($trip->main_image) : asset('storage/' . $trip->main_image) }}" alt="{{ $trip->title }}">
         </div>
 
         {{-- Мини-фото --}}
         <div class="thumbs">
             {{-- Главное фото как первая миниатюра --}}
+            <img loading="lazy" decoding="async" src="{{ $mainImageUrl }}"
             <img loading="lazy" decoding="async" src="{{ str_starts_with($trip->main_image, 'img/') ? asset($trip->main_image) : asset('storage/' . $trip->main_image) }}"
                  class="thumb"
                  alt="Main"
                  onclick="changeImage(this.src)">
 
             {{-- Галерея --}}
-            @php
-                $gallery = is_array($trip->gallery) ? $trip->gallery : [];
-            @endphp
-
             @if(count($gallery) > 1)
                 @foreach(array_slice($gallery, 1) as $img)
-                    <img loading="lazy" decoding="async" src="{{ asset('storage/'.$img) }}" class="thumb" alt="Gallery" onclick="changeImage(this.src)">
+                    <img loading="lazy" decoding="async" src="{{ $resolveTripImageUrl($img) }}" class="thumb" alt="Gallery" onclick="changeImage(this.src)">
                 @endforeach
             @endif
         </div>
