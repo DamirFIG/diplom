@@ -417,13 +417,13 @@
     <div class="trip-left">
         {{-- Большое фото --}}
         <div class="main-image">
-            <img loading="lazy" decoding="async" id="activeImage" src="{{ asset('storage/' . $trip->main_image) }}" alt="{{ $trip->title }}">
+            <img loading="lazy" decoding="async" id="activeImage" src="{{ str_starts_with($trip->main_image, 'img/') ? asset($trip->main_image) : asset('storage/' . $trip->main_image) }}" alt="{{ $trip->title }}">
         </div>
 
         {{-- Мини-фото --}}
         <div class="thumbs">
             {{-- Главное фото как первая миниатюра --}}
-            <img loading="lazy" decoding="async" src="{{ asset('storage/' . $trip->main_image) }}"
+            <img loading="lazy" decoding="async" src="{{ str_starts_with($trip->main_image, 'img/') ? asset($trip->main_image) : asset('storage/' . $trip->main_image) }}"
                  class="thumb"
                  alt="Main"
                  onclick="changeImage(this.src)">
