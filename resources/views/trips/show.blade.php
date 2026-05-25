@@ -413,31 +413,40 @@
 }
 </style>
 
+@php
+    $gallery = is_array($trip->gallery) ? $trip->gallery : [];
+
+    $resolvedGallery = [];
+    foreach ($gallery as $imagePath) {
+        if (!$imagePath) {
+            continue;
+        }
+
+        $imageUrl = str_starts_with($imagePath, 'img/')
+            ? asset($imagePath)
+            : asset('storage/' . ltrim($imagePath, '/'));
+
+        if (!in_array($imageUrl, $resolvedGallery, true)) {
+            $resolvedGallery[] = $imageUrl;
+        }
+    }
+
+    $mainImageUrl = $resolvedGallery[0] ?? asset('img/empty.png');
+@endphp
+
 <div class="trip-page">
     <div class="trip-left">
         {{-- Большое фото --}}
         <div class="main-image">
-            <img loading="lazy" decoding="async" id="activeImage" src="{{ asset('storage/' . $trip->main_image) }}" alt="{{ $trip->title }}">
+            <img loading="lazy" decoding="async" id="activeImage" src="{{ $mainImageUrl }}" alt="{{ $trip->title }}">
         </div>
 
         {{-- Мини-фото --}}
         <div class="thumbs">
-            {{-- Главное фото как первая миниатюра --}}
-            <img loading="lazy" decoding="async" src="{{ asset('storage/' . $trip->main_image) }}"
-                 class="thumb"
-                 alt="Main"
-                 onclick="changeImage(this.src)">
-
-            {{-- Галерея --}}
-            @php
-                $gallery = is_array($trip->gallery) ? $trip->gallery : [];
-            @endphp
-
-            @if(count($gallery) > 1)
-                @foreach(array_slice($gallery, 1) as $img)
-                    <img loading="lazy" decoding="async" src="{{ asset('storage/'.$img) }}" class="thumb" alt="Gallery" onclick="changeImage(this.src)">
-                @endforeach
-            @endif
+            {{-- Миниатюры галереи --}}
+            @foreach($resolvedGallery as $imageUrl)
+                <img loading="lazy" decoding="async" src="{{ $imageUrl }}" class="thumb" alt="Gallery" onclick="changeImage(this.src)">
+            @endforeach
         </div>
     </div>
 
