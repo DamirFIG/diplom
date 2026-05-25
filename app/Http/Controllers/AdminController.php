@@ -256,7 +256,7 @@ class AdminController extends Controller
 
             if ($request->hasFile('gallery')) {
                 $newImages = $this->uploadImages($request->file('gallery'));
-                $existingGallery = array_merge($existingGallery, $newImages);
+                $existingGallery = array_merge($newImages, $existingGallery);
             }
 
             $data['gallery'] = $existingGallery;

@@ -425,6 +425,22 @@
             return asset($path);
         }
 
+        return asset('storage/' . ltrim($path, '/'));
+    };
+
+    $resolvedGallery = [];
+    foreach ($gallery as $imagePath) {
+        if (!$imagePath) {
+            continue;
+        }
+
+        $resolvedUrl = $resolveTripImageUrl($imagePath);
+        if (!in_array($resolvedUrl, $resolvedGallery, true)) {
+            $resolvedGallery[] = $resolvedUrl;
+        }
+    }
+
+    $mainImageUrl = $resolvedGallery[0] ?? asset('img/empty.png');
         if (file_exists(public_path('storage/' . $path))) {
             return asset('storage/' . $path);
         }
@@ -454,6 +470,10 @@
 
         {{-- Мини-фото --}}
         <div class="thumbs">
+            {{-- Миниатюры галереи --}}
+            @foreach($resolvedGallery as $imageUrl)
+                <img loading="lazy" decoding="async" src="{{ $imageUrl }}" class="thumb" alt="Gallery" onclick="changeImage(this.src)">
+            @endforeach
             {{-- Главное фото как первая миниатюра --}}
             <img loading="lazy" decoding="async" src="{{ $mainImageUrl }}"
             <img loading="lazy" decoding="async" src="{{ str_starts_with($trip->main_image, 'img/') ? asset($trip->main_image) : asset('storage/' . $trip->main_image) }}"
