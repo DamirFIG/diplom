@@ -221,14 +221,15 @@ class AdminController extends Controller
         }
     }
 
-    public function edit($id)
+    public function edit(Request $request, $id)
     {
-        $item = $this->findModel($id);
+        $item = $this->findModelByContext($request, $id);
         $guides = Guide::withCount('trips')->orderByDesc('id')->limit(10)->get();
         
         // Если это Trip, используем отдельный view
         if ($item instanceof Trip) {
-            return view('admin.trips.edit', compact('item', 'guides'));
+            $trip = $item;
+            return view('admin.trips.edit', compact('trip', 'guides'));
         }
         
         return view('admin.items.edit', compact('item', 'guides'));
@@ -236,7 +237,7 @@ class AdminController extends Controller
 
     public function update(Request $request, $id)
     {
-        $item = $this->findModel($id);
+        $item = $this->findModelByContext($request, $id);
         $data = $this->validateCard($request);
 
         DB::beginTransaction();
@@ -273,9 +274,9 @@ class AdminController extends Controller
         }
     }
 
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        $item = $this->findModel($id);
+        $item = $this->findModelByContext($request, $id);
 
         if ($item->gallery && is_array($item->gallery)) {
             $this->deleteImages($item->gallery);
@@ -287,8 +288,16 @@ class AdminController extends Controller
         return redirect()->route($route)->with('success', 'Карточка удалена');
     }
 
-    private function findModel($id): Item|Trip
+    private function findModelByContext(Request $request, $id): Item|Trip
     {
+        if ($request->is('admin/trips*')) {
+            return Trip::findOrFail($id);
+        }
+
+        if ($request->is('admin/items*')) {
+            return Item::findOrFail($id);
+        }
+
         return Item::find($id) ?? Trip::findOrFail($id);
     }
 
