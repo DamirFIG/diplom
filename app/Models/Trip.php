@@ -50,6 +50,13 @@ class Trip extends Model
     {
         $gallery = $this->gallery;
 
+        if (is_string($gallery)) {
+            $decoded = json_decode($gallery, true);
+            if (json_last_error() === JSON_ERROR_NONE) {
+                $gallery = $decoded;
+            }
+        }
+
         if (is_array($gallery) && !empty($gallery[0])) {
             return $gallery[0];
         }
