@@ -32,9 +32,23 @@ class Trip extends Model
 
     public function getMainImageAttribute(): string
     {
-        if (is_array($this->gallery) && count($this->gallery) && $this->gallery[0]) {
-            return $this->gallery[0];
+        $gallery = $this->gallery;
+
+        if (is_string($gallery)) {
+            $decoded = json_decode($gallery, true);
+            if (json_last_error() === JSON_ERROR_NONE) {
+                $gallery = $decoded;
+            }
         }
+
+        if (is_array($gallery) && !empty($gallery[0])) {
+            return $gallery[0];
+        }
+
+        if (!empty($this->attributes['main_image'])) {
+            return $this->attributes['main_image'];
+        }
+
         return 'img/empty.png';
     }
 
