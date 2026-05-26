@@ -1262,6 +1262,7 @@ font-weight:600;
     }
 
     .guides-slider-shell {
+        overflow: hidden;
         margin: 0 -4px;
     }
 
@@ -1285,10 +1286,10 @@ font-weight:600;
     }
 
     .guides-slider-btn-prev {
-        left: 6px;
+        left: 10px;
     }
 
     .guides-slider-btn-next {
-        right: 6px;
+        right: 10px;
     }
 }
