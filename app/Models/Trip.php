@@ -58,6 +58,43 @@ class Trip extends Model
             }
         }
 
+    public function getGalleryAttribute($value): array
+    {
+        if (is_array($value)) {
+            return $value;
+        }
+
+        if (is_string($value) && $value !== '') {
+            $decoded = json_decode($value, true);
+            if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
+                return $decoded;
+            }
+        }
+
+        return [];
+    }
+
+    public function getMainImageAttribute(): string
+    {
+        $gallery = $this->gallery;
+
+        if (is_array($gallery)) {
+            foreach ($gallery as $image) {
+                if (!empty($image)) {
+                    return $image;
+                }
+            }
+        if (is_string($gallery)) {
+            $decoded = json_decode($gallery, true);
+            if (json_last_error() === JSON_ERROR_NONE) {
+                $gallery = $decoded;
+            }
+        }
+
+        if (is_array($gallery) && !empty($gallery[0])) {
+            return $gallery[0];
+        }
+
         if (!empty($this->attributes['main_image'])) {
             return $this->attributes['main_image'];
         }
