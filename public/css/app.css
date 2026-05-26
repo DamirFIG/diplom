@@ -1263,6 +1263,7 @@ font-weight:600;
 
     .guides-slider-shell {
         overflow: hidden;
+        margin: 0 -4px;
     }
 
     .guides-slider {
