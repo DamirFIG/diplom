@@ -501,6 +501,26 @@ p{
     text-align: center;
 }
 
+@media (max-width: 768px) {
+    .banner {
+        height: 460px;
+        background-position: center;
+    }
+
+    .banner h1 {
+        padding-top: 180px;
+        font-size: clamp(28px, 7vw, 38px);
+        line-height: 1.2;
+        padding-inline: 16px;
+    }
+
+    .banner h3 {
+        font-size: clamp(16px, 4.5vw, 22px);
+        line-height: 1.35;
+        padding-inline: 16px;
+    }
+}
+
 /*Каталог*/
 .catalog h2{
     text-align: center;
@@ -1237,6 +1257,27 @@ font-weight:600;
 }
 
 @media (max-width: 768px) {
+    .guides {
+        overflow-x: hidden;
+    }
+
+    .guides-slider-shell {
+        overflow: hidden;
+    }
+
+    .guides-slider {
+        gap: 14px;
+        padding: 8px 10px 18px;
+        scroll-padding: 10px;
+    }
+
+    .guides-slider .guide-card,
+    .guide-card {
+        width: min(86vw, 320px);
+        flex-basis: min(86vw, 320px);
+        height: 430px;
+    }
+
     .guides-slider-btn {
         width: 44px;
         height: 44px;
@@ -1244,10 +1285,10 @@ font-weight:600;
     }
 
     .guides-slider-btn-prev {
-        left: 6px;
+        left: 10px;
     }
 
     .guides-slider-btn-next {
-        right: 6px;
+        right: 10px;
     }
 }
