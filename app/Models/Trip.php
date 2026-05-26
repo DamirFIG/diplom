@@ -30,6 +30,22 @@ class Trip extends Model
         'event_date' => 'date',
     ];
 
+    public function getGalleryAttribute($value): array
+    {
+        if (is_array($value)) {
+            return $value;
+        }
+
+        if (is_string($value) && $value !== '') {
+            $decoded = json_decode($value, true);
+            if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
+                return $decoded;
+            }
+        }
+
+        return [];
+    }
+
     public function getMainImageAttribute(): string
     {
         $gallery = $this->gallery;
