@@ -1251,3 +1251,257 @@ font-weight:600;
         right: 6px;
     }
 }
+
+/* ===== Mobile-first improvements ===== */
+@media (max-width: 768px) {
+    * {
+        font-size: 16px;
+    }
+
+    h1 { font-size: 36px; }
+    h2 { font-size: 30px; }
+    h3 { font-size: 24px; }
+    h4 { font-size: 20px; }
+    p { font-size: 16px; }
+
+    .container {
+        margin: 0 16px;
+    }
+
+    .navigation {
+        height: 64px;
+    }
+
+    .navigation img {
+        height: 48px;
+        padding-top: 0;
+    }
+
+    .nav-menu {
+        top: 64px;
+        width: min(82vw, 300px);
+        height: calc(100vh - 64px);
+    }
+
+    .banner {
+        height: 420px;
+        background-position: center;
+    }
+
+    .banner h1 {
+        padding-top: 150px;
+        width: 90%;
+    }
+
+    .banner h3 {
+        padding-top: 14px;
+        width: 90%;
+    }
+
+    .catalog-wrapper {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .catalog-top-filters {
+        flex-direction: column;
+        gap: 12px;
+        margin: 20px 0;
+    }
+
+    .top-right {
+        gap: 12px;
+        width: 100%;
+    }
+
+    .filter-btn,
+    .search-wrapper,
+    .sort {
+        width: 100%;
+        box-sizing: border-box;
+        min-height: 44px;
+    }
+
+    .search-input {
+        width: 100%;
+        padding: 0 12px;
+        box-sizing: border-box;
+    }
+
+    .catalog-filters {
+        position: static;
+        flex: initial;
+    }
+
+    .catalog-filters ul {
+        display: flex;
+        overflow-x: auto;
+        gap: 10px;
+        padding-bottom: 8px;
+        margin: 0;
+    }
+
+    .catalog-filters li {
+        margin: 0;
+        white-space: nowrap;
+    }
+
+    .catalog-items {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .card {
+        max-width: 100%;
+    }
+
+    .card img {
+        width: calc(100% - 24px);
+        height: 220px;
+        padding: 12px 12px 8px;
+    }
+
+    .card-button {
+        width: 100%;
+        margin: 0 0 16px;
+        align-self: initial;
+    }
+
+    .card h4,
+    .card-text {
+        margin-left: 16px;
+        margin-right: 16px;
+    }
+
+    .guides-slider .guide-card,
+    .guide-card {
+        width: min(82vw, 320px);
+        height: 440px;
+        flex-basis: min(82vw, 320px);
+    }
+
+    .review {
+        width: min(88vw, 360px);
+        height: auto;
+        min-height: 360px;
+    }
+
+    .review-text,
+    .review-bottom {
+        width: calc(100% - 28px);
+    }
+
+    .auth {
+        flex-direction: column;
+        height: auto;
+        min-height: calc(100vh - 64px);
+    }
+
+    .auth-left {
+        display: none;
+    }
+
+    .auth-right {
+        height: auto;
+        min-height: calc(100vh - 64px);
+        width: 100%;
+    }
+
+    .auth-form {
+        margin: 0 16px;
+    }
+
+    .auth-form input,
+    .auth-right button {
+        font-size: 18px;
+    }
+
+    .item-page {
+        flex-direction: column;
+        gap: 24px;
+        margin-top: 24px;
+    }
+
+    .item-left {
+        position: static;
+        width: 100%;
+    }
+
+    .main-image img {
+        width: 100%;
+        height: 300px;
+    }
+
+    .thumbs {
+        overflow-x: auto;
+        padding-bottom: 4px;
+    }
+
+    .item-right {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 0;
+    }
+
+    .btn-book {
+        width: 100%;
+    }
+
+    .notifications {
+        left: 12px;
+        right: 12px;
+        bottom: 12px;
+    }
+
+    .notification {
+        min-width: 0;
+        max-width: none;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .filter-content {
+        width: calc(100% - 32px);
+        margin: 24px auto;
+        box-sizing: border-box;
+    }
+
+    .tabs {
+        overflow-x: auto;
+        gap: 6px;
+    }
+
+    .tab {
+        white-space: nowrap;
+    }
+}
+
+@media (max-width: 480px) {
+    .banner {
+        height: 360px;
+    }
+
+    .banner h1 {
+        padding-top: 120px;
+        font-size: 30px;
+    }
+
+    .banner h3 {
+        font-size: 18px;
+    }
+
+    .about-title,
+    .catalog h2,
+    .guides h2,
+    .review-form h2 {
+        margin: 32px 0 24px;
+    }
+
+    .feature-item {
+        padding: 12px;
+    }
+
+    .footer {
+        padding-top: 36px;
+    }
+}
