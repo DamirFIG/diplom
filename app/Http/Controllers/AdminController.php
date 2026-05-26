@@ -228,7 +228,8 @@ class AdminController extends Controller
         
         // Если это Trip, используем отдельный view
         if ($item instanceof Trip) {
-            return view('admin.trips.edit', compact('item', 'guides'));
+            $trip = $item;
+            return view('admin.trips.edit', compact('trip', 'guides'));
         }
         
         return view('admin.items.edit', compact('item', 'guides'));
