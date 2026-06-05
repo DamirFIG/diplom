@@ -524,12 +524,18 @@
 
 .bookings-list, .reviews-list, .favorites-list {
     display: grid;
-    grid-template-columns: repeat(auto-fill, 280px);
     align-items: start;
     justify-content: start;
-    gap: 26px;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
     gap: 20px;
+}
+
+.bookings-list, .favorites-list {
+    grid-template-columns: repeat(auto-fill, 280px);
+    gap: 26px;
+}
+
+.reviews-list {
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
 }
 
 .booking-card {
@@ -547,8 +553,6 @@
     width: 280px;
     height: 430px;
     overflow: hidden;
-    width: 100%;
-    height: 100%;
 }
 
 .booking-card:hover {
@@ -828,8 +832,6 @@
     width: 280px;
     height: 430px;
     overflow: hidden;
-    width: 100%;
-    height: 100%;
 }
 
 .favorite-card:hover {
