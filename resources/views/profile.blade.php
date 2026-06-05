@@ -589,7 +589,6 @@
     box-sizing: border-box;
     width: 300px;
     height: 510px;
-    height: 470px;
     overflow: hidden;
 }
 
