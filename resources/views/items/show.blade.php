@@ -106,15 +106,186 @@
     background: #357ABD;
 }
 
-.item-booking-form .booking-row { margin-bottom: 10px; }
-.item-booking-form label { display:block; font-size:13px; margin-bottom:4px; }
-.item-booking-form input, .item-booking-form textarea { width:100%; padding:8px; border:1px solid #ddd; border-radius:8px; }
-.booking-time-row { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
-.booking-modal { position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 1000; }
-.booking-modal-content { background:#fff; max-width:520px; margin:6vh auto; border-radius:12px; overflow:hidden; }
-.booking-modal-header { display:flex; justify-content:space-between; align-items:center; padding:16px 20px; border-bottom:1px solid #eee; }
-.booking-modal-body { padding:20px; }
-.booking-modal-close { font-size:26px; cursor:pointer; }
+.item-booking-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.item-booking-form .booking-row {
+    margin: 0;
+}
+
+.item-booking-form label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: #546170;
+    margin-bottom: 7px;
+}
+
+.item-booking-form input,
+.item-booking-form textarea {
+    width: 100%;
+    padding: 13px 14px;
+    border: 1px solid #d8e0ea;
+    border-radius: 12px;
+    background: #fff;
+    color: #1f2933;
+    font-family: inherit;
+    font-size: 16px;
+    line-height: 1.3;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.item-booking-form input:focus,
+.item-booking-form textarea:focus {
+    outline: none;
+    border-color: #4A90D9;
+    box-shadow: 0 0 0 4px rgba(74, 144, 217, 0.16);
+    background: #fbfdff;
+}
+
+.item-booking-form textarea {
+    min-height: 96px;
+    resize: vertical;
+}
+
+.booking-time-row {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+}
+
+.booking-modal {
+    position: fixed;
+    inset: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background: rgba(15, 23, 42, 0.58);
+    backdrop-filter: blur(4px);
+    z-index: 1000;
+}
+
+.booking-modal-content {
+    width: min(100%, 560px);
+    max-height: calc(100vh - 48px);
+    background: #fff;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 24px 70px rgba(15, 23, 42, 0.32);
+    animation: bookingModalIn 0.22s ease-out;
+}
+
+.booking-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 30px 32px 24px;
+    border-bottom: 1px solid #edf1f5;
+    background: linear-gradient(135deg, #f8fbff 0%, #ffffff 68%);
+}
+
+.booking-modal-header h3 {
+    margin: 0;
+    max-width: 390px;
+    color: #1f2933;
+    font-family: 'Montserrat', sans-serif;
+    font-size: clamp(28px, 4vw, 40px);
+    font-weight: 500;
+    line-height: 1.18;
+}
+
+.booking-modal-body {
+    padding: 24px 32px 32px;
+    overflow-y: auto;
+    max-height: calc(100vh - 190px);
+}
+
+.booking-modal-close {
+    flex: 0 0 auto;
+    width: 36px;
+    height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: 50%;
+    background: #eef4fb;
+    color: #2c3e50;
+    font-size: 24px;
+    line-height: 1;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.booking-modal-close:hover {
+    background: #4A90D9;
+    color: #fff;
+    transform: rotate(90deg);
+}
+
+.booking-total-preview {
+    margin: 2px 0 0;
+    padding: 16px 18px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, #eef6ff 0%, #f7fbff 100%);
+    color: #24547d;
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.item-booking-form .btn-book {
+    margin-top: 4px;
+    padding: 15px 20px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #4A90D9 0%, #357ABD 100%);
+    box-shadow: 0 10px 24px rgba(74, 144, 217, 0.34);
+}
+
+.item-booking-form .btn-book:hover {
+    background: linear-gradient(135deg, #357ABD 0%, #2c6aa3 100%);
+    transform: translateY(-1px);
+}
+
+@keyframes bookingModalIn {
+    from {
+        opacity: 0;
+        transform: translateY(18px) scale(0.98);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@media (max-width: 576px) {
+    .booking-modal {
+        align-items: flex-end;
+        padding: 12px;
+    }
+
+    .booking-modal-content {
+        border-radius: 20px;
+        max-height: calc(100vh - 24px);
+    }
+
+    .booking-modal-header {
+        padding: 24px 20px 18px;
+    }
+
+    .booking-modal-body {
+        padding: 20px;
+        max-height: calc(100vh - 150px);
+    }
+
+    .booking-time-row {
+        grid-template-columns: 1fr;
+    }
+}
 
 /* Стили для блока с маршрутом */
 .route-section {
@@ -553,51 +724,41 @@
 </div>
 
 <div id="itemBookingModal" class="booking-modal" style="display:none;">
-    <div class="booking-modal-content">
+    <div class="booking-modal-content" role="dialog" aria-modal="true" aria-labelledby="itemBookingModalTitle">
         <div class="booking-modal-header">
-            <h3>Бронирование аренды</h3>
-            <span class="booking-modal-close" onclick="closeItemBookingModal()">&times;</span>
+            <h3 id="itemBookingModalTitle">Бронирование аренды</h3>
+            <button class="booking-modal-close" type="button" onclick="closeItemBookingModal()" aria-label="Закрыть форму бронирования">&times;</button>
         </div>
         <div class="booking-modal-body">
             <form action="{{ route('items.book') }}" method="POST" class="item-booking-form">
                 @csrf
                 <input type="hidden" name="item_id" value="{{ $item->id }}">
                 <div class="booking-row">
-                    <label>Дата</label>
-                    <input type="date" name="booking_date" required min="{{ now()->toDateString() }}">
+                    <label for="booking_date">Дата</label>
+                    <input type="date" name="booking_date" id="booking_date" required min="{{ now()->toDateString() }}">
                 </div>
                 <div class="booking-row booking-time-row">
-                    <div><label>С</label><input type="time" name="start_time" id="start_time" required></div>
-                    <div><label>До</label><input type="time" name="end_time" id="end_time" required></div>
+                    <div>
+                        <label for="start_time">С</label>
+                        <input type="time" name="start_time" id="start_time" required>
+                    </div>
+                    <div>
+                        <label for="end_time">До</label>
+                        <input type="time" name="end_time" id="end_time" required>
+                    </div>
                 </div>
                 <div class="booking-row">
-                    <label>Людей</label>
+                    <label for="booking_people">Людей</label>
                     <input type="number" name="people" id="booking_people" value="1" min="1" max="{{ $item->max_people ?? 10 }}" required>
                 </div>
-                <div class="booking-row"><label>Комментарий</label><textarea name="comment" rows="2"></textarea></div>
-                <p id="booking_total_preview" class="price">Итоговая цена: {{ $item->price }} ₽</p>
+                <div class="booking-row">
+                    <label for="booking_comment">Комментарий</label>
+                    <textarea name="comment" id="booking_comment" rows="3" placeholder="Напишите пожелания к аренде"></textarea>
+                </div>
+                <p id="booking_total_preview" class="booking-total-preview">Итоговая цена: {{ number_format($item->price, 0, ',', ' ') }} ₽</p>
                 <button class="btn-book" type="submit">Подтвердить бронирование</button>
             </form>
         </div>
-        <form action="{{ route('items.book') }}" method="POST" class="item-booking-form">
-            @csrf
-            <input type="hidden" name="item_id" value="{{ $item->id }}">
-            <div class="booking-row">
-                <label>Дата</label>
-                <input type="date" name="booking_date" required min="{{ now()->toDateString() }}">
-            </div>
-            <div class="booking-row booking-time-row">
-                <div><label>С</label><input type="time" name="start_time" id="start_time" required></div>
-                <div><label>До</label><input type="time" name="end_time" id="end_time" required></div>
-            </div>
-            <div class="booking-row">
-                <label>Людей</label>
-                <input type="number" name="people" id="booking_people" value="1" min="1" max="{{ $item->max_people ?? 10 }}" required>
-            </div>
-            <div class="booking-row"><label>Комментарий</label><textarea name="comment" rows="2"></textarea></div>
-            <p id="booking_total_preview" class="price">{{ $item->price }} ₽</p>
-            <button class="btn-book" type="submit">Забронировать</button>
-        </form>
     </div>
 </div>
 
@@ -961,7 +1122,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 <script>
-function openItemBookingModal(){ document.getElementById('itemBookingModal').style.display='block'; }
+function openItemBookingModal(){ document.getElementById('itemBookingModal').style.display='flex'; }
 function closeItemBookingModal(){ document.getElementById('itemBookingModal').style.display='none'; }
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -980,7 +1141,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const hours = Math.ceil((endM - startM) / 60);
     const total = hours * pricePerHour * (parseInt(people.value || '1', 10));
     preview.textContent = 'Итоговая цена: ' + total.toLocaleString('ru-RU') + ' ₽';
-    preview.textContent = total.toLocaleString('ru-RU') + ' ₽';
   }
   [start, end, people].forEach(el => el && el.addEventListener('input', recalc));
 });
