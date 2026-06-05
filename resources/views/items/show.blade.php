@@ -106,6 +106,11 @@
     background: #357ABD;
 }
 
+.booking-modal,
+.booking-modal * {
+    box-sizing: border-box;
+}
+
 .item-booking-form {
     display: flex;
     flex-direction: column;
@@ -155,6 +160,10 @@
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 14px;
+}
+
+.booking-time-row > div {
+    min-width: 0;
 }
 
 .booking-modal {
