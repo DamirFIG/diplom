@@ -85,15 +85,23 @@
     <header class="header">
         <nav class="navigation container">
             <a href="/"><img class="logo" src="/img/logo.svg" alt="logo"></a>
-            <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+            <button type="button" class="mobile-menu-toggle" onclick="toggleMobileMenu()" aria-label="Открыть меню" aria-expanded="false">
                 <span></span>
                 <span></span>
                 <span></span>
             </button>
             <ul class="nav-menu">
                 <li class="nav-item"><a href="/about">О нас</a></li>
-                <li class="nav-item"><a href="/catalog">Каталог</a></li>
-                <li class="nav-item"><a href="/re">Отзывы</a></li>
+                <li class="nav-item"><a href="/#catalog">Аренда</a></li>
+                <li class="nav-item"><a href="/#trips">Поездки</a></li>
+                @auth
+                    @if(Auth::user()->role === 'admin')
+                        <li class="nav-item"><a href="/admin">Админ</a></li>
+                    @endif
+                    <li class="nav-item"><a href="/profile">{{ Auth::user()->login }}</a></li>
+                @else
+                    <li class="nav-item"><a href="/login">Войти</a></li>
+                @endauth
             </ul>
         </nav>
     </header>
@@ -168,8 +176,9 @@ function toggleMobileMenu() {
     const navMenu = document.querySelector('.nav-menu');
     const toggle = document.querySelector('.mobile-menu-toggle');
     if (navMenu && toggle) {
-        navMenu.classList.toggle('active');
-        toggle.classList.toggle('active');
+        const isOpen = navMenu.classList.toggle('active');
+        toggle.classList.toggle('active', isOpen);
+        toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
     }
 }
 </script>

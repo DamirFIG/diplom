@@ -488,7 +488,7 @@
 
 .profile-filters {
     display: grid;
-    grid-template-columns: minmax(220px, 1.4fr) minmax(160px, 1fr) minmax(140px, .8fr) minmax(170px, 1fr) auto;
+    grid-template-columns: minmax(220px, 1.4fr) minmax(160px, 1fr) minmax(150px, .8fr) minmax(170px, 1fr) auto;
     gap: 12px;
     align-items: center;
     margin-bottom: 24px;
@@ -498,22 +498,30 @@
 .profile-filters select {
     width: 100%;
     min-width: 0;
+    height: 42px;
     padding: 10px 12px;
     border: 1px solid #d9dee7;
     border-radius: 10px;
     background: #fff;
     color: #2b2b2b;
     font-size: 14px;
+    box-sizing: border-box;
 }
 
 .profile-filters a {
-    min-height: 40px;
-    padding: 10px 14px;
+    min-width: 0;
+    height: 42px;
+    padding: 0 14px;
     border-radius: 10px;
     font-size: 14px;
     font-weight: 600;
     text-align: center;
     text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    align-self: stretch;
 }
 
 .profile-filters a {
@@ -524,12 +532,23 @@
 
 .bookings-list, .reviews-list, .favorites-list {
     display: grid;
-    grid-template-columns: repeat(auto-fill, 280px);
     align-items: start;
     justify-content: start;
-    gap: 26px;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
     gap: 20px;
+}
+
+.bookings-list {
+    grid-template-columns: repeat(auto-fill, 300px);
+    gap: 26px;
+}
+
+.favorites-list {
+    grid-template-columns: repeat(auto-fill, 280px);
+    gap: 26px;
+}
+
+.reviews-list {
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
 }
 
 .booking-card {
@@ -544,11 +563,9 @@
     transition: all 0.3s ease;
     align-items: start;
     box-sizing: border-box;
-    width: 280px;
-    height: 430px;
+    width: 300px;
+    height: 510px;
     overflow: hidden;
-    width: 100%;
-    height: 100%;
 }
 
 .booking-card:hover {
@@ -828,8 +845,6 @@
     width: 280px;
     height: 430px;
     overflow: hidden;
-    width: 100%;
-    height: 100%;
 }
 
 .favorite-card:hover {
@@ -979,15 +994,95 @@
     cursor: not-allowed;
 }
 
-/* Адаптив для карточек бронирований и отзывов */
-@media (max-width: 768px) {
+
+@media (max-width: 1180px) {
+    .profile-layout {
+        gap: 24px;
+    }
+
+    .profile-filters {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .profile-filters a {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .bookings-list, .favorites-list, .reviews-list {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 900px) {
     .profile-layout {
         flex-direction: column;
+        margin-top: 32px;
+    }
+
+    .profile-sidebar {
+        width: 100%;
+        flex: none;
+        text-align: center;
+    }
+
+    .profile-avatar {
+        margin: 0 auto;
+    }
+
+    .profile-name {
+        justify-content: center;
+        font-size: 34px;
+    }
+
+    .profile-menu {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 12px;
+    }
+
+    .profile-menu-item {
+        margin-bottom: 0;
+        padding: 10px 14px;
+        border: 1px solid #cfe2f5;
+        border-radius: 999px;
+        font-size: 18px;
+    }
+
+    .profile-menu-item.active {
+        background: #edf6ff;
+    }
+
+    .profile-logout {
+        text-align: center;
+    }
+}
+
+/* Адаптив для карточек бронирований и отзывов */
+@media (max-width: 768px) {
+    .profile-page.container {
+        margin-left: 16px;
+        margin-right: 16px;
+    }
+
+    .profile-layout {
+        flex-direction: column;
+        margin-top: 24px;
+        gap: 24px;
     }
 
     .profile-sidebar {
         flex: none;
         width: 100%;
+    }
+
+    .profile-content {
+        width: 100%;
+    }
+
+    .section-title {
+        font-size: 34px;
     }
 
     .profile-filters {
@@ -1003,8 +1098,10 @@
         grid-template-columns: 1fr;
         gap: 15px;
         width: 100%;
+        max-width: 360px;
         height: auto;
         min-height: 0;
+        margin: 0 auto;
     }
 
     .booking-image {
@@ -1030,8 +1127,10 @@
         grid-template-columns: 1fr;
         gap: 15px;
         width: 100%;
+        max-width: 360px;
         height: auto;
         min-height: 0;
+        margin: 0 auto;
     }
 
     .favorite-image {
@@ -1068,6 +1167,41 @@
         font-size: 14px;
     }
 }
+@media (max-width: 480px) {
+    .profile-avatar {
+        width: 120px;
+        height: 120px;
+    }
+
+    .profile-name {
+        font-size: 28px;
+    }
+
+    .profile-register-date,
+    .profile-menu-item,
+    .profile-logout-btn {
+        font-size: 16px;
+    }
+
+    .booking-image,
+    .favorite-image {
+        height: 180px;
+    }
+
+    .booking-details,
+    .favorite-details {
+        flex-direction: column;
+    }
+
+    .detail-item {
+        width: 100%;
+    }
+
+    .profile-modal-content {
+        padding: 16px;
+    }
+}
+
 </style>
 
 <script>
