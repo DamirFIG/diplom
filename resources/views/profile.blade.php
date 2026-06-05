@@ -780,14 +780,6 @@
     transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
 }
 
-.review-card::before {
-    content: '';
-    position: absolute;
-    inset: 0 0 auto;
-    height: 5px;
-    background: linear-gradient(90deg, #4A90D9 0%, #9fd3ff 55%, #ffd36a 100%);
-}
-
 .review-card-wrapper:hover .review-card {
     transform: translateY(-4px);
     border-color: #cfe2f5;
