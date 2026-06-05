@@ -539,6 +539,11 @@
     gap: 26px;
 }
 
+.bookings-list, .favorites-list {
+    grid-template-columns: repeat(auto-fill, 280px);
+    gap: 26px;
+}
+
 .reviews-list {
     grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
 }
@@ -557,6 +562,7 @@
     box-sizing: border-box;
     width: 300px;
     height: 510px;
+    height: 470px;
     overflow: hidden;
 }
 
