@@ -488,7 +488,7 @@
 
 .profile-filters {
     display: grid;
-    grid-template-columns: minmax(220px, 1.4fr) minmax(160px, 1fr) minmax(140px, .8fr) minmax(170px, 1fr) auto;
+    grid-template-columns: minmax(220px, 1.4fr) minmax(160px, 1fr) minmax(150px, .8fr) minmax(170px, 1fr) auto;
     gap: 12px;
     align-items: center;
     margin-bottom: 24px;
@@ -498,22 +498,30 @@
 .profile-filters select {
     width: 100%;
     min-width: 0;
+    height: 42px;
     padding: 10px 12px;
     border: 1px solid #d9dee7;
     border-radius: 10px;
     background: #fff;
     color: #2b2b2b;
     font-size: 14px;
+    box-sizing: border-box;
 }
 
 .profile-filters a {
-    min-height: 40px;
-    padding: 10px 14px;
+    min-width: 0;
+    height: 42px;
+    padding: 0 14px;
     border-radius: 10px;
     font-size: 14px;
     font-weight: 600;
     text-align: center;
     text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    align-self: stretch;
 }
 
 .profile-filters a {
