@@ -551,6 +551,25 @@
     gap: 26px;
 }
 
+.bookings-list, .favorites-list {
+    grid-template-columns: repeat(auto-fill, 280px);
+    gap: 26px;
+}
+
+.reviews-list {
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+.bookings-list {
+    grid-template-columns: repeat(auto-fill, 300px);
+    gap: 26px;
+}
+
+.favorites-list {
+    grid-template-columns: repeat(auto-fill, 280px);
+    gap: 26px;
+}
+
 .reviews-list {
     grid-template-columns: repeat(auto-fill, minmax(300px, 320px));
     gap: 24px;
@@ -570,6 +589,7 @@
     box-sizing: border-box;
     width: 300px;
     height: 510px;
+    height: 470px;
     overflow: hidden;
 }
 
