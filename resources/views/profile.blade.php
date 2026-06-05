@@ -203,12 +203,16 @@
                                 <div class="review-card-wrapper" onclick="location.href='{{ $reviewRoute }}'" style="cursor: pointer;">
                                     <div class="review-card" data-review-id="{{ $review->id }}">
                                         <div class="review-card-header">
-                                            <div class="review-rating-badge">
+                                            <div class="review-rating-badge" aria-label="Оценка {{ $review->rating }} из 5">
                                                 @for($i = 0; $i < 5; $i++)
                                                     <span class="star {{ $i < $review->rating ? 'filled' : '' }}">★</span>
                                                 @endfor
                                             </div>
                                             <span class="review-date">{{ $review->created_at->format('d.m.Y') }}</span>
+                                        </div>
+                                        <div class="review-target">
+                                            <span class="review-target-label">{{ $review->item ? 'Аренда' : 'Поездка' }}</span>
+                                            <h4>{{ $reviewTarget->title }}</h4>
                                         </div>
                                         <p class="review-text">{{ $review->text }}</p>
                                         <div class="review-meta">
@@ -556,6 +560,21 @@
     grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
 }
 
+.bookings-list {
+    grid-template-columns: repeat(auto-fill, 300px);
+    gap: 26px;
+}
+
+.favorites-list {
+    grid-template-columns: repeat(auto-fill, 280px);
+    gap: 26px;
+}
+
+.reviews-list {
+    grid-template-columns: repeat(auto-fill, minmax(300px, 320px));
+    gap: 24px;
+}
+
 .booking-card {
     display: grid;
     grid-template-columns: 1fr;
@@ -708,57 +727,62 @@
     stroke: #fff;
 }
 
-.review-card {
-    background: #fff;
-    padding: 18px;
-    border-radius: 12px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-    border: 1px solid #f0f0f0;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    width: 280px;
-    height: 260px;
-    overflow: hidden;
-}
-
-.review-card-wrapper {
-    width: 280px;
-    height: 260px;
-}
-
-.review-card-wrapper {
-    width: 280px;
-    height: 260px;
-    height: 100%;
-}
-
 .review-card-wrapper {
     width: 100%;
     height: 100%;
+}
+
+.review-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    min-height: 300px;
+    padding: 22px;
+    overflow: hidden;
+    box-sizing: border-box;
+    background: linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
+    border: 1px solid #e8eef6;
+    border-radius: 20px;
+    box-shadow: 0 10px 28px rgba(43, 72, 105, 0.10);
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.review-card::before {
+    content: '';
+    position: absolute;
+    inset: 0 0 auto;
+    height: 5px;
+    background: linear-gradient(90deg, #4A90D9 0%, #9fd3ff 55%, #ffd36a 100%);
+}
+
+.review-card-wrapper:hover .review-card {
+    transform: translateY(-4px);
+    border-color: #cfe2f5;
+    box-shadow: 0 16px 36px rgba(43, 72, 105, 0.16);
 }
 
 .review-card-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 15px;
-    padding-bottom: 12px;
-    border-bottom: 1px solid #f0f0f0;
+    gap: 12px;
+    margin-bottom: 16px;
 }
 
 .review-rating-badge {
-    background: linear-gradient(135deg, #fff9e6 0%, #fff3cc 100%);
-    padding: 6px 12px;
-    border-radius: 16px;
+    background: linear-gradient(135deg, #fff8df 0%, #fff0b8 100%);
+    padding: 7px 13px;
+    border-radius: 999px;
     display: flex;
-    gap: 2px;
-    box-shadow: 0 2px 6px rgba(255, 193, 7, 0.15);
+    gap: 3px;
+    box-shadow: 0 6px 14px rgba(255, 193, 7, 0.18);
 }
 
 .review-rating-badge .star {
     color: #ffc107;
-    font-size: 16px;
+    font-size: 15px;
+    line-height: 1;
 }
 
 .review-rating-badge .star:not(.filled) {
@@ -774,40 +798,75 @@
     color: #ffc107;
 }
 
+.review-target {
+    padding-bottom: 14px;
+    margin-bottom: 14px;
+    border-bottom: 1px solid #eef2f7;
+}
+
+.review-target-label {
+    display: inline-flex;
+    margin-bottom: 7px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: #edf6ff;
+    color: #377FC1;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.review-target h4 {
+    margin: 0;
+    color: #22364d;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1.35;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
 .review-text {
-    color: #555;
-    line-height: 1.6;
-    margin-bottom: 15px;
-    font-size: 14px;
+    color: #58677a;
+    line-height: 1.65;
+    margin: 0 0 18px;
+    font-size: 15px;
     flex-grow: 1;
     overflow: hidden;
     display: -webkit-box;
-    -webkit-line-clamp: 5;
+    -webkit-line-clamp: 4;
     -webkit-box-orient: vertical;
 }
 
 .review-date {
-    color: #95a5a6;
-    font-size: 12px;
+    color: #9aa7b5;
+    font-size: 13px;
+    white-space: nowrap;
 }
 
 .review-meta {
     display: flex;
     gap: 10px;
-    padding-top: 12px;
-    border-top: 1px solid #f0f0f0;
+    margin-top: auto;
+    padding-top: 14px;
+    border-top: 1px solid #eef2f7;
 }
 
 .review-meta .review-likes,
 .review-meta .review-dislikes {
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    gap: 5px;
-    padding: 4px 10px;
-    border-radius: 14px;
-    background: #f8f9fa;
-    font-size: 13px;
-    transition: background 0.2s ease;
+    gap: 7px;
+    min-width: 58px;
+    padding: 8px 12px;
+    border-radius: 999px;
+    background: #f6f9fc;
+    color: #41546b;
+    font-size: 14px;
+    transition: background 0.2s ease, transform 0.2s ease;
     cursor: pointer;
 }
 
