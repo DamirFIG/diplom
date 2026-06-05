@@ -551,6 +551,40 @@
     gap: 26px;
 }
 
+.bookings-list, .favorites-list {
+    grid-template-columns: repeat(auto-fill, 280px);
+    gap: 26px;
+}
+
+.reviews-list {
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+.bookings-list {
+    grid-template-columns: repeat(auto-fill, 300px);
+    gap: 26px;
+}
+
+.favorites-list {
+    grid-template-columns: repeat(auto-fill, 280px);
+    gap: 26px;
+}
+
+.reviews-list {
+    grid-template-columns: repeat(auto-fill, minmax(300px, 320px));
+    gap: 24px;
+}
+
+.bookings-list {
+    grid-template-columns: repeat(auto-fill, 300px);
+    gap: 26px;
+}
+
+.favorites-list {
+    grid-template-columns: repeat(auto-fill, 280px);
+    gap: 26px;
+}
+
 .reviews-list {
     grid-template-columns: repeat(auto-fill, minmax(380px, 440px));
     gap: 24px;
@@ -728,6 +762,32 @@
     transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
 }
 
+}
+
+.review-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    min-height: 300px;
+    padding: 22px;
+    overflow: hidden;
+    box-sizing: border-box;
+    background: linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
+    border: 1px solid #e8eef6;
+    border-radius: 20px;
+    box-shadow: 0 10px 28px rgba(43, 72, 105, 0.10);
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.review-card::before {
+    content: '';
+    position: absolute;
+    inset: 0 0 auto;
+    height: 5px;
+    background: linear-gradient(90deg, #4A90D9 0%, #9fd3ff 55%, #ffd36a 100%);
+}
+
 .review-card-wrapper:hover .review-card {
     transform: translateY(-4px);
     border-color: #cfe2f5;
@@ -796,6 +856,10 @@
     font-weight: 600;
     line-height: 1.35;
     overflow: visible;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
 }
 
 .review-text {
@@ -805,6 +869,10 @@
     font-size: 15px;
     flex-grow: 1;
     overflow: visible;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
 }
 
 .review-date {
