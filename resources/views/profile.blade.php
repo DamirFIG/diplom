@@ -529,6 +529,16 @@
     gap: 20px;
 }
 
+.bookings-list {
+    grid-template-columns: repeat(auto-fill, 300px);
+    gap: 26px;
+}
+
+.favorites-list {
+    grid-template-columns: repeat(auto-fill, 280px);
+    gap: 26px;
+}
+
 .bookings-list, .favorites-list {
     grid-template-columns: repeat(auto-fill, 280px);
     gap: 26px;
@@ -550,8 +560,8 @@
     transition: all 0.3s ease;
     align-items: start;
     box-sizing: border-box;
-    width: 280px;
-    height: 430px;
+    width: 300px;
+    height: 470px;
     overflow: hidden;
 }
 
