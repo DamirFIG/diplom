@@ -524,12 +524,23 @@
 
 .bookings-list, .reviews-list, .favorites-list {
     display: grid;
-    grid-template-columns: repeat(auto-fill, 280px);
     align-items: start;
     justify-content: start;
-    gap: 26px;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
     gap: 20px;
+}
+
+.bookings-list {
+    grid-template-columns: repeat(auto-fill, 300px);
+    gap: 26px;
+}
+
+.favorites-list {
+    grid-template-columns: repeat(auto-fill, 280px);
+    gap: 26px;
+}
+
+.reviews-list {
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
 }
 
 .booking-card {
@@ -544,11 +555,9 @@
     transition: all 0.3s ease;
     align-items: start;
     box-sizing: border-box;
-    width: 280px;
-    height: 430px;
+    width: 300px;
+    height: 510px;
     overflow: hidden;
-    width: 100%;
-    height: 100%;
 }
 
 .booking-card:hover {
@@ -828,8 +837,6 @@
     width: 280px;
     height: 430px;
     overflow: hidden;
-    width: 100%;
-    height: 100%;
 }
 
 .favorite-card:hover {
@@ -979,15 +986,95 @@
     cursor: not-allowed;
 }
 
-/* Адаптив для карточек бронирований и отзывов */
-@media (max-width: 768px) {
+
+@media (max-width: 1180px) {
+    .profile-layout {
+        gap: 24px;
+    }
+
+    .profile-filters {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .profile-filters a {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .bookings-list, .favorites-list, .reviews-list {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 900px) {
     .profile-layout {
         flex-direction: column;
+        margin-top: 32px;
+    }
+
+    .profile-sidebar {
+        width: 100%;
+        flex: none;
+        text-align: center;
+    }
+
+    .profile-avatar {
+        margin: 0 auto;
+    }
+
+    .profile-name {
+        justify-content: center;
+        font-size: 34px;
+    }
+
+    .profile-menu {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 12px;
+    }
+
+    .profile-menu-item {
+        margin-bottom: 0;
+        padding: 10px 14px;
+        border: 1px solid #cfe2f5;
+        border-radius: 999px;
+        font-size: 18px;
+    }
+
+    .profile-menu-item.active {
+        background: #edf6ff;
+    }
+
+    .profile-logout {
+        text-align: center;
+    }
+}
+
+/* Адаптив для карточек бронирований и отзывов */
+@media (max-width: 768px) {
+    .profile-page.container {
+        margin-left: 16px;
+        margin-right: 16px;
+    }
+
+    .profile-layout {
+        flex-direction: column;
+        margin-top: 24px;
+        gap: 24px;
     }
 
     .profile-sidebar {
         flex: none;
         width: 100%;
+    }
+
+    .profile-content {
+        width: 100%;
+    }
+
+    .section-title {
+        font-size: 34px;
     }
 
     .profile-filters {
@@ -1003,8 +1090,10 @@
         grid-template-columns: 1fr;
         gap: 15px;
         width: 100%;
+        max-width: 360px;
         height: auto;
         min-height: 0;
+        margin: 0 auto;
     }
 
     .booking-image {
@@ -1030,8 +1119,10 @@
         grid-template-columns: 1fr;
         gap: 15px;
         width: 100%;
+        max-width: 360px;
         height: auto;
         min-height: 0;
+        margin: 0 auto;
     }
 
     .favorite-image {
@@ -1068,6 +1159,41 @@
         font-size: 14px;
     }
 }
+@media (max-width: 480px) {
+    .profile-avatar {
+        width: 120px;
+        height: 120px;
+    }
+
+    .profile-name {
+        font-size: 28px;
+    }
+
+    .profile-register-date,
+    .profile-menu-item,
+    .profile-logout-btn {
+        font-size: 16px;
+    }
+
+    .booking-image,
+    .favorite-image {
+        height: 180px;
+    }
+
+    .booking-details,
+    .favorite-details {
+        flex-direction: column;
+    }
+
+    .detail-item {
+        width: 100%;
+    }
+
+    .profile-modal-content {
+        padding: 16px;
+    }
+}
+
 </style>
 
 <script>
