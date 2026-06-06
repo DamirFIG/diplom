@@ -7,15 +7,17 @@
 <style>
 .item-page {
     display: flex;
-    gap: 30px;
+    align-items: flex-start;
+    gap: clamp(18px, 3vw, 30px);
     max-width: 1200px;
     margin: 80px auto 0;
-    padding: 30px 20px;
+    padding: clamp(18px, 4vw, 30px) 20px;
 }
 
 .item-left {
-    flex: 1.4;
+    flex: 1.4 1 0;
     max-width: 650px;
+    min-width: 0;
 }
 
 .main-image {
@@ -27,7 +29,7 @@
 
 .main-image img {
     width: 100%;
-    height: 550px;
+    height: clamp(320px, 46vw, 550px);
     object-fit: cover;
     display: block;
 }
@@ -53,16 +55,11 @@
     box-shadow: 0 4px 12px rgba(0,0,0,0.2);
 }
 
-/* Адаптив для главного фото */
-@media (max-width: 768px) {
-    .main-image img {
-        height: 300px;
-    }
-}
 
 .item-right {
-    flex: 1;
-    padding: 20px;
+    flex: 1 1 0;
+    min-width: 300px;
+    padding: clamp(18px, 3vw, 24px);
     background: #fff;
     border-radius: 10px;
     box-shadow: 0 2px 15px rgba(0,0,0,0.1);
@@ -70,7 +67,7 @@
 }
 
 .item-right h4 {
-    font-size: 28px;
+    font-size: clamp(24px, 4vw, 28px);
     margin-bottom: 20px;
     color: #333;
     font-family: 'Montserrat', sans-serif;
@@ -94,6 +91,7 @@
     color: white;
     border: none;
     border-radius: 8px;
+    padding: 15px 24px;
     font-size: 18px;
     font-weight: 600;
     cursor: pointer;
@@ -278,17 +276,23 @@
     }
 
     .booking-modal-content {
+        width: 100%;
         border-radius: 20px;
-        max-height: calc(100vh - 24px);
+        max-height: calc(100dvh - 24px);
     }
 
     .booking-modal-header {
-        padding: 24px 20px 18px;
+        gap: 12px;
+        padding: 22px 18px 16px;
+    }
+
+    .booking-modal-header h3 {
+        font-size: 24px;
     }
 
     .booking-modal-body {
-        padding: 20px;
-        max-height: calc(100vh - 150px);
+        padding: 18px;
+        max-height: calc(100dvh - 136px);
     }
 
     .booking-time-row {
@@ -406,13 +410,90 @@
 }
 
 /* Адаптив */
-@media (max-width: 768px) {
+@media (max-width: 900px) {
     .item-page {
         flex-direction: column;
+        margin-top: 64px;
     }
 
-    .item-left {
+    .item-left,
+    .item-right {
+        width: 100%;
         max-width: 100%;
+        min-width: 0;
+    }
+}
+
+@media (max-width: 768px) {
+    .main-image img {
+        height: 300px;
+    }
+
+    .route-section,
+    .reviews-section {
+        margin: 24px 12px;
+        padding: 22px 16px;
+    }
+
+    #map {
+        height: 360px;
+    }
+}
+
+@media (max-width: 576px) {
+    .item-page {
+        margin-top: 52px;
+        padding: 16px 12px;
+        gap: 16px;
+    }
+
+    .main-image {
+        border-radius: 14px;
+    }
+
+    .main-image img {
+        height: 240px;
+    }
+
+    .thumbs {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        padding-bottom: 6px;
+        scroll-snap-type: x proximity;
+    }
+
+    .thumb {
+        flex: 0 0 68px;
+        width: 68px;
+        height: 68px;
+        scroll-snap-align: start;
+    }
+
+    .item-right {
+        padding: 18px;
+        border-radius: 14px;
+    }
+
+    .item-right p {
+        font-size: 15px;
+    }
+
+    .item-right .price {
+        font-size: 22px;
+    }
+
+    .btn-book {
+        padding: 14px 18px;
+        font-size: 16px;
+    }
+
+    #map {
+        height: 300px;
+    }
+
+    .leaflet-popup-content {
+        width: 260px !important;
+        max-width: 260px;
     }
 }
 
@@ -686,6 +767,34 @@
     display: flex;
     justify-content: center;
 }
+
+@media (max-width: 768px) {
+    .reviews-section {
+        margin: 24px 12px;
+        padding: 22px 16px;
+    }
+}
+
+@media (max-width: 576px) {
+    .reviews-title {
+        font-size: 24px;
+        flex-wrap: wrap;
+    }
+
+    .review-card,
+    .add-review-form,
+    .no-reviews,
+    .login-message {
+        padding: 18px;
+        border-radius: 14px;
+    }
+
+    .review-card-header {
+        gap: 12px;
+        flex-direction: column;
+    }
+}
+
 </style>
 @endpush
 
@@ -1131,8 +1240,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 <script>
-function openItemBookingModal(){ document.getElementById('itemBookingModal').style.display='flex'; }
-function closeItemBookingModal(){ document.getElementById('itemBookingModal').style.display='none'; }
+function openItemBookingModal(){
+  document.getElementById('itemBookingModal').style.display='flex';
+  document.body.style.overflow = 'hidden';
+}
+function closeItemBookingModal(){
+  document.getElementById('itemBookingModal').style.display='none';
+  document.body.style.overflow = '';
+}
 
 document.addEventListener('DOMContentLoaded', function () {
   const start = document.getElementById('start_time');
