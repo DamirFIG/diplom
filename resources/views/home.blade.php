@@ -728,6 +728,8 @@
         flex-direction: column;
         gap: 14px;
         margin-top: 14px;
+        gap: 18px;
+        margin-top: 18px;
     }
 
     .catalog-filters {
@@ -738,6 +740,10 @@
         box-sizing: border-box;
         padding: 10px;
         overflow: hidden;
+        min-width: 0;
+        width: 100%;
+        box-sizing: border-box;
+        padding: 14px;
     }
 
     .catalog-filters ul {
@@ -745,6 +751,9 @@
         gap: 6px;
         overflow-x: auto;
         padding-bottom: 2px;
+        gap: 10px;
+        overflow-x: auto;
+        padding-bottom: 4px;
         -webkit-overflow-scrolling: touch;
         scrollbar-width: none;
     }
@@ -767,6 +776,8 @@
         padding: 7px 10px;
         font-size: 12px;
         line-height: 1.2;
+        padding: 10px 14px;
+        font-size: 14px;
     }
 
     .catalog-items,
@@ -880,6 +891,7 @@
     .catalog-filters a {
         padding: 6px 8px;
         font-size: 11px;
+        margin-inline: 12px;
     }
 
     .item-card-image,
