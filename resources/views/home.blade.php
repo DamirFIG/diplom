@@ -726,12 +726,20 @@
 
     .catalog-wrapper {
         flex-direction: column;
+        gap: 14px;
+        margin-top: 14px;
         gap: 18px;
         margin-top: 18px;
     }
 
     .catalog-filters {
         position: static;
+        flex: 0 0 auto;
+        min-width: 0;
+        width: 100%;
+        box-sizing: border-box;
+        padding: 10px;
+        overflow: hidden;
         min-width: 0;
         width: 100%;
         box-sizing: border-box;
@@ -740,6 +748,9 @@
 
     .catalog-filters ul {
         display: flex;
+        gap: 6px;
+        overflow-x: auto;
+        padding-bottom: 2px;
         gap: 10px;
         overflow-x: auto;
         padding-bottom: 4px;
@@ -762,6 +773,9 @@
 
     .catalog-filters a {
         white-space: nowrap;
+        padding: 7px 10px;
+        font-size: 12px;
+        line-height: 1.2;
         padding: 10px 14px;
         font-size: 14px;
     }
@@ -867,6 +881,16 @@
 @media (max-width: 480px) {
     .catalog.container,
     .trips.container {
+        margin-inline: 10px;
+    }
+
+    .catalog-filters {
+        padding: 8px;
+    }
+
+    .catalog-filters a {
+        padding: 6px 8px;
+        font-size: 11px;
         margin-inline: 12px;
     }
 
