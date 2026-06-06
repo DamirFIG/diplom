@@ -273,6 +273,93 @@ p{
     color: #61A4E2;
 }
 
+@media (max-width: 1439px) {
+    .auth {
+        min-height: calc(100vh - 67px);
+        height: auto;
+        justify-content: center;
+        align-items: center;
+        padding: 40px 20px;
+        box-sizing: border-box;
+        background: #f7fbff;
+    }
+
+    .auth-left {
+        display: none;
+    }
+
+    .auth-right {
+        flex: 0 1 560px;
+        width: 100%;
+        height: auto;
+        max-height: calc(100vh - 147px);
+        padding: 36px 0;
+        border-radius: 18px;
+        box-shadow: 0 8px 28px rgba(55, 127, 193, 0.18);
+    }
+
+    .auth-right h2 {
+        margin-top: 0;
+    }
+
+    .auth-form {
+        margin: 0 10%;
+    }
+}
+
+@media (max-width: 600px) {
+    .auth {
+        align-items: flex-start;
+        padding: 24px 14px;
+    }
+
+    .auth-right {
+        max-height: none;
+        padding: 28px 0;
+        border-radius: 14px;
+    }
+
+    .auth-right h2 {
+        font-size: 34px;
+        margin-bottom: 24px;
+    }
+
+    .auth-form {
+        margin: 0 7%;
+        font-size: 18px;
+    }
+
+    .auth-form label {
+        padding-left: 12px;
+        font-size: 18px;
+    }
+
+    .auth-form input {
+        height: 40px;
+        padding-left: 12px;
+        font-size: 18px;
+        margin-bottom: 18px;
+    }
+
+    .auth-input:-webkit-autofill,
+    .auth-input:-webkit-autofill:hover,
+    .auth-input:-webkit-autofill:focus {
+        font-size: 18px !important;
+    }
+
+    .auth-right button {
+        width: 86%;
+        height: 46px;
+        font-size: 18px;
+        margin-bottom: 24px;
+    }
+
+    .auth-right a,
+    .auth-link-text {
+        font-size: 16px;
+    }
+}
+
 /*Главная страница*/
 
 /* О НАС */
