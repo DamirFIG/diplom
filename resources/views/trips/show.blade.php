@@ -5,15 +5,17 @@
 <style>
 .trip-page {
     display: flex;
-    gap: 30px;
+    align-items: flex-start;
+    gap: clamp(18px, 3vw, 30px);
     max-width: 1200px;
     margin: 0 auto;
-    padding: 30px 20px;
+    padding: clamp(18px, 4vw, 30px) 20px;
 }
 
 .trip-left {
-    flex: 1.4;
+    flex: 1.4 1 0;
     max-width: 650px;
+    min-width: 0;
 }
 
 .main-image {
@@ -25,7 +27,7 @@
 
 .main-image img {
     width: 100%;
-    height: 550px;
+    height: clamp(320px, 46vw, 550px);
     object-fit: cover;
     display: block;
 }
@@ -51,16 +53,11 @@
     box-shadow: 0 4px 12px rgba(0,0,0,0.2);
 }
 
-/* Адаптив для главного фото */
-@media (max-width: 768px) {
-    .main-image img {
-        height: 300px;
-    }
-}
 
 .trip-right {
-    flex: 1;
-    padding: 20px;
+    flex: 1 1 0;
+    min-width: 300px;
+    padding: clamp(18px, 3vw, 24px);
     background: #fff;
     border-radius: 10px;
     box-shadow: 0 2px 15px rgba(0,0,0,0.1);
@@ -68,7 +65,7 @@
 }
 
 .trip-right h4 {
-    font-size: 28px;
+    font-size: clamp(24px, 4vw, 28px);
     margin-bottom: 20px;
     color: #333;
     font-family: 'Montserrat', sans-serif;
@@ -220,36 +217,117 @@
 }
 
 /* Адаптив */
-@media (max-width: 768px) {
+@media (max-width: 900px) {
     .trip-page {
         flex-direction: column;
     }
 
-    .trip-left {
+    .trip-left,
+    .trip-right {
+        width: 100%;
         max-width: 100%;
+        min-width: 0;
+    }
+}
+
+@media (max-width: 768px) {
+    .main-image img {
+        height: 300px;
+    }
+
+    .route-section,
+    .reviews-section {
+        margin: 24px 12px;
+        padding: 22px 16px;
+    }
+
+    #map {
+        height: 360px;
+    }
+}
+
+@media (max-width: 576px) {
+    .trip-page {
+        padding: 16px 12px;
+        gap: 16px;
+    }
+
+    .main-image {
+        border-radius: 14px;
+    }
+
+    .main-image img {
+        height: 240px;
+    }
+
+    .thumbs {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        padding-bottom: 6px;
+        scroll-snap-type: x proximity;
+    }
+
+    .thumb {
+        flex: 0 0 68px;
+        width: 68px;
+        height: 68px;
+        scroll-snap-align: start;
+    }
+
+    .trip-right {
+        padding: 18px;
+        border-radius: 14px;
+    }
+
+    .trip-right p {
+        font-size: 15px;
+    }
+
+    .trip-right .price {
+        font-size: 22px;
+    }
+
+    .btn-book {
+        padding: 14px 18px;
+        font-size: 16px;
+    }
+
+    #map {
+        height: 300px;
+    }
+
+    .leaflet-popup-content {
+        width: 260px !important;
+        max-width: 260px;
     }
 }
 
 /* Модальное окно бронирования */
+.booking-modal,
+.booking-modal * {
+    box-sizing: border-box;
+}
+
 .booking-modal {
     display: none;
     position: fixed;
     z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
+    inset: 0;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background: rgba(15, 23, 42, 0.58);
+    backdrop-filter: blur(4px);
     animation: fadeIn 0.3s ease;
 }
 
 .booking-modal-content {
     background: #fff;
-    margin: 5% auto;
-    border-radius: 16px;
-    width: 90%;
-    max-width: 500px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    border-radius: 24px;
+    width: min(100%, 520px);
+    max-height: calc(100vh - 48px);
+    overflow: hidden;
+    box-shadow: 0 24px 70px rgba(15, 23, 42, 0.32);
     animation: slideDown 0.3s ease;
 }
 
@@ -272,36 +350,51 @@
 .booking-modal-header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    padding: 20px 25px;
-    border-bottom: 1px solid #e0e0e0;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 28px 30px 22px;
+    border-bottom: 1px solid #edf1f5;
+    background: linear-gradient(135deg, #f8fbff 0%, #ffffff 68%);
 }
 
 .booking-modal-header h3 {
     margin: 0;
-    font-size: 22px;
-    color: #2c3e50;
+    font-size: clamp(24px, 4vw, 32px);
+    color: #1f2933;
     font-weight: 600;
+    line-height: 1.2;
 }
 
 .booking-modal-close {
-    font-size: 32px;
-    color: #999;
+    flex: 0 0 auto;
+    width: 36px;
+    height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #eef4fb;
+    font-size: 28px;
+    color: #2c3e50;
     cursor: pointer;
-    transition: color 0.2s;
+    transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
     line-height: 1;
 }
 
 .booking-modal-close:hover {
-    color: #333;
+    background: #4A90D9;
+    color: #fff;
+    transform: rotate(90deg);
 }
 
 .booking-modal-body {
-    padding: 25px;
+    padding: 24px 30px 30px;
+    overflow-y: auto;
+    max-height: calc(100vh - 150px);
 }
 
 .form-group {
-    margin-bottom: 20px;
+    margin-bottom: 18px;
 }
 
 .form-group label {
@@ -373,10 +466,10 @@
 
 #booking-comment {
     width: 100%;
-    min-height: 80px;
-    padding: 12px;
-    border: 2px solid #e0e0e0;
-    border-radius: 8px;
+    min-height: 90px;
+    padding: 13px 14px;
+    border: 1px solid #d8e0ea;
+    border-radius: 12px;
     resize: vertical;
     font-family: inherit;
     font-size: 14px;
@@ -410,6 +503,38 @@
 
 .btn-submit-booking:active {
     transform: translateY(0);
+}
+
+@media (max-width: 576px) {
+    .booking-modal {
+        align-items: flex-end;
+        padding: 12px;
+    }
+
+    .booking-modal-content {
+        width: 100%;
+        border-radius: 20px;
+        max-height: calc(100dvh - 24px);
+    }
+
+    .booking-modal-header {
+        gap: 12px;
+        padding: 22px 18px 16px;
+    }
+
+    .booking-modal-body {
+        padding: 18px;
+        max-height: calc(100dvh - 136px);
+    }
+
+    .people-counter {
+        gap: 10px;
+    }
+
+    .counter-btn {
+        width: 44px;
+        height: 44px;
+    }
 }
 </style>
 
@@ -864,6 +989,34 @@
     display: flex;
     justify-content: center;
 }
+
+@media (max-width: 768px) {
+    .reviews-section {
+        margin: 24px 12px;
+        padding: 22px 16px;
+    }
+}
+
+@media (max-width: 576px) {
+    .reviews-title {
+        font-size: 24px;
+        flex-wrap: wrap;
+    }
+
+    .review-card,
+    .add-review-form,
+    .no-reviews,
+    .login-message {
+        padding: 18px;
+        border-radius: 14px;
+    }
+
+    .review-card-header {
+        gap: 12px;
+        flex-direction: column;
+    }
+}
+
 </style>
 
 <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
@@ -1145,7 +1298,7 @@ const tripPrice = {{ $trip->price }};
 const maxPeople = {{ $trip->max_people ?? 10 }};
 
 function openBookingModal() {
-    document.getElementById('bookingModal').style.display = 'block';
+    document.getElementById('bookingModal').style.display = 'flex';
     document.body.style.overflow = 'hidden';
 }
 
