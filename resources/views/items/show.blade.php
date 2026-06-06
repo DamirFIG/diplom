@@ -58,6 +58,17 @@
     .main-image img {
         height: 300px;
     }
+
+    .item-page {
+        flex-direction: column;
+        gap: 18px;
+        margin: 20px auto 0;
+        padding: 16px 12px;
+    }
+
+    .item-left {
+        max-width: 100%;
+    }
 }
 
 .item-right {
@@ -114,7 +125,7 @@
 .item-booking-form {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 12px;
 }
 
 .item-booking-form .booking-row {
@@ -132,7 +143,7 @@
 .item-booking-form input,
 .item-booking-form textarea {
     width: 100%;
-    padding: 13px 14px;
+    padding: 11px 12px;
     border: 1px solid #d8e0ea;
     border-radius: 12px;
     background: #fff;
@@ -152,7 +163,7 @@
 }
 
 .item-booking-form textarea {
-    min-height: 96px;
+    min-height: 76px;
     resize: vertical;
 }
 
@@ -179,7 +190,7 @@
 }
 
 .booking-modal-content {
-    width: min(100%, 560px);
+    width: min(100%, 500px);
     max-height: calc(100vh - 48px);
     background: #fff;
     border-radius: 24px;
@@ -193,7 +204,7 @@
     justify-content: space-between;
     align-items: flex-start;
     gap: 20px;
-    padding: 30px 32px 24px;
+    padding: 24px 26px 18px;
     border-bottom: 1px solid #edf1f5;
     background: linear-gradient(135deg, #f8fbff 0%, #ffffff 68%);
 }
@@ -203,13 +214,13 @@
     max-width: 390px;
     color: #1f2933;
     font-family: 'Montserrat', sans-serif;
-    font-size: clamp(28px, 4vw, 40px);
+    font-size: clamp(24px, 3vw, 32px);
     font-weight: 500;
     line-height: 1.18;
 }
 
 .booking-modal-body {
-    padding: 24px 32px 32px;
+    padding: 20px 26px 26px;
     overflow-y: auto;
     max-height: calc(100vh - 190px);
 }
@@ -239,17 +250,17 @@
 
 .booking-total-preview {
     margin: 2px 0 0;
-    padding: 16px 18px;
+    padding: 12px 14px;
     border-radius: 16px;
     background: linear-gradient(135deg, #eef6ff 0%, #f7fbff 100%);
     color: #24547d;
-    font-size: 22px;
+    font-size: 18px;
     font-weight: 700;
 }
 
 .item-booking-form .btn-book {
     margin-top: 4px;
-    padding: 15px 20px;
+    padding: 13px 18px;
     border-radius: 12px;
     background: linear-gradient(135deg, #4A90D9 0%, #357ABD 100%);
     box-shadow: 0 10px 24px rgba(74, 144, 217, 0.34);
@@ -274,25 +285,63 @@
 @media (max-width: 576px) {
     .booking-modal {
         align-items: flex-end;
-        padding: 12px;
+        padding: 8px;
     }
 
     .booking-modal-content {
-        border-radius: 20px;
-        max-height: calc(100vh - 24px);
+        border-radius: 18px 18px 12px 12px;
+        max-height: calc(100vh - 16px);
     }
 
     .booking-modal-header {
-        padding: 24px 20px 18px;
+        padding: 16px 16px 12px;
+        gap: 12px;
+    }
+
+    .booking-modal-header h3 {
+        font-size: 22px;
+    }
+
+    .booking-modal-close {
+        width: 32px;
+        height: 32px;
+        font-size: 22px;
     }
 
     .booking-modal-body {
-        padding: 20px;
-        max-height: calc(100vh - 150px);
+        padding: 14px 16px 16px;
+        max-height: calc(100vh - 112px);
+    }
+
+    .item-booking-form {
+        gap: 10px;
+    }
+
+    .item-booking-form label {
+        margin-bottom: 5px;
+        font-size: 12px;
+    }
+
+    .item-booking-form input,
+    .item-booking-form textarea {
+        padding: 10px 11px;
+        border-radius: 10px;
+        font-size: 14px;
+    }
+
+    .item-booking-form textarea {
+        min-height: 64px;
     }
 
     .booking-time-row {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+    }
+
+    .booking-total-preview {
+        padding: 10px 12px;
+        border-radius: 12px;
+        font-size: 16px;
     }
 }
 
@@ -405,14 +454,68 @@
     transform: scale(1.2);
 }
 
-/* Адаптив */
+/* Адаптив карточки и связанных блоков */
 @media (max-width: 768px) {
-    .item-page {
-        flex-direction: column;
+    .item-right {
+        padding: 16px;
+        border-radius: 14px;
     }
 
-    .item-left {
-        max-width: 100%;
+    .item-right h4 {
+        font-size: 22px;
+        margin: 0 0 14px;
+    }
+
+    .item-right p {
+        font-size: 15px;
+        line-height: 1.5;
+        margin-bottom: 10px;
+    }
+
+    .item-right .price {
+        font-size: 21px;
+        margin: 16px 0 10px;
+    }
+
+    .btn-book {
+        min-height: 46px;
+        margin-top: 14px;
+        padding: 12px 16px;
+        font-size: 16px;
+    }
+
+    .thumbs {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        padding-bottom: 4px;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+    }
+
+    .thumbs::-webkit-scrollbar {
+        display: none;
+    }
+
+    .thumb {
+        flex: 0 0 auto;
+        width: 62px;
+        height: 62px;
+    }
+
+    .route-section,
+    .reviews-section {
+        margin: 18px 12px;
+        padding: 18px 12px;
+        border-radius: 14px;
+    }
+
+    #map {
+        height: 320px;
+    }
+
+    .leaflet-popup-content {
+        width: min(260px, 78vw) !important;
+        max-width: min(260px, 78vw);
     }
 }
 

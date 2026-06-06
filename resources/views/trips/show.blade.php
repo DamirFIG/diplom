@@ -17,7 +17,7 @@
 }
 
 .main-image {
-    margin-bottom: 20px;
+    margin-bottom: 14px;
     border-radius: 10px;
     overflow: hidden;
     box-shadow: 0 4px 15px rgba(0,0,0,0.1);
@@ -219,14 +219,86 @@
     text-align: center;
 }
 
-/* Адаптив */
+/* Адаптив карточки поездки */
 @media (max-width: 768px) {
     .trip-page {
         flex-direction: column;
+        gap: 18px;
+        padding: 16px 12px;
     }
 
     .trip-left {
         max-width: 100%;
+    }
+
+    .main-image {
+        margin-bottom: 12px;
+        border-radius: 14px;
+    }
+
+    .main-image img {
+        height: 300px;
+    }
+
+    .thumbs {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        padding-bottom: 4px;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+    }
+
+    .thumbs::-webkit-scrollbar {
+        display: none;
+    }
+
+    .thumb {
+        flex: 0 0 auto;
+        width: 62px;
+        height: 62px;
+    }
+
+    .trip-right {
+        padding: 16px;
+        border-radius: 14px;
+    }
+
+    .trip-right h4 {
+        font-size: 22px;
+        margin: 0 0 14px;
+    }
+
+    .trip-right p {
+        font-size: 15px;
+        line-height: 1.5;
+        margin-bottom: 10px;
+    }
+
+    .trip-right .price {
+        font-size: 21px;
+        margin: 16px 0 10px;
+    }
+
+    .btn-book {
+        min-height: 46px;
+        margin-top: 14px;
+        padding: 12px 16px;
+        font-size: 16px;
+    }
+
+    .route-section {
+        margin: 18px 12px;
+        padding: 18px 12px;
+        border-radius: 14px;
+    }
+
+    #map {
+        height: 320px;
+    }
+
+    .leaflet-popup-content {
+        width: min(260px, 78vw) !important;
+        max-width: min(260px, 78vw);
     }
 }
 
@@ -245,10 +317,10 @@
 
 .booking-modal-content {
     background: #fff;
-    margin: 5% auto;
+    margin: 4% auto;
     border-radius: 16px;
     width: 90%;
-    max-width: 500px;
+    max-width: 440px;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
     animation: slideDown 0.3s ease;
 }
@@ -273,7 +345,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px 25px;
+    padding: 16px 20px;
     border-bottom: 1px solid #e0e0e0;
 }
 
@@ -285,7 +357,7 @@
 }
 
 .booking-modal-close {
-    font-size: 32px;
+    font-size: 28px;
     color: #999;
     cursor: pointer;
     transition: color 0.2s;
@@ -297,7 +369,7 @@
 }
 
 .booking-modal-body {
-    padding: 25px;
+    padding: 18px 20px 20px;
 }
 
 .form-group {
@@ -315,12 +387,12 @@
 .people-counter {
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 10px;
 }
 
 .counter-btn {
-    width: 40px;
-    height: 40px;
+    width: 36px;
+    height: 36px;
     border: 2px solid #e0e0e0;
     background: #f8f9fa;
     border-radius: 8px;
@@ -373,7 +445,7 @@
 
 #booking-comment {
     width: 100%;
-    min-height: 80px;
+    min-height: 68px;
     padding: 12px;
     border: 2px solid #e0e0e0;
     border-radius: 8px;
@@ -390,7 +462,7 @@
 
 .btn-submit-booking {
     width: 100%;
-    padding: 15px;
+    padding: 13px;
     background: linear-gradient(135deg, #4A90D9 0%, #357ABD 100%);
     color: white;
     border: none;
@@ -411,6 +483,94 @@
 .btn-submit-booking:active {
     transform: translateY(0);
 }
+
+@media (max-width: 576px) {
+    .booking-modal {
+        overflow-y: auto;
+        padding: 8px;
+        box-sizing: border-box;
+    }
+
+    .booking-modal-content {
+        width: 100%;
+        margin: 0 auto;
+        border-radius: 16px;
+        max-height: calc(100vh - 16px);
+        overflow: hidden;
+    }
+
+    .booking-modal-header {
+        padding: 14px 16px 10px;
+    }
+
+    .booking-modal-header h3 {
+        font-size: 19px;
+    }
+
+    .booking-modal-body {
+        padding: 14px 16px 16px;
+        max-height: calc(100vh - 86px);
+        overflow-y: auto;
+    }
+
+    .form-group {
+        margin-bottom: 10px;
+    }
+
+    .form-group label,
+    .form-hint {
+        font-size: 12px;
+    }
+
+    .people-counter {
+        gap: 8px;
+    }
+
+    .counter-btn {
+        width: 34px;
+        height: 34px;
+        font-size: 18px;
+    }
+
+    #booking-people {
+        width: 48px;
+        font-size: 16px;
+    }
+
+    #total-price {
+        font-size: 20px;
+    }
+
+    #booking-comment {
+        min-height: 60px;
+        padding: 10px;
+        font-size: 14px;
+    }
+
+    .btn-submit-booking {
+        padding: 12px;
+        font-size: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .trip-page {
+        padding-inline: 10px;
+    }
+
+    .main-image img {
+        height: 240px;
+    }
+
+    .trip-right {
+        padding: 14px;
+    }
+
+    .route-section {
+        margin-inline: 10px;
+    }
+}
+
 </style>
 
 <div class="trip-page">
