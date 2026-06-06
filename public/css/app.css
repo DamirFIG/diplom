@@ -1293,3 +1293,140 @@ font-weight:600;
         right: 10px;
     }
 }
+
+/* Адаптация главной страницы для телефонов */
+@media (max-width: 768px) {
+    html,
+    body {
+        overflow-x: hidden;
+    }
+
+
+    .about-container {
+        padding-inline: 16px;
+        gap: 28px;
+    }
+
+    .about-title {
+        margin: 36px 0 22px;
+    }
+
+    .about-description {
+        margin-bottom: 24px;
+        text-align: left;
+    }
+
+    .about-features {
+        gap: 14px;
+    }
+
+    .feature-item {
+        gap: 14px;
+        border-radius: 14px;
+    }
+
+    .about-gallery {
+        gap: 12px;
+    }
+
+    .gallery-item {
+        border-radius: 14px;
+    }
+
+    .guides h2 {
+        margin: 36px 0 20px;
+    }
+
+    .guide-info {
+        opacity: 1;
+        position: relative;
+        z-index: 2;
+        min-height: 100%;
+        background: linear-gradient(180deg, rgba(0,0,0,0.08) 0%, rgba(0,0,0,0.68) 100%);
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        padding: 20px;
+        box-sizing: border-box;
+    }
+
+    .guide-info p:first-child,
+    .guide-info p:last-child {
+        width: 100%;
+        margin: 0;
+        font-size: 16px;
+    }
+
+    .guide-info p:first-child {
+        margin-bottom: 12px;
+        font-weight: 600;
+    }
+
+    .reviews {
+        padding: 28px 0 28px 16px;
+    }
+
+    .reviews-slider {
+        gap: 16px;
+        padding-right: 16px;
+    }
+
+    .review {
+        width: min(84vw, 340px);
+        height: auto;
+        min-height: 360px;
+    }
+
+    .top-review {
+        margin: 22px 16px 14px;
+    }
+
+    .top-review img {
+        width: 58px;
+        height: 58px;
+    }
+
+    .review-text,
+    .review-bottom {
+        width: auto;
+        margin-inline: 16px;
+        font-size: 14px;
+    }
+
+    .footer {
+        margin-top: 40px;
+        padding: 36px 0 18px;
+    }
+}
+
+@media (max-width: 480px) {
+    .banner {
+        height: 380px;
+    }
+
+    .banner h1 {
+        padding-top: 150px;
+    }
+
+    .about-section {
+        padding: 26px 0;
+    }
+
+    .about-container {
+        padding-inline: 12px;
+    }
+
+    .about-gallery {
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(3, 150px);
+    }
+
+    .gallery-item-large {
+        grid-column: auto;
+        grid-row: auto;
+    }
+
+    .feature-item {
+        align-items: center;
+    }
+}
