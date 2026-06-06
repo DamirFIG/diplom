@@ -11,7 +11,7 @@ use App\Http\Controllers\TripController;
 use Illuminate\Support\Facades\Route;
 
 // Админ-панель
-Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
+Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(function () {
     Route::get('/', [AdminController::class, 'index'])->name('index');
     Route::get('/users', [AdminController::class, 'users'])->name('users');
     Route::post('/users/{id}/ban', [AdminController::class, 'banUser'])->name('users.ban');
