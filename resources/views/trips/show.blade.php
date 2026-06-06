@@ -248,6 +248,11 @@
 
     .thumbs {
         margin-bottom: 18px;
+    .trip-left,
+    .trip-right {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
     }
 }
 

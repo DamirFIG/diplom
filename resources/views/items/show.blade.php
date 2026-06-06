@@ -442,6 +442,15 @@
 
     .thumbs {
         margin-bottom: 18px;
+        flex-direction: column;
+        margin-top: 64px;
+    }
+
+    .item-left,
+    .item-right {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
     }
 }
 
