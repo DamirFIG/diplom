@@ -273,6 +273,109 @@ p{
     color: #61A4E2;
 }
 
+@media (max-width: 900px) {
+    .auth,
+    .auth *{
+        box-sizing: border-box;
+    }
+
+    .auth{
+        justify-content: center;
+        align-items: center;
+        height: auto;
+        min-height: calc(100dvh - 67px);
+        padding: clamp(24px, 6vw, 48px) 20px;
+        background: linear-gradient(180deg, #f7fbff 0%, #ffffff 100%);
+    }
+
+    .auth-left{
+        display: none;
+    }
+
+    .auth-right{
+        flex: 0 1 520px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: min(100%, 520px);
+        height: auto;
+        min-height: auto;
+        border-radius: 18px;
+        box-shadow: 0 12px 32px rgba(55, 127, 193, 0.18);
+        padding: clamp(28px, 6vw, 44px) clamp(18px, 6vw, 46px);
+        overflow: visible;
+    }
+
+    .auth-right form{
+        width: min(100%, 430px);
+    }
+
+    .auth-right h2{
+        margin: 0 0 clamp(24px, 4vh, 34px);
+        font-size: clamp(28px, 5vw, 36px);
+    }
+
+    .auth-form{
+        width: 100%;
+        margin: 0 0 clamp(16px, 2.5vh, 22px);
+        font-size: clamp(16px, 3vw, 22px);
+    }
+
+    .auth-form label{
+        padding-left: clamp(10px, 2vw, 20px);
+    }
+
+    .auth-form input{
+        width: 100%;
+        height: clamp(42px, 6vh, 50px);
+        padding: 0 clamp(10px, 2vw, 20px);
+        margin-bottom: 0;
+        font-size: clamp(16px, 3vw, 22px);
+        background: transparent;
+    }
+
+    .auth-input:-webkit-autofill,
+    .auth-input:-webkit-autofill:hover,
+    .auth-input:-webkit-autofill:focus{
+        font-size: clamp(16px, 3vw, 22px) !important;
+    }
+
+    .auth-right button{
+        width: min(100%, 280px);
+        min-height: 50px;
+        height: auto;
+        padding: 12px 20px;
+        font-size: clamp(18px, 3vw, 22px);
+    }
+
+    .auth-link-text{
+        margin: 15px 0 0;
+        line-height: 1.45;
+    }
+}
+
+@media (max-width: 480px) {
+    .auth{
+        align-items: stretch;
+        padding: 16px 12px;
+    }
+
+    .auth-right{
+        justify-content: center;
+        border-radius: 14px;
+        padding: 26px 16px;
+    }
+
+    .auth-right form{
+        width: 100%;
+    }
+
+    .auth-right button{
+        width: 100%;
+    }
+}
+
 /*Главная страница*/
 
 /* О НАС */

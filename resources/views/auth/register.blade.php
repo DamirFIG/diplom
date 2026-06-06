@@ -11,23 +11,23 @@
     <h2>Регистрация</h2>
     <div class="auth-form">
         <label for="login">Логин</label>
-        <input type="text" name="login" id="" value="{{ old('login') }}" class="auth-input">
+        <input type="text" name="login" id="login" value="{{ old('login') }}" class="auth-input">
     </div>
     <div class="auth-form">
         <label for="email">Почта</label>
-        <input type="email" name="email" id="" value="{{ old('email') }}" class="auth-input">
+        <input type="email" name="email" id="email" value="{{ old('email') }}" class="auth-input">
     </div>
     <div class="auth-form">
         <label for="phone">Номер телефона</label>
-        <input type="tel" name="phone" id="" value="{{ old('phone') }}" class="auth-input">
+        <input type="tel" name="phone" id="phone" value="{{ old('phone') }}" class="auth-input">
     </div>
     <div class="auth-form">
         <label for="password">Пароль</label>
-        <input type="password" name="password" id="" class="auth-input">
+        <input type="password" name="password" id="password" class="auth-input">
     </div>
     <div class="auth-form">
         <label for="password_confirmation">Подтвержение пароля</label>
-        <input type="password" name="password_confirmation" id="" class="auth-input">
+        <input type="password" name="password_confirmation" id="password_confirmation" class="auth-input">
     </div>
 
     <button type="submit">Зарегистрироваться</button>
