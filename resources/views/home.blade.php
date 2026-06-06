@@ -647,6 +647,239 @@
         padding: 18px 20px;
     }
 }
+
+@media (max-width: 768px) {
+    .catalog.container,
+    .trips.container {
+        margin-inline: 16px;
+    }
+
+    .catalog h2,
+    .trips-title {
+        margin: 36px 0 22px;
+        font-size: clamp(30px, 9vw, 38px);
+        line-height: 1.15;
+    }
+
+    .catalog-top-filters {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 14px;
+        margin: 20px 0;
+    }
+
+    .price-slider-wrapper,
+    .search-wrapper,
+    .sort,
+    #openTripFilters {
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+
+    .price-slider-wrapper {
+        justify-content: space-between;
+        flex-wrap: wrap;
+        padding: 14px 16px;
+        border: 1px solid #e0e0e0;
+        border-radius: 14px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        background: #fff;
+    }
+
+    .price-slider {
+        order: 3;
+        width: 100%;
+        margin-top: 6px;
+    }
+
+    .price-value {
+        width: auto;
+        font-size: 18px;
+        text-align: right;
+    }
+
+    .search-wrapper {
+        padding: 12px 14px;
+        gap: 8px;
+    }
+
+    .search-wrapper svg {
+        width: 20px;
+        height: 20px;
+        margin: 0;
+    }
+
+    .search-input {
+        min-width: 0;
+        width: 100%;
+        font-size: 16px;
+    }
+
+    .sort,
+    #openTripFilters {
+        min-height: 48px;
+        padding: 12px 14px;
+        font-size: 16px;
+        justify-content: center;
+    }
+
+    .catalog-wrapper {
+        flex-direction: column;
+        gap: 18px;
+        margin-top: 18px;
+    }
+
+    .catalog-filters {
+        position: static;
+        min-width: 0;
+        width: 100%;
+        box-sizing: border-box;
+        padding: 14px;
+    }
+
+    .catalog-filters ul {
+        display: flex;
+        gap: 10px;
+        overflow-x: auto;
+        padding-bottom: 4px;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+    }
+
+    .catalog-filters ul::-webkit-scrollbar {
+        display: none;
+    }
+
+    .catalog-filters li {
+        flex: 0 0 auto;
+        margin-bottom: 0;
+    }
+
+    .catalog-filters li:first-child label {
+        display: none !important;
+    }
+
+    .catalog-filters a {
+        white-space: nowrap;
+        padding: 10px 14px;
+        font-size: 14px;
+    }
+
+    .catalog-items,
+    .trips-list {
+        grid-template-columns: 1fr;
+        gap: 18px;
+    }
+
+    .item-card,
+    .trip-card {
+        min-height: auto;
+        border-radius: 16px;
+    }
+
+    .item-card:hover,
+    .trip-card:hover,
+    .feature-item:hover,
+    .gallery-item:hover {
+        transform: none;
+    }
+
+    .item-card-image,
+    .trip-card-image {
+        height: 190px;
+    }
+
+    .item-card-content,
+    .trip-card-content {
+        padding: 16px;
+    }
+
+    .item-card-title,
+    .trip-card-title {
+        font-size: 19px;
+        margin-bottom: 10px;
+    }
+
+    .item-card-details,
+    .trip-card-details {
+        gap: 8px;
+        margin-bottom: 16px;
+        padding-bottom: 16px;
+    }
+
+    .item-card-details .detail,
+    .trip-card-details .detail {
+        font-size: 13px;
+        padding: 7px 10px;
+    }
+
+    .favorite-btn,
+    .item-card:hover .favorite-btn {
+        opacity: 1;
+        transform: scale(1);
+        width: 42px;
+        height: 42px;
+    }
+
+    .trip-card-footer {
+        align-items: stretch;
+        gap: 14px;
+        flex-direction: column;
+    }
+
+    .trip-card-price {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: baseline;
+        gap: 12px;
+    }
+
+    .trip-card-btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .filters-modal {
+        align-items: flex-end !important;
+        padding: 12px;
+        box-sizing: border-box;
+    }
+
+    .filters-modal-content {
+        width: 100% !important;
+        max-width: none !important;
+        max-height: 88vh !important;
+        border-radius: 18px 18px 0 0 !important;
+        padding: 24px 18px !important;
+        box-sizing: border-box;
+    }
+
+    .filters-modal-content > div[style*="grid-template-columns"] {
+        grid-template-columns: 1fr !important;
+    }
+
+    .filters-modal-content > div[style*="display: flex"] {
+        flex-direction: column !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .catalog.container,
+    .trips.container {
+        margin-inline: 12px;
+    }
+
+    .item-card-image,
+    .trip-card-image {
+        height: 170px;
+    }
+
+    .item-card-btn,
+    .trip-card-btn {
+        padding: 12px 16px;
+    }
+}
 </style>
 
 <!-- Баннер -->
