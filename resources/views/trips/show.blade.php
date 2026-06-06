@@ -3,6 +3,11 @@
 @section('content')
 
 <style>
+.trip-page,
+.trip-page * {
+    box-sizing: border-box;
+}
+
 .trip-page {
     display: flex;
     align-items: flex-start;
@@ -16,6 +21,7 @@
     flex: 1.4 1 0;
     max-width: 650px;
     min-width: 0;
+    position: static;
 }
 
 .main-image {
@@ -219,9 +225,29 @@
 /* Адаптив */
 @media (max-width: 900px) {
     .trip-page {
-        flex-direction: column;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
     }
 
+    .trip-left,
+    .trip-right {
+        width: 100%;
+        max-width: none;
+        min-width: 0;
+    }
+
+    .trip-left {
+        position: static;
+        overflow: hidden;
+    }
+
+    .trip-right {
+        margin-top: 0;
+        clear: both;
+    }
+
+    .thumbs {
+        margin-bottom: 18px;
     .trip-left,
     .trip-right {
         width: 100%;

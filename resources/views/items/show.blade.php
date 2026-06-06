@@ -5,6 +5,11 @@
 @push('styles')
 <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 <style>
+.item-page,
+.item-page * {
+    box-sizing: border-box;
+}
+
 .item-page {
     display: flex;
     align-items: flex-start;
@@ -18,6 +23,7 @@
     flex: 1.4 1 0;
     max-width: 650px;
     min-width: 0;
+    position: static;
 }
 
 .main-image {
@@ -412,6 +418,30 @@
 /* Адаптив */
 @media (max-width: 900px) {
     .item-page {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        margin-top: 64px;
+    }
+
+    .item-left,
+    .item-right {
+        width: 100%;
+        max-width: none;
+        min-width: 0;
+    }
+
+    .item-left {
+        position: static;
+        overflow: hidden;
+    }
+
+    .item-right {
+        margin-top: 0;
+        clear: both;
+    }
+
+    .thumbs {
+        margin-bottom: 18px;
         flex-direction: column;
         margin-top: 64px;
     }
