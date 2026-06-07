@@ -9,7 +9,6 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     @stack('styles')
-    <link rel="stylesheet" href="{{ asset('css/review-compact.css') }}">
     <title>Аренда гидроциклов в Санкт-Петербурге</title>
     <meta name="description" content="Аренда гидроциклов и водных маршрутов в Санкт-Петербурге. Активный отдых на воде.">
     <meta name="keywords" content="аренда гидроцикла СПб, водные прогулки, отдых на воде">
@@ -81,8 +80,6 @@
             background: #fff !important;
         }
     </style>
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="dns-prefetch" href="https://unpkg.com">
 </head>
 <body>
     <header class="header">

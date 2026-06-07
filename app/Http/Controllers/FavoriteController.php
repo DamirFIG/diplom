@@ -14,19 +14,19 @@ class FavoriteController extends Controller
     public function add($itemId)
     {
         $user = Auth::user();
-        
+
         // Проверяем, существует ли элемент
-        $item = Item::findOrFail($itemId);
-        
+        Item::findOrFail($itemId);
+
         // Проверяем, не добавлено ли уже в избранное
         $exists = $user->favorites()->where('item_id', $itemId)->exists();
-        
-        if (!$exists) {
+
+        if (! $exists) {
             $user->favorites()->create([
                 'item_id' => $itemId,
             ]);
         }
-        
+
         return response()->json([
             'success' => true,
             'is_favorite' => true,
@@ -39,13 +39,13 @@ class FavoriteController extends Controller
     public function remove($itemId)
     {
         $user = Auth::user();
-        
+
         $favorite = $user->favorites()->where('item_id', $itemId)->first();
-        
+
         if ($favorite) {
             $favorite->delete();
         }
-        
+
         return response()->json([
             'success' => true,
             'is_favorite' => false,
@@ -58,11 +58,11 @@ class FavoriteController extends Controller
     public function toggle($itemId)
     {
         $user = Auth::user();
-        
-        $item = Item::findOrFail($itemId);
-        
+
+        Item::findOrFail($itemId);
+
         $exists = $user->favorites()->where('item_id', $itemId)->exists();
-        
+
         if ($exists) {
             $user->favorites()->where('item_id', $itemId)->delete();
             $isFavorite = false;
@@ -72,10 +72,39 @@ class FavoriteController extends Controller
             ]);
             $isFavorite = true;
         }
-        
+
         return response()->json([
             'success' => true,
             'is_favorite' => $isFavorite,
+        ]);
+    }
+
+    /**
+     * Проверить сразу несколько элементов избранного.
+     */
+    public function checkMany(Request $request)
+    {
+        $ids = collect(explode(',', (string) $request->query('ids')))
+            ->map(fn ($id) => (int) $id)
+            ->filter()
+            ->unique()
+            ->values();
+
+        if ($ids->isEmpty()) {
+            return response()->json([
+                'favorites' => [],
+            ]);
+        }
+
+        $favoriteIds = $request->user()
+            ->favorites()
+            ->whereIn('item_id', $ids)
+            ->pluck('item_id')
+            ->map(fn ($id) => (int) $id)
+            ->all();
+
+        return response()->json([
+            'favorites' => $favoriteIds,
         ]);
     }
 
@@ -85,9 +114,9 @@ class FavoriteController extends Controller
     public function check($itemId)
     {
         $user = Auth::user();
-        
+
         $isFavorite = $user->favorites()->where('item_id', $itemId)->exists();
-        
+
         return response()->json([
             'is_favorite' => $isFavorite,
         ]);

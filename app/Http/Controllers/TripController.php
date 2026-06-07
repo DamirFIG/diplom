@@ -2,18 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Trip;
 use App\Models\Booking;
+use App\Models\Trip;
 use Illuminate\Http\Request;
 
 class TripController extends Controller
 {
     public function show($id)
     {
-        $trip = Trip::with(['reviews.user' => function($query) {
-            $query->orderBy('created_at', 'desc');
-        }])->findOrFail($id);
-        
+        $trip = Trip::with(['guide', 'route.points'])->findOrFail($id);
+
         $reviews = $trip->reviews()->with('user')->orderBy('created_at', 'desc')->paginate(10);
 
         $canReview = auth()->check() && Booking::where('user_id', auth()->id())
@@ -37,7 +35,7 @@ class TripController extends Controller
         // Проверка максимального количества людей
         if ($request->people > ($trip->max_people ?? 10)) {
             return redirect()->back()
-                ->with('error', 'Превышено максимальное количество участников: ' . ($trip->max_people ?? 10));
+                ->with('error', 'Превышено максимальное количество участников: '.($trip->max_people ?? 10));
         }
 
         // Создаем бронирование
