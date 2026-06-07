@@ -16,7 +16,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::get('/users', [AdminController::class, 'users'])->name('users');
     Route::post('/users/{id}/ban', [AdminController::class, 'banUser'])->name('users.ban');
     Route::post('/users/{id}/unban', [AdminController::class, 'unbanUser'])->name('users.unban');
-    
+
     // Карточки (Items)
     Route::get('/items', [AdminController::class, 'items'])->name('items');
     Route::get('/items/create', [AdminController::class, 'create'])->name('items.create');
@@ -24,7 +24,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::get('/items/{id}/edit', [AdminController::class, 'edit'])->name('items.edit');
     Route::put('/items/{id}', [AdminController::class, 'update'])->name('items.update');
     Route::delete('/items/{id}', [AdminController::class, 'destroy'])->name('items.destroy');
-    
+
     // Поездки (Trips)
     Route::get('/trips', [AdminController::class, 'trips'])->name('trips');
     Route::get('/trips/create', [AdminController::class, 'createTrip'])->name('trips.create');
@@ -32,7 +32,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::get('/trips/{id}/edit', [AdminController::class, 'editTrip'])->name('trips.edit');
     Route::put('/trips/{id}', [AdminController::class, 'updateTrip'])->name('trips.update');
     Route::delete('/trips/{id}', [AdminController::class, 'destroyTrip'])->name('trips.destroy');
-    
+
     // Заказы
     Route::get('/bookings', [AdminController::class, 'bookings'])->name('bookings');
     Route::post('/bookings/{booking}/status', [AdminController::class, 'updateBookingStatus'])->name('bookings.status');
@@ -84,6 +84,7 @@ Route::middleware('auth')->group(function () {
 
 // Избранное
 Route::middleware('auth')->group(function () {
+    Route::get('/favorites/check', [FavoriteController::class, 'checkMany'])->name('favorites.check-many');
     Route::post('/favorites/{id}/toggle', [FavoriteController::class, 'toggle'])->name('favorites.toggle');
     Route::post('/favorites/{id}/add', [FavoriteController::class, 'add'])->name('favorites.add');
     Route::post('/favorites/{id}/remove', [FavoriteController::class, 'remove'])->name('favorites.remove');

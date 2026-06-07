@@ -542,13 +542,13 @@
     <div class="trip-left">
         {{-- Большое фото --}}
         <div class="main-image">
-            <img loading="lazy" decoding="async" id="activeImage" src="{{ asset('storage/' . $trip->main_image) }}" alt="{{ $trip->title }}">
+            <img loading="lazy" decoding="async" id="activeImage" src="{{ $trip->main_image_url }}" alt="{{ $trip->title }}">
         </div>
 
         {{-- Мини-фото --}}
         <div class="thumbs">
             {{-- Главное фото как первая миниатюра --}}
-            <img loading="lazy" decoding="async" src="{{ asset('storage/' . $trip->main_image) }}"
+            <img loading="lazy" decoding="async" src="{{ $trip->main_image_url }}"
                  class="thumb"
                  alt="Main"
                  onclick="changeImage(this.src)">
@@ -1019,9 +1019,6 @@
 
 </style>
 
-<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-
-<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script>
 // Рейтинг для формы отзыва
 document.addEventListener('DOMContentLoaded', function() {
@@ -1137,7 +1134,12 @@ document.addEventListener('DOMContentLoaded', function() {
 function changeImage(src) {
     document.getElementById('activeImage').src = src;
 }
+</script>
 
+@if($trip->route && $trip->route->points->count())
+<link rel="stylesheet" href="{{ asset('vendor/leaflet/leaflet.css') }}" />
+<script src="{{ asset('vendor/leaflet/leaflet.js') }}"></script>
+<script>
 // Инициализация карты с маршрутом
 document.addEventListener('DOMContentLoaded', function() {
     const mapElement = document.getElementById('map');
@@ -1292,7 +1294,10 @@ document.addEventListener('DOMContentLoaded', function() {
         map.fitBounds(L.polyline(latlngs).getBounds(), { padding: [50, 50] });
     }
 });
+</script>
+@endif
 
+<script>
 // Функции для модального окна бронирования
 const tripPrice = {{ $trip->price }};
 const maxPeople = {{ $trip->max_people ?? 10 }};

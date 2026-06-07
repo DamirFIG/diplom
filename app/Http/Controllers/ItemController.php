@@ -2,18 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Item;
 use App\Models\Booking;
-use Illuminate\Http\Request;
+use App\Models\Item;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 
 class ItemController extends Controller
 {
     public function show($id)
     {
-        $item = Item::with(['reviews.user' => function($query) {
-            $query->orderBy('created_at', 'desc');
-        }])->findOrFail($id);
+        $item = Item::findOrFail($id);
 
         $reviews = $item->reviews()->with('user')->orderBy('created_at', 'desc')->paginate(10);
 
