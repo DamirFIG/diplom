@@ -63,12 +63,9 @@
             <div class="current-images">
                 @if($item->gallery && count($item->gallery) > 0)
                     @foreach($item->gallery as $image)
-                        <div class="image-item">
+                        <div class="image-item" data-image="{{ $image }}">
                             <img loading="lazy" decoding="async" src="{{ asset('storage/' . $image) }}" alt="Фото">
-                            <label class="delete-checkbox">
-                                <input type="checkbox" name="delete_images[]" value="{{ $image }}">
-                                <span>Удалить</span>
-                            </label>
+                            <button type="button" class="btn-remove-image" aria-label="Убрать фото" title="Убрать фото" data-image="{{ $image }}">×</button>
                         </div>
                     @endforeach
                 @endif
@@ -193,19 +190,38 @@
     object-fit: cover;
 }
 
-.delete-checkbox {
+.btn-remove-image {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    width: 28px;
+    height: 28px;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 5px;
-    padding: 8px;
-    background: #fff;
-    font-size: 13px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(220, 53, 69, 0.95);
+    color: #fff;
+    font-size: 22px;
+    line-height: 1;
     cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+    transition: background 0.2s, transform 0.2s;
 }
 
-.delete-checkbox input {
-    width: auto;
+.btn-remove-image:hover {
+    background: #c82333;
+    transform: scale(1.08);
+}
+
+.image-item {
+    transition: opacity 0.2s, transform 0.2s;
+}
+
+.image-item.is-removing {
+    opacity: 0;
+    transform: scale(0.92);
 }
 
 .form-actions {
@@ -256,5 +272,32 @@
     }
 }
 </style>
+
+<script>
+document.addEventListener('click', function (event) {
+    const removeButton = event.target.closest('.btn-remove-image');
+
+    if (!removeButton) {
+        return;
+    }
+
+    const imageItem = removeButton.closest('.image-item');
+    const form = removeButton.closest('form');
+    const imagePath = removeButton.dataset.image;
+
+    if (!imageItem || !form || !imagePath) {
+        return;
+    }
+
+    const deleteInput = document.createElement('input');
+    deleteInput.type = 'hidden';
+    deleteInput.name = 'delete_images[]';
+    deleteInput.value = imagePath;
+    form.appendChild(deleteInput);
+
+    imageItem.classList.add('is-removing');
+    window.setTimeout(() => imageItem.remove(), 200);
+});
+</script>
 
 @endsection
