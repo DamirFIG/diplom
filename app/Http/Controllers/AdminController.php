@@ -546,15 +546,22 @@ class AdminController extends Controller
             'name' => 'required|string|max:255',
             'bio' => 'nullable|string',
             'photo' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
+            'delete_photo' => 'nullable|boolean',
         ]);
 
-        if ($request->hasFile('photo')) {
-            // Удаляем старое фото
-            if ($guide->photo) {
-                Storage::disk('public')->delete($guide->photo);
-            }
-            $data['photo'] = $request->file('photo')->store('img/guides', 'public');
+        $deletePhoto = $request->boolean('delete_photo');
+
+        if (($deletePhoto || $request->hasFile('photo')) && $guide->photo) {
+            Storage::disk('public')->delete($guide->photo);
         }
+
+        if ($request->hasFile('photo')) {
+            $data['photo'] = $request->file('photo')->store('img/guides', 'public');
+        } elseif ($deletePhoto) {
+            $data['photo'] = null;
+        }
+
+        unset($data['delete_photo']);
 
         $guide->update($data);
 
