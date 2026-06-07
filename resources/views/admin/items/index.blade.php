@@ -69,7 +69,7 @@
                     <td>{{ $item->id }}</td>
                     <td>
                         @if($item->main_image && $item->main_image !== 'img/empty.png')
-                            <img loading="lazy" decoding="async" src="{{ asset('storage/' . $item->main_image) }}" width="80" style="object-fit: cover; border-radius: 5px;">
+                            <img loading="lazy" decoding="async" src="{{ $item->main_image_url }}" width="80" style="object-fit: cover; border-radius: 5px;">
                         @else
                             <span style="color: #999;">Нет фото</span>
                         @endif

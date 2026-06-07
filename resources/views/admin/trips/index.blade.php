@@ -71,7 +71,7 @@
                     <td>{{ $trip->id }}</td>
                     <td>
                         @if($trip->main_image && $trip->main_image !== 'img/empty.png')
-                            <img loading="lazy" decoding="async" src="{{ asset('storage/' . $trip->main_image) }}" width="80" style="object-fit: cover; border-radius: 5px;">
+                            <img loading="lazy" decoding="async" src="{{ $trip->main_image_url }}" width="80" style="object-fit: cover; border-radius: 5px;">
                         @else
                             <span style="color: #999;">Нет фото</span>
                         @endif
