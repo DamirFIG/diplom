@@ -1,7 +1,7 @@
 @forelse($trips as $trip)
     <div class="trip-card" onclick="location.href='{{ route('trips.show', $trip->id) }}'" style="cursor: pointer;">
         <div class="trip-card-image">
-            <img loading="lazy" decoding="async" src="{{ asset('storage/' . $trip->main_image) }}" alt="{{ $trip->title }}" onerror="this.src='{{ asset('img/empty.png') }}'; this.onerror=null;">
+            <img loading="lazy" decoding="async" src="{{ $trip->main_image_url }}" alt="{{ $trip->title }}" onerror="this.src='{{ asset('img/empty.png') }}'; this.onerror=null;">
         </div>
         <div class="trip-card-content">
             <h3 class="trip-card-title">{{ $trip->title }}</h3>

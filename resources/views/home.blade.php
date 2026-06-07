@@ -1015,9 +1015,9 @@
             @forelse($items as $item)
                 <div class="item-card" data-item-id="{{ $item->id }}" onclick="location.href='{{ route('items.show', $item->id) }}'" style="cursor: pointer;">
                     <div class="item-card-image">
-                        <img loading="lazy" decoding="async" src="{{ asset('storage/' . $item->main_image) }}" alt="{{ $item->title }}" onerror="this.src='{{ asset('img/empty.png') }}'; this.onerror=null;">
+                        <img loading="lazy" decoding="async" src="{{ $item->main_image_url }}" alt="{{ $item->title }}" onerror="this.src='{{ asset('img/empty.png') }}'; this.onerror=null;">
                         @auth
-                            <button class="favorite-btn" data-item-id="{{ $item->id }}" title="Добавить в избранное" onclick="event.stopPropagation()">
+                            <button class="favorite-btn {{ !empty($item->is_favorite) ? 'active' : '' }}" data-item-id="{{ $item->id }}" title="Добавить в избранное" onclick="event.stopPropagation()">
                                 <svg class="heart-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M12.1 8.64c-.92-1.1-2.26-1.74-3.71-1.74C6.07 6.9 4.5 8.5 4.5 10.57c0 2.69 2.45 5.25 6.21 8.67l1.29 1.17 1.29-1.17c3.76-3.42 6.21-5.98 6.21-8.67 0-2.07-1.57-3.67-3.89-3.67-1.45 0-2.79.64-3.71 1.74l-.3.36-.3-.36z"/>
                                 </svg>
@@ -1181,7 +1181,7 @@
             @forelse($trips as $trip)
                 <div class="trip-card" onclick="location.href='{{ route('trips.show', $trip->id) }}'" style="cursor: pointer;">
                     <div class="trip-card-image">
-                        <img loading="lazy" decoding="async" src="{{ asset('storage/' . $trip->main_image) }}" alt="{{ $trip->title }}" onerror="this.src='{{ asset('img/empty.png') }}'; this.onerror=null;">
+                        <img loading="lazy" decoding="async" src="{{ $trip->main_image_url }}" alt="{{ $trip->title }}" onerror="this.src='{{ asset('img/empty.png') }}'; this.onerror=null;">
                     </div>
                     <div class="trip-card-content">
                         <h3 class="trip-card-title">{{ $trip->title }}</h3>
@@ -1346,12 +1346,21 @@ document.addEventListener('DOMContentLoaded', function() {
         window.history.pushState({path: url}, '', url);
     }
 
+    let itemsAbortController;
+    let tripsAbortController;
+
     function loadItemsContent(params, scrollPosition) {
+        if (itemsAbortController) {
+            itemsAbortController.abort();
+        }
+        itemsAbortController = new AbortController();
+
         fetch('{{ route("search.items") }}?' + params.toString(), {
             headers: {
                 'X-Requested-With': 'XMLHttpRequest',
                 'Accept': 'application/json'
-            }
+            },
+            signal: itemsAbortController.signal
         })
         .then(response => response.json())
         .then(data => {
@@ -1362,15 +1371,25 @@ document.addEventListener('DOMContentLoaded', function() {
             initFavoriteButtons();
             initSortSelects(); // Переинициализируем select-ы
         })
-        .catch(error => console.error('Ошибка фильтрации:', error));
+        .catch(error => {
+            if (error.name !== 'AbortError') {
+                console.error('Ошибка фильтрации:', error);
+            }
+        });
     }
 
     function loadTripsContent(params, scrollPosition) {
+        if (tripsAbortController) {
+            tripsAbortController.abort();
+        }
+        tripsAbortController = new AbortController();
+
         fetch('{{ route("search.trips") }}?' + params.toString(), {
             headers: {
                 'X-Requested-With': 'XMLHttpRequest',
                 'Accept': 'application/json'
-            }
+            },
+            signal: tripsAbortController.signal
         })
         .then(response => response.json())
         .then(data => {
@@ -1380,7 +1399,11 @@ document.addEventListener('DOMContentLoaded', function() {
             window.scrollTo(0, scrollPosition);
             initSortSelects();
         })
-        .catch(error => console.error('Ошибка фильтрации:', error));
+        .catch(error => {
+            if (error.name !== 'AbortError') {
+                console.error('Ошибка фильтрации:', error);
+            }
+        });
     }
 
     // Инициализация select-ов сортировки
@@ -1475,7 +1498,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 params.delete('page');
                 const scrollPosition = document.getElementById('catalog').offsetTop - 100;
                 loadItemsContent(params, scrollPosition);
-            }, 300);
+            }, 600);
         });
     }
 
@@ -1495,7 +1518,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 params.delete('page');
                 const scrollPosition = document.getElementById('trips').offsetTop - 100;
                 loadTripsContent(params, scrollPosition);
-            }, 300);
+            }, 600);
         });
     }
 
@@ -1587,24 +1610,39 @@ document.addEventListener('DOMContentLoaded', function() {
     // Инициализация кнопок избранного после AJAX-запроса
     function initFavoriteButtons() {
         @auth
-            const favoriteBtns = document.querySelectorAll('.favorite-btn');
-            favoriteBtns.forEach(btn => {
-                const itemId = btn.dataset.itemId;
-                fetch(`/favorites/${itemId}/check`)
+            const favoriteBtns = Array.from(document.querySelectorAll('.favorite-btn'));
+            const uncheckedIds = favoriteBtns
+                .filter(btn => !btn.classList.contains('active'))
+                .map(btn => btn.dataset.itemId)
+                .filter(Boolean);
+            const uniqueIds = [...new Set(uncheckedIds)];
+
+            if (uniqueIds.length) {
+                fetch(`/favorites/check?ids=${uniqueIds.join(',')}`)
                     .then(response => response.json())
                     .then(data => {
-                        if (data.is_favorite) {
-                            btn.classList.add('active');
-                        }
+                        const favoriteIds = new Set((data.favorites || []).map(String));
+                        favoriteBtns.forEach(btn => {
+                            if (favoriteIds.has(String(btn.dataset.itemId))) {
+                                btn.classList.add('active');
+                            }
+                        });
                     })
                     .catch(e => console.error('Ошибка загрузки состояния избранного:', e));
-                
+            }
+
+            favoriteBtns.forEach(btn => {
+                if (btn.dataset.favoriteBound === 'true') {
+                    return;
+                }
+
+                btn.dataset.favoriteBound = 'true';
                 btn.addEventListener('click', async function(e) {
                     e.stopPropagation();
                     e.preventDefault();
-                    
+
                     const itemId = this.dataset.itemId;
-                    
+
                     try {
                         const response = await fetch(`/favorites/${itemId}/toggle`, {
                             method: 'POST',
@@ -1613,15 +1651,11 @@ document.addEventListener('DOMContentLoaded', function() {
                                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
                             }
                         });
-                        
+
                         const data = await response.json();
-                        
+
                         if (data.success) {
-                            if (data.is_favorite) {
-                                this.classList.add('active');
-                            } else {
-                                this.classList.remove('active');
-                            }
+                            this.classList.toggle('active', data.is_favorite);
                         }
                     } catch (e) {
                         console.error('Ошибка обновления избранного:', e);

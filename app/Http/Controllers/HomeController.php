@@ -9,10 +9,20 @@ use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
+    private function addFavoriteState($itemsQuery): void
+    {
+        if (auth()->check()) {
+            $itemsQuery->withExists([
+                'favorites as is_favorite' => fn ($query) => $query->where('user_id', auth()->id()),
+            ]);
+        }
+    }
+
     public function index(Request $request)
     {
         // АРЕНДА (каталог)
         $itemsQuery = Item::query();
+        $this->addFavoriteState($itemsQuery);
 
         // 🔍 ПОИСК
         if ($request->filled('search')) {
@@ -40,7 +50,7 @@ class HomeController extends Controller
         $items = $itemsQuery->paginate(8)->withQueryString();
 
         // 🚀 ПОЕЗДКИ (новая таблица trips)
-        $tripsQuery = Trip::query();
+        $tripsQuery = Trip::with('guide');
 
         // 🔍 ПОИСК для поездок
         if ($request->filled('trip_search')) {
@@ -101,6 +111,7 @@ class HomeController extends Controller
     public function searchItems(Request $request)
     {
         $itemsQuery = Item::query();
+        $this->addFavoriteState($itemsQuery);
 
         // 🔍 ПОИСК
         if ($request->filled('search')) {
@@ -142,7 +153,7 @@ class HomeController extends Controller
 
     public function searchTrips(Request $request)
     {
-        $tripsQuery = Trip::query();
+        $tripsQuery = Trip::with('guide');
 
         // 🔍 ПОИСК
         if ($request->filled('trip_search')) {
