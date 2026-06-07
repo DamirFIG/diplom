@@ -29,9 +29,9 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::get('/trips', [AdminController::class, 'trips'])->name('trips');
     Route::get('/trips/create', [AdminController::class, 'createTrip'])->name('trips.create');
     Route::post('/trips/store', [AdminController::class, 'storeTrip'])->name('trips.store');
-    Route::get('/trips/{id}/edit', [AdminController::class, 'edit'])->name('trips.edit');
-    Route::put('/trips/{id}', [AdminController::class, 'update'])->name('trips.update');
-    Route::delete('/trips/{id}', [AdminController::class, 'destroy'])->name('trips.destroy');
+    Route::get('/trips/{id}/edit', [AdminController::class, 'editTrip'])->name('trips.edit');
+    Route::put('/trips/{id}', [AdminController::class, 'updateTrip'])->name('trips.update');
+    Route::delete('/trips/{id}', [AdminController::class, 'destroyTrip'])->name('trips.destroy');
     
     // Заказы
     Route::get('/bookings', [AdminController::class, 'bookings'])->name('bookings');

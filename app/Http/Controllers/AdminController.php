@@ -223,20 +223,62 @@ class AdminController extends Controller
 
     public function edit($id)
     {
-        $item = $this->findModel($id);
+        $item = Item::findOrFail($id);
         $guides = Guide::withCount('trips')->orderByDesc('id')->limit(10)->get();
-        
-        // Если это Trip, используем отдельный view
-        if ($item instanceof Trip) {
-            return view('admin.trips.edit', compact('item', 'guides'));
-        }
         
         return view('admin.items.edit', compact('item', 'guides'));
     }
 
+    public function editTrip($id)
+    {
+        $trip = Trip::with(['route.points'])->findOrFail($id);
+        $guides = Guide::withCount('trips')->orderByDesc('id')->limit(10)->get();
+
+        return view('admin.trips.edit', compact('trip', 'guides'));
+    }
+
     public function update(Request $request, $id)
     {
-        $item = $this->findModel($id);
+        $item = Item::findOrFail($id);
+
+        return $this->updateExistingCard($request, $item, 'admin.items');
+    }
+
+    public function updateTrip(Request $request, $id)
+    {
+        $trip = Trip::findOrFail($id);
+
+        return $this->updateExistingCard($request, $trip, 'admin.trips');
+    }
+
+    public function destroy($id)
+    {
+        $item = Item::findOrFail($id);
+
+        if ($item->gallery && is_array($item->gallery)) {
+            $this->deleteImages($item->gallery);
+        }
+
+        $item->delete();
+
+        return redirect()->route('admin.items')->with('success', 'Карточка удалена');
+    }
+
+    public function destroyTrip($id)
+    {
+        $trip = Trip::findOrFail($id);
+
+        if ($trip->gallery && is_array($trip->gallery)) {
+            $this->deleteImages($trip->gallery);
+        }
+
+        $trip->delete();
+
+        return redirect()->route('admin.trips')->with('success', 'Карточка удалена');
+    }
+
+    private function updateExistingCard(Request $request, Item|Trip $item, string $redirectRoute)
+    {
         $data = $this->validateCard($request);
 
         DB::beginTransaction();
@@ -264,32 +306,12 @@ class AdminController extends Controller
             $this->createOrUpdateCard($data, $item, $request);
 
             DB::commit();
-            
-            $route = $item instanceof Trip ? 'admin.trips' : 'admin.items';
-            return redirect()->route($route)->with('success', 'Карточка обновлена');
+
+            return redirect()->route($redirectRoute)->with('success', 'Карточка обновлена');
         } catch (\Exception $e) {
             DB::rollBack();
             return back()->withInput()->with('error', 'Ошибка: ' . $e->getMessage());
         }
-    }
-
-    public function destroy($id)
-    {
-        $item = $this->findModel($id);
-
-        if ($item->gallery && is_array($item->gallery)) {
-            $this->deleteImages($item->gallery);
-        }
-
-        $item->delete();
-
-        $route = $item instanceof Trip ? 'admin.trips' : 'admin.items';
-        return redirect()->route($route)->with('success', 'Карточка удалена');
-    }
-
-    private function findModel($id): Item|Trip
-    {
-        return Item::find($id) ?? Trip::findOrFail($id);
     }
 
     private function validateCard(Request $request): array
