@@ -100,6 +100,22 @@ p{
 .nav-menu a{
     text-decoration: none;
     color: white;
+    display: inline-block;
+    padding: 6px 10px;
+    border-radius: 8px;
+    transition: color 0.25s ease, background-color 0.25s ease, transform 0.25s ease;
+}
+
+.nav-menu a:hover,
+.nav-menu a:focus-visible{
+    color: #e8f1fb;
+    background-color: rgba(0, 0, 0, 0.14);
+    transform: translateY(-1px);
+}
+
+.nav-menu a:focus-visible{
+    outline: 2px solid rgba(255, 255, 255, 0.75);
+    outline-offset: 3px;
 }
 
 /* Мобильное меню */

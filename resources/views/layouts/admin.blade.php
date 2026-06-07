@@ -445,7 +445,8 @@
         }
 
         .filters-section:hover {
-            box-shadow: 0 2px 10px rgba(16, 24, 40, 0.05) !important;
+            box-shadow: 0 10px 24px rgba(16, 24, 40, 0.10) !important;
+            transform: translateY(-2px) !important;
         }
 
         .filters-row {
@@ -498,7 +499,6 @@
             justify-content: center !important;
             gap: 6px !important;
             box-shadow: none !important;
-            transform: none !important;
         }
 
         .btn-filter {
@@ -537,7 +537,6 @@
         .stat-card,
         .action-card {
             padding: 18px !important;
-            transform: none !important;
             box-shadow: 0 2px 10px rgba(16, 24, 40, 0.05) !important;
         }
 
@@ -557,8 +556,11 @@
 
         .admin-sidebar,
         .admin-content,
+        .mobile-menu-btn span {
+            transition: transform 0.3s ease, margin-left 0.3s ease !important;
+        }
+
         .sidebar-link,
-        .mobile-menu-btn span,
         .filters-section,
         .btn-primary,
         .btn-secondary,
@@ -572,20 +574,30 @@
         .action-card,
         .filter-group input,
         .filter-group select {
-            transition: none !important;
-            animation: none !important;
+            transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease !important;
         }
 
-        .sidebar-link:hover,
+        .sidebar-link:hover {
+            transform: translateX(4px) !important;
+            background: rgba(255,255,255,0.08) !important;
+        }
+
         .stat-card:hover,
-        .action-card:hover,
+        .action-card:hover {
+            transform: translateY(-3px) !important;
+            box-shadow: 0 12px 26px rgba(16, 24, 40, 0.12) !important;
+        }
+
         .btn-filter:hover,
         .btn-reset:hover,
         .btn-primary:hover,
         .btn-secondary:hover,
         .btn-submit:hover,
-        .btn-cancel:hover {
-            transform: none !important;
+        .btn-cancel:hover,
+        .btn-edit:hover,
+        .btn-delete:hover {
+            transform: translateY(-2px) !important;
+            box-shadow: 0 8px 18px rgba(16, 24, 40, 0.14) !important;
         }
 
 

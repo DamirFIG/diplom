@@ -6,7 +6,7 @@
     box-shadow: 0 4px 16px rgba(0,0,0,0.06);
     margin-bottom: 24px;
     border: 1px solid #e8ecf1;
-    transition: none;
+    transition: box-shadow 0.25s ease, transform 0.25s ease, border-color 0.25s ease;
 }
 
 .filters-section:hover {
@@ -48,7 +48,7 @@
     font-size: 15px;
     font-family: inherit;
     background: #fff;
-    transition: none;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
     color: #334155;
 }
 
@@ -90,7 +90,7 @@
     font-weight: 600;
     text-decoration: none;
     cursor: pointer;
-    transition: none;
+    transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
     border: none;
     white-space: nowrap;
     display: inline-flex;
@@ -107,11 +107,11 @@
 .btn-filter:hover {
     background: linear-gradient(135deg, #2980b9 0%, #2471a3 100%);
     box-shadow: 0 4px 12px rgba(52, 152, 219, 0.4);
-    transform: none;
+    transform: translateY(-2px);
 }
 
 .btn-filter:active {
-    transform: none;
+    transform: translateY(0);
 }
 
 .btn-reset {
@@ -124,6 +124,7 @@
     background: #e2e8f0;
     color: #475569;
     border-color: #cbd5e1;
+    transform: translateY(-2px);
 }
 
 @media (max-width: 768px) {
