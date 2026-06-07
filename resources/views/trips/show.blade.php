@@ -1019,9 +1019,6 @@
 
 </style>
 
-<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-
-<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script>
 // Рейтинг для формы отзыва
 document.addEventListener('DOMContentLoaded', function() {
@@ -1137,7 +1134,12 @@ document.addEventListener('DOMContentLoaded', function() {
 function changeImage(src) {
     document.getElementById('activeImage').src = src;
 }
+</script>
 
+@if($trip->route && $trip->route->points->count())
+<link rel="stylesheet" href="{{ asset('vendor/leaflet/leaflet.css') }}" />
+<script src="{{ asset('vendor/leaflet/leaflet.js') }}"></script>
+<script>
 // Инициализация карты с маршрутом
 document.addEventListener('DOMContentLoaded', function() {
     const mapElement = document.getElementById('map');
@@ -1292,7 +1294,10 @@ document.addEventListener('DOMContentLoaded', function() {
         map.fitBounds(L.polyline(latlngs).getBounds(), { padding: [50, 50] });
     }
 });
+</script>
+@endif
 
+<script>
 // Функции для модального окна бронирования
 const tripPrice = {{ $trip->price }};
 const maxPeople = {{ $trip->max_people ?? 10 }};

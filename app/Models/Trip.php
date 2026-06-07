@@ -35,6 +35,7 @@ class Trip extends Model
         if (is_array($this->gallery) && count($this->gallery) && $this->gallery[0]) {
             return $this->gallery[0];
         }
+
         return 'img/empty.png';
     }
 

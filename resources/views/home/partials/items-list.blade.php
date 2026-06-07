@@ -3,7 +3,7 @@
         <div class="item-card-image">
             <img loading="lazy" decoding="async" src="{{ asset('storage/' . $item->main_image) }}" alt="{{ $item->title }}" onerror="this.src='{{ asset('img/empty.png') }}'; this.onerror=null;">
             @auth
-                <button class="favorite-btn" data-item-id="{{ $item->id }}" title="Добавить в избранное" onclick="event.stopPropagation()">
+                <button class="favorite-btn {{ !empty($item->is_favorite) ? 'active' : '' }}" data-item-id="{{ $item->id }}" title="Добавить в избранное" onclick="event.stopPropagation()">
                     <svg class="heart-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path d="M12.1 8.64c-.92-1.1-2.26-1.74-3.71-1.74C6.07 6.9 4.5 8.5 4.5 10.57c0 2.69 2.45 5.25 6.21 8.67l1.29 1.17 1.29-1.17c3.76-3.42 6.21-5.98 6.21-8.67 0-2.07-1.57-3.67-3.89-3.67-1.45 0-2.79.64-3.71 1.74l-.3.36-.3-.36z"/>
                     </svg>

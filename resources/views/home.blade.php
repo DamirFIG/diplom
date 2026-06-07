@@ -13,899 +13,6 @@
     ];
 @endphp
 
-<style>
-.catalog-top-filters {
-    margin-bottom: 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap:30px;
-    flex-wrap: wrap;
-}
-
-.catalog-top-left {
-    display: flex;
-    align-items: center;
-}
-
-.price-slider-wrapper {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.price-label {
-    font-weight: 500;
-    color: #2B2B2B;
-    white-space: nowrap;
-}
-
-.price-slider {
-    -webkit-appearance: none;
-    width: 120px;
-    height: 4px;
-    background: #ddd;
-    border-radius: 2px;
-    outline: none;
-}
-
-.price-slider::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    background: #4A90D9;
-    cursor: pointer;
-    box-shadow: 0 2px 4px rgba(74, 144, 217, 0.3);
-    transition: transform 0.2s;
-}
-
-.price-slider::-webkit-slider-thumb:hover {
-    transform: scale(1.1);
-}
-
-.price-slider::-moz-range-thumb {
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    background: #4A90D9;
-    cursor: pointer;
-    border: none;
-    box-shadow: 0 2px 4px rgba(74, 144, 217, 0.3);
-}
-
-.price-value {
-    font-size: 24px;
-    font-weight:500;
-    color: #4A90D9;
-    white-space: nowrap;
-    width: 70px;
-}
-
-.search-wrapper {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    background: #fff;
-    padding: 10px 15px;
-    border-radius: 12px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-    border: 1px solid #e0e0e0;
-}
-
-.search-wrapper svg {
-    flex-shrink: 0;
-}
-
-.search-input {
-    border: none;
-    outline: none;
-    font-size: 15px;
-    color: #2B2B2B;
-    background: transparent;
-    min-width: 200px;
-}
-
-.search-input::placeholder {
-    color: #999;
-}
-
-.sort {
-    padding: 12px 20px;
-    border-radius: 12px;
-    border: 1px solid #e0e0e0;
-    background: #fff;
-    color: #2B2B2B;
-    font-size: 15px;
-    cursor: pointer;
-    outline: none;
-    transition: all 0.2s ease;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-}
-
-.sort:hover {
-    border-color: #4A90D9;
-}
-
-.sort:focus {
-    border-color: #4A90D9;
-    box-shadow: 0 0 0 3px rgba(74, 144, 217, 0.1);
-}
-
-/* Стили для сердечка избранного */
-.item-card-image {
-    position: relative;
-}
-
-.favorite-btn {
-    padding: 0;
-    position: absolute;
-    bottom: 15px;
-    right: 15px;
-    width: 45px;
-    height: 45px;
-    border: none;
-    background: rgba(255, 255, 255, 0.95);
-    border-radius: 50%;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    transform: scale(0.8);
-    transition: all 0.3s ease;
-    z-index: 10;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.15);
-}
-
-.item-card:hover .favorite-btn {
-    opacity: 1;
-    transform: scale(1);
-}
-
-.favorite-btn:hover {
-    background: #fff !important;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-}
-
-.favorite-btn .heart-icon {
-    width: 24px;
-    height: 24px;
-    fill: none;
-    stroke: #dc3545;
-    stroke-width: 2;
-    transition: all 0.3s ease;
-}
-
-.favorite-btn.active .heart-icon {
-    fill: #dc3545;
-    stroke: #dc3545;
-}
-
-.favorite-btn:active {
-    transform: scale(0.95);
-}
-
-/* Стили для поездок */
-.trips-title {
-    color: #2b2b2b;
-    text-align: center;
-    margin-bottom: 10px;
-}
-
-.trips-subtitle {
-    font-size: 18px;
-    color: #7f8c8d;
-    text-align: center;
-    margin-bottom: 40px;
-}
-
-.trips-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 25px;
-    flex: 1;
-    min-width: 0;
-}
-
-.trip-card {
-    min-height: 520px;
-    background: #fff;
-    border-radius: 20px;
-    overflow: hidden;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-    transition: all 0.3s ease;
-    border: 1px solid #e0e0e0;
-    display: flex;
-    flex-direction: column;
-}
-
-.trip-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 12px 35px rgba(0,0,0,0.15);
-    border-color: #4A90D9;
-}
-
-.trip-card-image {
-    position: relative;
-    height: 240px;
-    overflow: hidden;
-}
-
-.trip-card-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.5s ease;
-}
-
-.trip-card:hover .trip-card-image img {
-    transform: scale(1.1);
-}
-
-.trip-card-content {
-    padding: 25px;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-}
-
-.trip-card-title {
-    font-size: 22px;
-    font-weight: 700;
-    color: #2c3e50;
-    margin-bottom: 12px;
-    line-height: 1.3;
-}
-
-.trip-card-details {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
-    margin-bottom: 20px;
-    padding-bottom: 20px;
-    border-bottom: 1px solid #f0f0f0;
-}
-
-.trip-card-details .detail {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 14px;
-    color: #555;
-    background: #f8f9fa;
-    padding: 8px 14px;
-    border-radius: 12px;
-}
-
-.detail-icon {
-    font-size: 18px;
-}
-
-.trip-card-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.trip-card-price {
-    display: flex;
-    flex-direction: column;
-}
-
-.price-label {
-    font-size: 13px;
-    color: #999;
-    margin-top: 5px;
-}
-
-.trip-card-btn {
-    background: linear-gradient(135deg, #4A90D9 0%, #357ABD 100%);
-    color: #fff;
-    padding: 12px 24px;
-    border: none;
-    border-radius: 12px;
-    font-size: 15px;
-    font-weight: 600;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 12px rgba(74, 144, 217, 0.3);
-}
-
-.trip-card-btn:hover {
-    background: linear-gradient(135deg, #357ABD 0%, #2c6aa3 100%);
-    transform: translateX(5px);
-    box-shadow: 0 6px 18px rgba(74, 144, 217, 0.4);
-}
-
-.trip-card-btn svg {
-    transition: transform 0.3s ease;
-}
-
-.trip-card-btn:hover svg {
-    transform: translateX(3px);
-}
-
-.empty-message {
-    text-align: center;
-    padding: 60px 20px;
-    color: #999;
-    font-size: 18px;
-}
-
-@media (max-width: 768px) {
-    .trips-list {
-        grid-template-columns: 1fr;
-    }
-
-    .trips-title {
-        font-size: 28px;
-    }
-
-    .trips-subtitle {
-        font-size: 16px;
-    }
-}
-
-/* Стили для карточек аренды */
-.catalog-wrapper {
-    display: flex;
-    gap: 20px;
-    margin-top: 30px;
-}
-
-.catalog-filters {
-    min-width: 200px;
-    background: #fff;
-    padding: 20px;
-    border-radius: 16px;
-    box-shadow: 0 2px 15px rgba(0,0,0,0.08);
-    height: fit-content;
-    position: sticky;
-    top: 90px;
-}
-
-.catalog-filters ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.catalog-filters li {
-    margin-bottom: 10px;
-}
-
-.catalog-filters li:last-child {
-    margin-bottom: 0;
-}
-
-.catalog-filters a {
-    display: block;
-    padding: 12px 16px;
-    color: #555;
-    text-decoration: none;
-    border-radius: 10px;
-    transition: all 0.2s ease;
-    font-size: 15px;
-}
-
-.catalog-filters a:hover,
-.catalog-filters li.active a {
-    background: linear-gradient(135deg, #4A90D9 0%, #357ABD 100%);
-    color: #fff;
-}
-
-.catalog-items {
-    flex: 1;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 25px;
-}
-
-.item-card {
-    min-height: 520px;
-    background: #fff;
-    border-radius: 20px;
-    overflow: hidden;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-    transition: all 0.3s ease;
-    border: 1px solid #e0e0e0;
-    display: flex;
-    flex-direction: column;
-}
-
-.item-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 12px 35px rgba(0,0,0,0.15);
-    border-color: #4A90D9;
-}
-
-.item-card-image {
-    position: relative;
-    height: 220px;
-    overflow: hidden;
-}
-
-.item-card-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.5s ease;
-}
-
-.item-card:hover .item-card-image img {
-    transform: scale(1.1);
-}
-
-.item-card-content {
-    padding: 20px;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-}
-
-.item-card-title {
-    font-size: 20px;
-    font-weight: 700;
-    color: #2c3e50;
-    margin-bottom: 8px;
-    line-height: 1.3;
-}
-
-.item-card-type {
-    font-size: 14px;
-    color: #4A90D9;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-bottom: 15px;
-}
-
-.item-card-details {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-bottom: 20px;
-    flex: 1;
-}
-
-.item-card-details .detail {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 14px;
-    color: #555;
-    background: #f8f9fa;
-    padding: 8px 14px;
-    border-radius: 12px;
-}
-
-.item-card-footer {
-    padding-top: 15px;
-    border-top: 1px solid #f0f0f0;
-}
-
-.item-card-btn {
-    width: 100%;
-    background: linear-gradient(135deg, #4A90D9 0%, #357ABD 100%);
-    color: #fff;
-    padding: 12px 24px;
-    border: none;
-    border-radius: 12px;
-    font-size: 15px;
-    font-weight: 600;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 12px rgba(74, 144, 217, 0.3);
-}
-
-.item-card-btn:hover {
-    background: linear-gradient(135deg, #357ABD 0%, #2c6aa3 100%);
-    box-shadow: 0 6px 18px rgba(74, 144, 217, 0.4);
-}
-
-.item-card-btn svg {
-    transition: transform 0.3s ease;
-}
-
-.item-card-btn:hover svg {
-    transform: translateX(3px);
-}
-
-@media (max-width: 768px) {
-    .catalog-items {
-        grid-template-columns: 1fr;
-    }
-
-    .catalog-wrapper {
-        flex-direction: column;
-    }
-
-    .catalog-filters {
-        position: static;
-        min-width: 100%;
-    }
-
-    .trips-list {
-        grid-template-columns: 1fr;
-    }
-
-    .trips-title {
-        font-size: 28px;
-    }
-
-    .trips-subtitle {
-        font-size: 16px;
-    }
-}
-
-/* FAQ */
-.faq {
-    margin-top: 50px;
-}
-
-.faq h2 {
-    text-align: center;
-    font-size: 36px;
-    font-weight: 700;
-    color: #2B2B2B;
-    margin-bottom: 40px;
-}
-
-.faq details {
-    background: #fff;
-    border-radius: 16px;
-    margin-bottom: 15px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-    overflow: hidden;
-    transition: all 0.3s ease;
-}
-
-.faq details:hover {
-    box-shadow: 0 6px 20px rgba(0,0,0,0.12);
-}
-
-.faq details[open] {
-    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
-}
-
-.faq summary {
-    padding: 20px 25px;
-    font-size: 18px;
-    font-weight: 600;
-    color: #2B2B2B;
-    cursor: pointer;
-    list-style: none;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    transition: all 0.3s ease;
-}
-
-.faq summary::-webkit-details-marker {
-    display: none;
-}
-
-.faq summary::after {
-    content: '+';
-    font-size: 24px;
-    font-weight: 400;
-    color: #4A90D9;
-    transition: transform 0.3s ease;
-    flex-shrink: 0;
-    margin-left: 15px;
-}
-
-.faq details[open] summary::after {
-    content: '−';
-}
-
-.faq details[open] summary {
-    background: linear-gradient(135deg, #4A90D9 0%, #357ABD 100%);
-    color: #fff;
-}
-
-.faq details[open] summary::after {
-    color: #fff;
-}
-
-.faq details p {
-    padding: 20px 25px;
-    margin: 0;
-    font-size: 16px;
-    line-height: 1.7;
-    color: #555;
-    background: #fff;
-    border-top: 1px solid #f0f0f0;
-}
-
-@media (max-width: 768px) {
-    .faq {
-        padding: 60px 0;
-    }
-
-    .faq h2 {
-        font-size: 28px;
-        margin-bottom: 30px;
-    }
-
-    .faq summary {
-        font-size: 16px;
-        padding: 18px 20px;
-    }
-
-    .faq details p {
-        font-size: 15px;
-        padding: 18px 20px;
-    }
-}
-
-@media (max-width: 768px) {
-    .catalog.container,
-    .trips.container {
-        margin-inline: 16px;
-    }
-
-    .catalog h2,
-    .trips-title {
-        margin: 36px 0 22px;
-        font-size: clamp(30px, 9vw, 38px);
-        line-height: 1.15;
-    }
-
-    .catalog-top-filters {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 14px;
-        margin: 20px 0;
-    }
-
-    .price-slider-wrapper,
-    .search-wrapper,
-    .sort,
-    #openTripFilters {
-        width: 100%;
-        max-width: 100%;
-        box-sizing: border-box;
-    }
-
-    .price-slider-wrapper {
-        justify-content: space-between;
-        flex-wrap: wrap;
-        padding: 14px 16px;
-        border: 1px solid #e0e0e0;
-        border-radius: 14px;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-        background: #fff;
-    }
-
-    .price-slider {
-        order: 3;
-        width: 100%;
-        margin-top: 6px;
-    }
-
-    .price-value {
-        width: auto;
-        font-size: 18px;
-        text-align: right;
-    }
-
-    .search-wrapper {
-        padding: 12px 14px;
-        gap: 8px;
-    }
-
-    .search-wrapper svg {
-        width: 20px;
-        height: 20px;
-        margin: 0;
-    }
-
-    .search-input {
-        min-width: 0;
-        width: 100%;
-        font-size: 16px;
-    }
-
-    .sort,
-    #openTripFilters {
-        min-height: 48px;
-        padding: 12px 14px;
-        font-size: 16px;
-        justify-content: center;
-    }
-
-    .catalog-wrapper {
-        flex-direction: column;
-        gap: 14px;
-        margin-top: 14px;
-        gap: 18px;
-        margin-top: 18px;
-    }
-
-    .catalog-filters {
-        position: static;
-        flex: 0 0 auto;
-        min-width: 0;
-        width: 100%;
-        box-sizing: border-box;
-        padding: 10px;
-        overflow: hidden;
-        min-width: 0;
-        width: 100%;
-        box-sizing: border-box;
-        padding: 14px;
-    }
-
-    .catalog-filters ul {
-        display: flex;
-        gap: 6px;
-        overflow-x: auto;
-        padding-bottom: 2px;
-        gap: 10px;
-        overflow-x: auto;
-        padding-bottom: 4px;
-        -webkit-overflow-scrolling: touch;
-        scrollbar-width: none;
-    }
-
-    .catalog-filters ul::-webkit-scrollbar {
-        display: none;
-    }
-
-    .catalog-filters li {
-        flex: 0 0 auto;
-        margin-bottom: 0;
-    }
-
-    .catalog-filters li:first-child label {
-        display: none !important;
-    }
-
-    .catalog-filters a {
-        white-space: nowrap;
-        padding: 7px 10px;
-        font-size: 12px;
-        line-height: 1.2;
-        padding: 10px 14px;
-        font-size: 14px;
-    }
-
-    .catalog-items,
-    .trips-list {
-        grid-template-columns: 1fr;
-        gap: 18px;
-    }
-
-    .item-card,
-    .trip-card {
-        min-height: auto;
-        border-radius: 16px;
-    }
-
-    .item-card:hover,
-    .trip-card:hover,
-    .feature-item:hover,
-    .gallery-item:hover {
-        transform: none;
-    }
-
-    .item-card-image,
-    .trip-card-image {
-        height: 190px;
-    }
-
-    .item-card-content,
-    .trip-card-content {
-        padding: 16px;
-    }
-
-    .item-card-title,
-    .trip-card-title {
-        font-size: 19px;
-        margin-bottom: 10px;
-    }
-
-    .item-card-details,
-    .trip-card-details {
-        gap: 8px;
-        margin-bottom: 16px;
-        padding-bottom: 16px;
-    }
-
-    .item-card-details .detail,
-    .trip-card-details .detail {
-        font-size: 13px;
-        padding: 7px 10px;
-    }
-
-    .favorite-btn,
-    .item-card:hover .favorite-btn {
-        opacity: 1;
-        transform: scale(1);
-        width: 42px;
-        height: 42px;
-    }
-
-    .trip-card-footer {
-        align-items: stretch;
-        gap: 14px;
-        flex-direction: column;
-    }
-
-    .trip-card-price {
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: baseline;
-        gap: 12px;
-    }
-
-    .trip-card-btn {
-        width: 100%;
-        justify-content: center;
-    }
-
-    .filters-modal {
-        align-items: flex-end !important;
-        padding: 12px;
-        box-sizing: border-box;
-    }
-
-    .filters-modal-content {
-        width: 100% !important;
-        max-width: none !important;
-        max-height: 88vh !important;
-        border-radius: 18px 18px 0 0 !important;
-        padding: 24px 18px !important;
-        box-sizing: border-box;
-    }
-
-    .filters-modal-content > div[style*="grid-template-columns"] {
-        grid-template-columns: 1fr !important;
-    }
-
-    .filters-modal-content > div[style*="display: flex"] {
-        flex-direction: column !important;
-    }
-}
-
-@media (max-width: 480px) {
-    .catalog.container,
-    .trips.container {
-        margin-inline: 10px;
-    }
-
-    .catalog-filters {
-        padding: 8px;
-    }
-
-    .catalog-filters a {
-        padding: 6px 8px;
-        font-size: 11px;
-        margin-inline: 12px;
-    }
-
-    .item-card-image,
-    .trip-card-image {
-        height: 170px;
-    }
-
-    .item-card-btn,
-    .trip-card-btn {
-        padding: 12px 16px;
-    }
-}
-</style>
-
 <!-- Баннер -->
 <section class="banner">
     <h1>Водный отдых</h1>
@@ -1017,7 +124,7 @@
                     <div class="item-card-image">
                         <img loading="lazy" decoding="async" src="{{ asset('storage/' . $item->main_image) }}" alt="{{ $item->title }}" onerror="this.src='{{ asset('img/empty.png') }}'; this.onerror=null;">
                         @auth
-                            <button class="favorite-btn" data-item-id="{{ $item->id }}" title="Добавить в избранное" onclick="event.stopPropagation()">
+                            <button class="favorite-btn {{ !empty($item->is_favorite) ? 'active' : '' }}" data-item-id="{{ $item->id }}" title="Добавить в избранное" onclick="event.stopPropagation()">
                                 <svg class="heart-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M12.1 8.64c-.92-1.1-2.26-1.74-3.71-1.74C6.07 6.9 4.5 8.5 4.5 10.57c0 2.69 2.45 5.25 6.21 8.67l1.29 1.17 1.29-1.17c3.76-3.42 6.21-5.98 6.21-8.67 0-2.07-1.57-3.67-3.89-3.67-1.45 0-2.79.64-3.71 1.74l-.3.36-.3-.36z"/>
                                 </svg>
@@ -1346,12 +453,21 @@ document.addEventListener('DOMContentLoaded', function() {
         window.history.pushState({path: url}, '', url);
     }
 
+    let itemsAbortController;
+    let tripsAbortController;
+
     function loadItemsContent(params, scrollPosition) {
+        if (itemsAbortController) {
+            itemsAbortController.abort();
+        }
+        itemsAbortController = new AbortController();
+
         fetch('{{ route("search.items") }}?' + params.toString(), {
             headers: {
                 'X-Requested-With': 'XMLHttpRequest',
                 'Accept': 'application/json'
-            }
+            },
+            signal: itemsAbortController.signal
         })
         .then(response => response.json())
         .then(data => {
@@ -1362,15 +478,25 @@ document.addEventListener('DOMContentLoaded', function() {
             initFavoriteButtons();
             initSortSelects(); // Переинициализируем select-ы
         })
-        .catch(error => console.error('Ошибка фильтрации:', error));
+        .catch(error => {
+            if (error.name !== 'AbortError') {
+                console.error('Ошибка фильтрации:', error);
+            }
+        });
     }
 
     function loadTripsContent(params, scrollPosition) {
+        if (tripsAbortController) {
+            tripsAbortController.abort();
+        }
+        tripsAbortController = new AbortController();
+
         fetch('{{ route("search.trips") }}?' + params.toString(), {
             headers: {
                 'X-Requested-With': 'XMLHttpRequest',
                 'Accept': 'application/json'
-            }
+            },
+            signal: tripsAbortController.signal
         })
         .then(response => response.json())
         .then(data => {
@@ -1380,7 +506,11 @@ document.addEventListener('DOMContentLoaded', function() {
             window.scrollTo(0, scrollPosition);
             initSortSelects();
         })
-        .catch(error => console.error('Ошибка фильтрации:', error));
+        .catch(error => {
+            if (error.name !== 'AbortError') {
+                console.error('Ошибка фильтрации:', error);
+            }
+        });
     }
 
     // Инициализация select-ов сортировки
@@ -1475,7 +605,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 params.delete('page');
                 const scrollPosition = document.getElementById('catalog').offsetTop - 100;
                 loadItemsContent(params, scrollPosition);
-            }, 300);
+            }, 600);
         });
     }
 
@@ -1495,7 +625,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 params.delete('page');
                 const scrollPosition = document.getElementById('trips').offsetTop - 100;
                 loadTripsContent(params, scrollPosition);
-            }, 300);
+            }, 600);
         });
     }
 
@@ -1587,24 +717,39 @@ document.addEventListener('DOMContentLoaded', function() {
     // Инициализация кнопок избранного после AJAX-запроса
     function initFavoriteButtons() {
         @auth
-            const favoriteBtns = document.querySelectorAll('.favorite-btn');
-            favoriteBtns.forEach(btn => {
-                const itemId = btn.dataset.itemId;
-                fetch(`/favorites/${itemId}/check`)
+            const favoriteBtns = Array.from(document.querySelectorAll('.favorite-btn'));
+            const uncheckedIds = favoriteBtns
+                .filter(btn => !btn.classList.contains('active'))
+                .map(btn => btn.dataset.itemId)
+                .filter(Boolean);
+            const uniqueIds = [...new Set(uncheckedIds)];
+
+            if (uniqueIds.length) {
+                fetch(`/favorites/check?ids=${uniqueIds.join(',')}`)
                     .then(response => response.json())
                     .then(data => {
-                        if (data.is_favorite) {
-                            btn.classList.add('active');
-                        }
+                        const favoriteIds = new Set((data.favorites || []).map(String));
+                        favoriteBtns.forEach(btn => {
+                            if (favoriteIds.has(String(btn.dataset.itemId))) {
+                                btn.classList.add('active');
+                            }
+                        });
                     })
                     .catch(e => console.error('Ошибка загрузки состояния избранного:', e));
-                
+            }
+
+            favoriteBtns.forEach(btn => {
+                if (btn.dataset.favoriteBound === 'true') {
+                    return;
+                }
+
+                btn.dataset.favoriteBound = 'true';
                 btn.addEventListener('click', async function(e) {
                     e.stopPropagation();
                     e.preventDefault();
-                    
+
                     const itemId = this.dataset.itemId;
-                    
+
                     try {
                         const response = await fetch(`/favorites/${itemId}/toggle`, {
                             method: 'POST',
@@ -1613,15 +758,11 @@ document.addEventListener('DOMContentLoaded', function() {
                                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
                             }
                         });
-                        
+
                         const data = await response.json();
-                        
+
                         if (data.success) {
-                            if (data.is_favorite) {
-                                this.classList.add('active');
-                            } else {
-                                this.classList.remove('active');
-                            }
+                            this.classList.toggle('active', data.is_favorite);
                         }
                     } catch (e) {
                         console.error('Ошибка обновления избранного:', e);
