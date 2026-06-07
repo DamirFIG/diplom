@@ -821,7 +821,7 @@
 
             @if(count($gallery) > 1)
                 @foreach(array_slice($gallery, 1) as $img)
-                    <img loading="lazy" decoding="async" src="{{ asset('storage/'.$img) }}" class="thumb" alt="Gallery" onclick="changeImage(this.src)">
+                    <img loading="lazy" decoding="async" src="{{ $item->imageUrl($img) }}" class="thumb" alt="Gallery" onclick="changeImage(this.src)">
                 @endforeach
             @endif
         </div>

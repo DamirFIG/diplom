@@ -64,7 +64,7 @@
                 @if($item->gallery && count($item->gallery) > 0)
                     @foreach($item->gallery as $image)
                         <div class="image-item" data-image="{{ $image }}">
-                            <img loading="lazy" decoding="async" src="{{ asset('storage/' . $image) }}" alt="Фото">
+                            <img loading="lazy" decoding="async" src="{{ $item->imageUrl($image) }}" alt="Фото">
                             <button type="button" class="btn-remove-image" aria-label="Убрать фото" title="Убрать фото" data-image="{{ $image }}">×</button>
                         </div>
                     @endforeach

@@ -72,7 +72,7 @@
                             <div class="booking-card" @if($booking->trip) onclick="location.href='{{ route('trips.show', $booking->trip->id) }}'" style="cursor: pointer;" @endif>
                                 @if($booking->trip)
                                     <div class="booking-image">
-                                        <img loading="lazy" decoding="async" src="{{ asset('storage/' . $booking->trip->main_image) }}" alt="{{ $booking->trip->title }}" onerror="this.src='{{ asset('img/empty.png') }}'; this.onerror=null;">
+                                        <img loading="lazy" decoding="async" src="{{ $booking->trip->main_image_url }}" alt="{{ $booking->trip->title }}" onerror="this.src='{{ asset('img/empty.png') }}'; this.onerror=null;">
                                     </div>
                                     <div class="booking-info">
                                         <div class="booking-header">
@@ -119,7 +119,7 @@
                                     </div>
                                 @elseif($booking->item)
                                     <div class="booking-image">
-                                        <img loading="lazy" decoding="async" src="{{ asset('storage/' . $booking->item->main_image) }}" alt="{{ $booking->item->title }}" onerror="this.src='{{ asset('img/empty.png') }}'; this.onerror=null;">
+                                        <img loading="lazy" decoding="async" src="{{ $booking->item->main_image_url }}" alt="{{ $booking->item->title }}" onerror="this.src='{{ asset('img/empty.png') }}'; this.onerror=null;">
                                     </div>
                                     <div class="booking-info">
                                         <div class="booking-header"><h4>{{ $booking->item->title }}</h4>
@@ -269,7 +269,7 @@
                         @foreach($favorites as $item)
                             <div class="favorite-card" onclick="location.href='{{ route('items.show', $item->id) }}'" style="cursor: pointer;">
                                 <div class="favorite-image">
-                                    <img loading="lazy" decoding="async" src="{{ asset('storage/' . $item->main_image) }}" alt="{{ $item->title }}" onerror="this.src='{{ asset('img/empty.png') }}'; this.onerror=null;">
+                                    <img loading="lazy" decoding="async" src="{{ $item->main_image_url }}" alt="{{ $item->title }}" onerror="this.src='{{ asset('img/empty.png') }}'; this.onerror=null;">
                                 </div>
                                 <div class="favorite-info">
                                     <div class="favorite-header">

@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Guide;
 use App\Models\Booking;
+use App\Models\Guide;
 use App\Models\Item;
-use App\Models\Trip;
-use App\Models\User;
 use App\Models\Route;
 use App\Models\RoutePoint;
+use App\Models\Trip;
+use App\Models\User;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Database\Eloquent\Model;
 
 class AdminController extends Controller
 {
@@ -31,24 +31,24 @@ class AdminController extends Controller
     public function items(Request $request)
     {
         $query = Item::query();
-        
+
         // Поиск
         if ($request->filled('search')) {
-            $query->where('title', 'like', '%' . $request->search . '%');
+            $query->where('title', 'like', '%'.$request->search.'%');
         }
-        
+
         // Фильтр по типу активности
         if ($request->filled('activity_type')) {
             $query->where('activity_type', $request->activity_type);
         }
-        
+
         // Сортировка
         $sort = $request->get('sort', 'id');
         $order = $request->get('order', 'desc');
         $query->orderBy($sort, $order);
-        
+
         $items = $query->get();
-        
+
         return view('admin.items.index', [
             'items' => $items,
             'activityTypes' => ['гидроцикл', 'банан', 'флайборд', 'сапборд', 'катамаран'],
@@ -59,34 +59,34 @@ class AdminController extends Controller
     public function trips(Request $request)
     {
         $query = Trip::query();
-        
+
         // Поиск
         if ($request->filled('search')) {
-            $query->where('title', 'like', '%' . $request->search . '%');
+            $query->where('title', 'like', '%'.$request->search.'%');
         }
-        
+
         // Фильтр по типу активности
         if ($request->filled('activity_type')) {
             $query->where('activity_type', $request->activity_type);
         }
-        
+
         // Сортировка
         $sort = $request->get('sort', 'id');
         $order = $request->get('order', 'desc');
         $query->orderBy($sort, $order);
-        
+
         $trips = $query->get();
-        
+
         return view('admin.trips.index', [
             'trips' => $trips,
             'activityTypes' => ['гидроцикл', 'банан', 'флайборд', 'сапборд', 'катамаран'],
         ]);
     }
 
-
     public function bookings(Request $request)
     {
         $bookings = Booking::with(['user', 'trip'])->orderByDesc('created_at')->paginate(20);
+
         return view('admin.bookings', compact('bookings'));
     }
 
@@ -105,28 +105,28 @@ class AdminController extends Controller
     public function users(Request $request)
     {
         $query = User::where('role', '!=', 'admin');
-        
+
         // Поиск
         if ($request->filled('search')) {
-            $query->where(function($q) use ($request) {
-                $q->where('login', 'like', '%' . $request->search . '%')
-                  ->orWhere('name', 'like', '%' . $request->search . '%')
-                  ->orWhere('email', 'like', '%' . $request->search . '%');
+            $query->where(function ($q) use ($request) {
+                $q->where('login', 'like', '%'.$request->search.'%')
+                    ->orWhere('name', 'like', '%'.$request->search.'%')
+                    ->orWhere('email', 'like', '%'.$request->search.'%');
             });
         }
-        
+
         // Фильтр по роли
         if ($request->filled('role')) {
             $query->where('role', $request->role);
         }
-        
+
         // Сортировка
         $sort = $request->get('sort', 'id');
         $order = $request->get('order', 'desc');
         $query->orderBy($sort, $order);
-        
+
         $users = $query->get();
-        
+
         return view('admin.users', [
             'users' => $users,
         ]);
@@ -181,17 +181,20 @@ class AdminController extends Controller
             }
 
             $data['gallery'] = $galleryPaths;
+            $this->syncMainImageWithGallery($data);
 
             $item = $this->createOrUpdateCard($data, null, $request);
 
             DB::commit();
 
             $route = $item instanceof Trip ? 'admin.trips' : 'admin.items';
+
             return redirect()->route($route)->with('success', 'Карточка создана');
         } catch (\Exception $e) {
             DB::rollBack();
             $this->deleteImages($data['gallery'] ?? []);
-            return back()->withInput()->with('error', 'Ошибка: ' . $e->getMessage());
+
+            return back()->withInput()->with('error', 'Ошибка: '.$e->getMessage());
         }
     }
 
@@ -208,6 +211,7 @@ class AdminController extends Controller
             }
 
             $data['gallery'] = $galleryPaths;
+            $this->syncMainImageWithGallery($data);
 
             $trip = $this->createOrUpdateCard($data, null, $request);
 
@@ -217,7 +221,8 @@ class AdminController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             $this->deleteImages($data['gallery'] ?? []);
-            return back()->withInput()->with('error', 'Ошибка: ' . $e->getMessage());
+
+            return back()->withInput()->with('error', 'Ошибка: '.$e->getMessage());
         }
     }
 
@@ -225,7 +230,7 @@ class AdminController extends Controller
     {
         $item = Item::findOrFail($id);
         $guides = Guide::withCount('trips')->orderByDesc('id')->limit(10)->get();
-        
+
         return view('admin.items.edit', compact('item', 'guides'));
     }
 
@@ -285,7 +290,7 @@ class AdminController extends Controller
         try {
             $existingGallery = $item->gallery ?? [];
 
-            if (!empty($data['delete_images'])) {
+            if (! empty($data['delete_images'])) {
                 foreach ($data['delete_images'] as $imageToDelete) {
                     $key = array_search($imageToDelete, $existingGallery);
                     if ($key !== false) {
@@ -302,6 +307,8 @@ class AdminController extends Controller
             }
 
             $data['gallery'] = $existingGallery;
+            $data['main_image'] = $item->getRawOriginal('main_image');
+            $this->syncMainImageWithGallery($data);
 
             $this->createOrUpdateCard($data, $item, $request);
 
@@ -310,7 +317,8 @@ class AdminController extends Controller
             return redirect()->route($redirectRoute)->with('success', 'Карточка обновлена');
         } catch (\Exception $e) {
             DB::rollBack();
-            return back()->withInput()->with('error', 'Ошибка: ' . $e->getMessage());
+
+            return back()->withInput()->with('error', 'Ошибка: '.$e->getMessage());
         }
     }
 
@@ -340,6 +348,16 @@ class AdminController extends Controller
         ]);
     }
 
+    private function syncMainImageWithGallery(array &$data): void
+    {
+        $gallery = array_values(array_filter($data['gallery'] ?? []));
+        $mainImage = $data['main_image'] ?? null;
+
+        if (! $mainImage || ! in_array($mainImage, $gallery, true)) {
+            $data['main_image'] = $gallery[0] ?? null;
+        }
+    }
+
     private function uploadImages(?array $files): array
     {
         $paths = [];
@@ -355,6 +373,7 @@ class AdminController extends Controller
                 }
             }
         }
+
         return $paths;
     }
 
@@ -365,10 +384,11 @@ class AdminController extends Controller
         }
     }
 
-    private function createOrUpdateCard(array $data, ?Model $item = null, Request $request): Item|Trip|null
+    private function createOrUpdateCard(array $data, ?Model $item, Request $request): Item|Trip|null
     {
         if ($data['type'] === 'transport') {
             unset($data['guide_id'], $data['event_date']);
+
             return $item
                 ? tap($item)->update($data)
                 : Item::create($data);
@@ -377,29 +397,30 @@ class AdminController extends Controller
         $tripData = Arr::only($data, [
             'title', 'activity_type', 'price', 'description',
             'max_people', 'min_age', 'duration_minutes',
-            'guide_id', 'event_date', 'gallery',
+            'guide_id', 'event_date', 'gallery', 'main_image',
         ]);
 
         if ($item instanceof Trip) {
             $item->update($tripData);
             $this->updateRoute($item, $data, $request);
+
             return $item;
         }
 
         $trip = Trip::create($tripData);
-        
+
         // Создаем маршрут только если есть данные о нем
         if ($request->has('start_lat') || $request->has('end_lat') || $request->has('route_points')) {
             $this->createRoute($trip, $data, $request);
         }
-        
+
         return $trip;
     }
 
     private function createRoute(Trip $trip, array $data, Request $request): void
     {
         // Создаем маршрут только если есть точки
-        if (!empty($data['route_points'])) {
+        if (! empty($data['route_points'])) {
             $route = Route::create([
                 'trip_id' => $trip->id,
                 'title' => $data['title'],
@@ -442,9 +463,9 @@ class AdminController extends Controller
             }
 
             $imagePath = null;
-            if (!empty($pointData['image_file']) && $pointData['image_file'] instanceof \Illuminate\Http\UploadedFile) {
+            if (! empty($pointData['image_file']) && $pointData['image_file'] instanceof \Illuminate\Http\UploadedFile) {
                 $imagePath = $pointData['image_file']->store('img/route_points', 'public');
-            } elseif (!empty($pointData['existing_image'])) {
+            } elseif (! empty($pointData['existing_image'])) {
                 $imagePath = $pointData['existing_image'];
             }
 
@@ -454,7 +475,7 @@ class AdminController extends Controller
 
             RoutePoint::create([
                 'route_id' => $route->id,
-                'title' => $pointData['title'] ?? 'Остановка ' . ($index + 1),
+                'title' => $pointData['title'] ?? 'Остановка '.($index + 1),
                 'description' => $pointData['description'] ?? '',
                 'lat' => $pointData['lat'],
                 'lng' => $pointData['lng'],
@@ -470,19 +491,19 @@ class AdminController extends Controller
     public function guides(Request $request)
     {
         $query = Guide::withCount('trips');
-        
+
         // Поиск
         if ($request->filled('search')) {
-            $query->where('name', 'like', '%' . $request->search . '%');
+            $query->where('name', 'like', '%'.$request->search.'%');
         }
-        
+
         // Сортировка
         $sort = $request->get('sort', 'id');
         $order = $request->get('order', 'desc');
         $query->orderBy($sort, $order);
-        
+
         $guides = $query->orderByDesc('id')->get();
-        
+
         return view('admin.guides.index', [
             'guides' => $guides,
         ]);
@@ -525,15 +546,22 @@ class AdminController extends Controller
             'name' => 'required|string|max:255',
             'bio' => 'nullable|string',
             'photo' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
+            'delete_photo' => 'nullable|boolean',
         ]);
 
-        if ($request->hasFile('photo')) {
-            // Удаляем старое фото
-            if ($guide->photo) {
-                Storage::disk('public')->delete($guide->photo);
-            }
-            $data['photo'] = $request->file('photo')->store('img/guides', 'public');
+        $deletePhoto = $request->boolean('delete_photo');
+
+        if (($deletePhoto || $request->hasFile('photo')) && $guide->photo) {
+            Storage::disk('public')->delete($guide->photo);
         }
+
+        if ($request->hasFile('photo')) {
+            $data['photo'] = $request->file('photo')->store('img/guides', 'public');
+        } elseif ($deletePhoto) {
+            $data['photo'] = null;
+        }
+
+        unset($data['delete_photo']);
 
         $guide->update($data);
 
