@@ -3,13 +3,14 @@
 <head>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Lobster&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poiret+One&display=swap&display=swap" rel="stylesheet">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Lobster&family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Poiret+One&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Lobster&family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Poiret+One&display=swap" rel="stylesheet"></noscript>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    @stack('preloads')
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     @stack('styles')
-    <link rel="stylesheet" href="{{ asset('css/review-compact.css') }}">
     <title>Аренда гидроциклов в Санкт-Петербурге</title>
     <meta name="description" content="Аренда гидроциклов и водных маршрутов в Санкт-Петербурге. Активный отдых на воде.">
     <meta name="keywords" content="аренда гидроцикла СПб, водные прогулки, отдых на воде">
@@ -81,7 +82,6 @@
             background: #fff !important;
         }
     </style>
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="dns-prefetch" href="https://unpkg.com">
 </head>
 <body>

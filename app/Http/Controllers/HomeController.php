@@ -12,7 +12,7 @@ class HomeController extends Controller
     public function index(Request $request)
     {
         // АРЕНДА (каталог)
-        $itemsQuery = Item::query();
+        $itemsQuery = Item::query()->select(['id', 'title', 'activity_type', 'price', 'max_people', 'main_image']);
 
         // 🔍 ПОИСК
         if ($request->filled('search')) {
@@ -40,7 +40,7 @@ class HomeController extends Controller
         $items = $itemsQuery->paginate(8)->withQueryString();
 
         // 🚀 ПОЕЗДКИ (новая таблица trips)
-        $tripsQuery = Trip::query();
+        $tripsQuery = Trip::query()->select(['id', 'title', 'event_date', 'duration_minutes', 'max_people', 'price', 'main_image', 'activity_type', 'guide_id']);
 
         // 🔍 ПОИСК для поездок
         if ($request->filled('trip_search')) {
@@ -93,14 +93,14 @@ class HomeController extends Controller
         $trips = $tripsQuery->paginate(8)->withQueryString();
 
         // 👨‍✈️ ГИДЫ
-        $guides = Guide::all();
+        $guides = Guide::select(['id', 'name', 'bio', 'photo'])->get();
 
         return view('home', compact('items', 'trips', 'guides'));
     }
 
     public function searchItems(Request $request)
     {
-        $itemsQuery = Item::query();
+        $itemsQuery = Item::query()->select(['id', 'title', 'activity_type', 'price', 'max_people', 'main_image']);
 
         // 🔍 ПОИСК
         if ($request->filled('search')) {
@@ -142,7 +142,7 @@ class HomeController extends Controller
 
     public function searchTrips(Request $request)
     {
-        $tripsQuery = Trip::query();
+        $tripsQuery = Trip::query()->select(['id', 'title', 'event_date', 'duration_minutes', 'max_people', 'price', 'main_image', 'activity_type', 'guide_id']);
 
         // 🔍 ПОИСК
         if ($request->filled('trip_search')) {
