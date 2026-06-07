@@ -949,13 +949,13 @@
         </div>
         <div class="about-gallery">
             <div class="gallery-item gallery-item-large">
-                <img src="/img/about-1.jpg" alt="Наша команда" class="gallery-image" onclick="openImageModal(this.src)" onerror="this.src='/img/empty.png'">
+                <img loading="lazy" decoding="async" width="612" height="408" src="/img/about-1.jpg" alt="Наша команда" class="gallery-image" onclick="openImageModal(this.src)" onerror="this.src='/img/empty.png'">
             </div>
             <div class="gallery-item">
-                <img src="/img/about-2.jpg" alt="Процесс" class="gallery-image" onclick="openImageModal(this.src)" onerror="this.src='/img/empty.png'">
+                <img loading="lazy" decoding="async" width="1000" height="563" src="/img/about-2.jpg" alt="Процесс" class="gallery-image" onclick="openImageModal(this.src)" onerror="this.src='/img/empty.png'">
             </div>
             <div class="gallery-item">
-                <img src="/img/about-3.jpg" alt="Оборудование" class="gallery-image" onclick="openImageModal(this.src)" onerror="this.src='/img/empty.png'">
+                <img loading="lazy" decoding="async" width="900" height="506" src="/img/about-3.jpg" alt="Оборудование" class="gallery-image" onclick="openImageModal(this.src)" onerror="this.src='/img/empty.png'">
             </div>
         </div>
     </div>
