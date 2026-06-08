@@ -54,6 +54,9 @@ Route::get('/register', [AuthController::class, 'showRegister'])->name('auth.reg
 Route::post('/register', [AuthController::class, 'register'])->name('user.register');
 Route::get('/login', [AuthController::class, 'showLogin'])->name('auth.login');
 Route::post('/login', [AuthController::class, 'login'])->name('user.login');
+Route::get('/two-factor', [AuthController::class, 'showTwoFactor'])->name('auth.two-factor.show');
+Route::post('/two-factor', [AuthController::class, 'verifyTwoFactor'])->name('auth.two-factor.verify');
+Route::post('/two-factor/resend', [AuthController::class, 'resendTwoFactor'])->name('auth.two-factor.resend');
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // Восстановление пароля
@@ -68,6 +71,7 @@ Route::middleware('auth')->prefix('profile')->name('profile.')->group(function (
     Route::post('/update', [ProfileController::class, 'updateInfo'])->name('update');
     Route::post('/avatar', [ProfileController::class, 'uploadAvatar'])->name('avatar.upload');
     Route::post('/avatar/delete', [ProfileController::class, 'deleteAvatar'])->name('avatar.delete');
+    Route::post('/two-factor', [ProfileController::class, 'updateTwoFactor'])->name('two-factor.update');
 });
 
 // Отзывы

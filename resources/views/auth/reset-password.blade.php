@@ -13,7 +13,7 @@
     
     <div class="auth-form">
         <label for="email">Email</label>
-        <input type="email" name="email" id="email" value="{{ old('email') }}" class="auth-input" required>
+        <input type="email" name="email" id="email" value="{{ old('email', $email ?? '') }}" class="auth-input" required>
     </div>
     
     <div class="auth-form">
