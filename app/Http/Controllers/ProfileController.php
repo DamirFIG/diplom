@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Item;
 use App\Models\Trip;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -216,13 +215,32 @@ class ProfileController extends Controller
 
         $data = $request->validate([
             'name' => 'nullable|string|max:255',
-            'login' => 'required|string|max:255|unique:users,login,' . $user->id,
-            'email' => 'required|email|max:255|unique:users,email,' . $user->id,
+            'login' => 'required|string|max:255|unique:users,login,'.$user->id,
+            'email' => 'required|email|max:255|unique:users,email,'.$user->id,
         ]);
 
         $user->update($data);
 
         return back()->with('success', 'Профиль обновлён');
+    }
+
+    public function updateTwoFactor(Request $request)
+    {
+        $user = Auth::user();
+        $enabled = $request->boolean('two_factor_enabled');
+
+        $user->forceFill([
+            'two_factor_enabled' => $enabled,
+            'two_factor_code' => null,
+            'two_factor_expires_at' => null,
+        ])->save();
+
+        return back()->with(
+            'success',
+            $enabled
+                ? 'Двухфакторная аутентификация включена'
+                : 'Двухфакторная аутентификация отключена'
+        );
     }
 
     public function deleteAvatar()
