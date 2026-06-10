@@ -26,15 +26,11 @@ class User extends Authenticatable
         'is_banned',
         'failed_login_attempts',
         'locked_until',
-        'two_factor_enabled',
-        'two_factor_code',
-        'two_factor_expires_at',
     ];
 
     protected $hidden = [
         'password',
         'remember_token',
-        'two_factor_code',
     ];
 
     protected $casts = [
@@ -44,8 +40,6 @@ class User extends Authenticatable
         'banned_at' => 'datetime',
         'failed_login_attempts' => 'integer',
         'locked_until' => 'datetime',
-        'two_factor_enabled' => 'boolean',
-        'two_factor_expires_at' => 'datetime',
     ];
 
     public function reviews(): HasMany

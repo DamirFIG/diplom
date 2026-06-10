@@ -17,6 +17,9 @@ class ProfileController extends Controller
     {
         $user = Auth::user();
         $activeTab = $request->get('tab', 'bookings');
+        if (! in_array($activeTab, ['bookings', 'reviews', 'favorites'], true)) {
+            $activeTab = 'bookings';
+        }
 
         $bookingFilters = [
             'search' => $request->get('booking_search'),
@@ -222,25 +225,6 @@ class ProfileController extends Controller
         $user->update($data);
 
         return back()->with('success', 'Профиль обновлён');
-    }
-
-    public function updateTwoFactor(Request $request)
-    {
-        $user = Auth::user();
-        $enabled = $request->boolean('two_factor_enabled');
-
-        $user->forceFill([
-            'two_factor_enabled' => $enabled,
-            'two_factor_code' => null,
-            'two_factor_expires_at' => null,
-        ])->save();
-
-        return back()->with(
-            'success',
-            $enabled
-                ? 'Двухфакторная аутентификация включена'
-                : 'Двухфакторная аутентификация отключена'
-        );
     }
 
     public function deleteAvatar()

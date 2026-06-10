@@ -30,9 +30,6 @@
                 <a href="{{ route('profile.index', ['tab' => 'favorites']) }}" class="profile-menu-item {{ $activeTab === 'favorites' ? 'active' : '' }}">
                     Избранное
                 </a>
-                <a href="{{ route('profile.index', ['tab' => 'settings']) }}" class="profile-menu-item {{ $activeTab === 'settings' ? 'active' : '' }}">
-                    Настройки
-                </a>
             </nav>
             
             <div class="profile-divider"></div>
@@ -316,30 +313,6 @@
                 @endif
             </section>
 
-            <!-- Настройки -->
-            <section id="settings" class="profile-section {{ $activeTab === 'settings' ? '' : 'hidden' }}">
-                <h3 class="section-title">Настройки профиля</h3>
-
-                <div class="profile-settings-card">
-                    <div>
-                        <h4>Двухфакторная аутентификация по email</h4>
-                        <p>
-                            Сейчас: <strong>{{ $user->two_factor_enabled ? 'включена' : 'отключена' }}</strong>.
-                            Когда защита включена, после ввода логина и пароля на вашу почту отправляется одноразовый код.
-                        </p>
-                    </div>
-
-                    <form action="{{ route('profile.two-factor.update') }}" method="POST" class="two-factor-settings-form">
-                        @csrf
-                        <input type="hidden" name="two_factor_enabled" value="0">
-                        <label class="two-factor-toggle">
-                            <input type="checkbox" name="two_factor_enabled" value="1" @checked($user->two_factor_enabled)>
-                            <span>Включить двухфакторную аутентификацию</span>
-                        </label>
-                        <button type="submit">Сохранить настройки</button>
-                    </form>
-                </div>
-            </section>
         </main>
 
 <div id="profileEditModal" class="profile-modal" style="display:none;">
@@ -411,51 +384,6 @@
 .profile-edit-form input{padding:10px 12px;border:1px solid #d9dee7;border-radius:10px;font-size:14px;}
 .profile-edit-form button{padding:10px 14px;border:none;border-radius:10px;background:#377FC1;color:#fff;font-weight:600;cursor:pointer;}
 
-
-.profile-settings-card {
-    background: #fff;
-    border: 1px solid #e8eef6;
-    border-radius: 18px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
-    padding: 24px;
-    max-width: 720px;
-}
-.profile-settings-card h4 {
-    margin: 0 0 10px;
-    color: #2b2b2b;
-    font-size: 22px;
-}
-.profile-settings-card p {
-    color: #555;
-    line-height: 1.5;
-    margin: 0 0 18px;
-}
-.two-factor-settings-form {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-}
-.two-factor-toggle {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    color: #2b2b2b;
-    font-size: 16px;
-}
-.two-factor-toggle input {
-    width: 20px;
-    height: 20px;
-}
-.two-factor-settings-form button {
-    width: fit-content;
-    padding: 12px 18px;
-    border: none;
-    border-radius: 10px;
-    background: #377FC1;
-    color: #fff;
-    font-weight: 600;
-    cursor: pointer;
-}
 
 .profile-register-date {
     color: #B2AEAE;
