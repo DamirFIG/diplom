@@ -140,7 +140,7 @@
         </script>
     @endif
 
-    @if(!in_array(Request::path(), ['login', 'register', 'forgot-password', 'reset-password']))
+    @if(!in_array(Request::path(), ['login', 'register']))
         <footer class="footer">
             <div class="container">
                 <div class="footer-content">

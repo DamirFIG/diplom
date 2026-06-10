@@ -20,7 +20,6 @@
     <button type="submit">Войти</button>
     </form>
 
-    <a href="{{ route('auth.forgot-password') }}">Забыли пароль?</a>
     <p class="auth-link-text">Еще нет аккаунта? <a href="{{ route('auth.register') }}">Зарегистрироваться</a></p>
     </div>
 
